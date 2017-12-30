@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project xmlns:ns1="cn.edu.scau.cmi.liangshanero" name="test">
+	<package ns1:name="cn.scau.cmi.liangzaoqing" />
+	<model>
+		<dataBaseType name="MySql" ip="127.0.0.1" port="3306"
+			username="root" password="root" schema="test">
+			<tables>
+				<table name="idcard">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="number" ns1:type="VARCHAR" ns1:display="true"/>
+						<column ns1:name="address" ns1:type="VARCHAR" />
+						<column ns1:name="birthday" ns1:type="DATE" />
+						<column ns1:name="student" ns1:type="BIGINT" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="idcard2student">
+							<column ns1:name="idcard" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="idcard2student">
+					<primaryKeys>
+						<column ns1:name="idcard" ns1:type="BIGINT" />
+						<column ns1:name="student" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="idcard" ns1:referenceTable="idcard"
+							ns1:referenceColumn="id" />
+						<column ns1:name="student" ns1:referenceTable="student"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="office">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" />
+						<column ns1:name="department" ns1:type="BIGINT" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="teacher">
+							<column ns1:name="office" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="student">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="idcard2student">
+							<column ns1:name="student" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="student2teacher">
+							<column ns1:name="student" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="student2teacher">
+					<primaryKeys>
+						<column ns1:name="student" ns1:type="BIGINT" />
+						<column ns1:name="teacher" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="student" ns1:referenceTable="student"
+							ns1:referenceColumn="id" />
+						<column ns1:name="teacher" ns1:referenceTable="teacher"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="teacher">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="office" ns1:referenceTable="office"
+							ns1:referenceColumn="id" />
+						<column ns1:name="leader" ns1:referenceTable="teacher"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="student2teacher">
+							<column ns1:name="teacher" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="teacher">
+							<column ns1:name="leader" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+			</tables>
+		</dataBaseType>
+	</model>
+</project>

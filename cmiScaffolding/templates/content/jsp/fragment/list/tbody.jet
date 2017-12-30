@@ -1,0 +1,178 @@
+<f:replaceAll value="Dollar_symbol" replacement="$"><c:replaceStrings replace="%Left_angle_brackets,%Right_angle_brackets" with="<,>"><c:setVariable select="0" var="count"/><c:iterate select="$eachTable/primaryKeys/column" var="PK"><c:setVariable select="$count+1" var="count"/></c:iterate><c:setVariable select="$count" var="num"/>			<tbody>
+			%Left_angle_bracketsc:forEach items="Dollar_symbol{<c:get select="$eachTable/@name"/>s}" var="current" varStatus="i"%Right_angle_brackets
+			%Left_angle_bracketsc:choose%Right_angle_brackets
+			%Left_angle_bracketsc:when test="Dollar_symbol{(i.count) % 2 == 0}"%Right_angle_brackets
+			%Left_angle_bracketsc:set var="rowclass" value="rowtwo"/%Right_angle_brackets
+			%Left_angle_brackets/c:when%Right_angle_brackets
+			%Left_angle_bracketsc:otherwise%Right_angle_brackets
+			%Left_angle_bracketsc:set var="rowclass" value="rowone"/%Right_angle_brackets
+			%Left_angle_brackets/c:otherwise%Right_angle_brackets
+			%Left_angle_brackets/c:choose%Right_angle_brackets	
+			<tr class="Dollar_symbol{rowclass}">
+				<td nowrap="nowrap" class="tabletd">
+					<a title="<fmt:message key="navigation.view" />" href="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/>?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$primaryKey/@name"/>=Dollar_symbol{current.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate><c:iterate select="$eachTable/referenceds/referenced" var="referenced"><c:iterate select="$referenceTables/table" var="referenceTable"><c:if test="$referenceTable/@name=$referenced/@name"><c:setVariable select="0" var="i"/><c:setVariable select="0" var="j"/><c:iterate select="$referenceTable/columns/column" var="col"><c:setVariable select="$i+1" var="i"/></c:iterate><c:iterate select="$referenceTable/referenceds/referenced" var="ref"><c:setVariable select="$j+1" var="j"/></c:iterate><c:choose><c:when test="$i=0and$j=0"><c:iterate select="$referenceTable/foreigns/column" var="foreign"><c:choose><c:when test="$foreign/@referenceTable=$eachTable/@name"></c:when><c:otherwise>&<c:get select="$foreign/@referenceTable"/>Page=homePage</c:otherwise></c:choose></c:iterate></c:when><c:otherwise>&<c:get select="$referenceTable/@name"/>Page=homePage</c:otherwise></c:choose></c:if></c:iterate></c:iterate>"><img src="images/icons/view.gif" /></a>
+			<c:setVariable select="$num" var="count"/>
+					<a title="<fmt:message key="navigation.edit" />" href="Dollar_symbol{pageContext.request.contextPath}/edit<c:get select="uppercaseFirst($eachTable/@name)"/>?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$primaryKey/@name"/>=Dollar_symbol{current.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate><c:iterate select="$eachTable/referenceds/referenced" var="referenced"><c:iterate select="$referenceTables/table" var="referenceTable"><c:if test="$referenceTable/@name=$referenced/@name"><c:setVariable select="0" var="i"/><c:setVariable select="0" var="j"/><c:iterate select="$referenceTable/columns/column" var="col"><c:setVariable select="$i+1" var="i"/></c:iterate><c:iterate select="$referenceTable/referenceds/referenced" var="ref"><c:setVariable select="$j+1" var="j"/></c:iterate><c:choose><c:when test="$i=0and$j=0"><c:iterate select="$referenceTable/foreigns/column" var="foreign"><c:choose><c:when test="$foreign/@referenceTable=$eachTable/@name"></c:when><c:otherwise>&<c:get select="$foreign/@referenceTable"/>Page=previousPage</c:otherwise></c:choose></c:iterate></c:when><c:otherwise>&<c:get select="$referenceTable/@name"/>Page=previousPage</c:otherwise></c:choose></c:if></c:iterate></c:iterate>"><img src="images/icons/edit.gif" /></a>
+			<c:setVariable select="$num" var="count"/>
+					<a title="<fmt:message key="navigation.delete" />" href="Dollar_symbol{pageContext.request.contextPath}/confirmDelete<c:get select="uppercaseFirst($eachTable/@name)"/>?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$primaryKey/@name"/>=Dollar_symbol{current.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>"><img src="images/icons/delete.gif" /></a>
+				</td>
+			<c:iterate select="$eachTable/columns/column" var="attribute">
+			<c:choose>
+			<c:when test="$attribute/@type='TIMESTAMP'or$attribute/@type='DATE'or$attribute/@type='TIME'or$attribute/@type='YEAR'or$attribute/@type='DATETIME'">
+				<td nowrap="nowrap" class="tabletd"><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="Dollar_symbol{current.<c:get select="lowercaseFirst($attribute/@name)"/>}"/>&nbsp;</td>
+			</c:when>
+			<c:otherwise>
+				<td nowrap="nowrap" class="tabletd">Dollar_symbol{current.<c:get select="lowercaseFirst($attribute/@name)"/>} &nbsp;</td>
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			<c:iterate select="$eachTable/foreigns/column" var="foreign">
+			<c:iterate select="$referenceTables/table" var="rt">
+			<c:if test="$rt/@name=$foreign/@referenceTable">
+			<c:iterate select="$rt/columns/column" var="col">
+			<c:choose>
+			<c:when test="$col/@name='name'">
+				<td nowrap="nowrap" class="tabletd">Dollar_symbol{current.<c:get select="$foreign/@referenceTable"/>.name} &nbsp;</td>
+			</c:when>
+			<c:otherwise>
+			<c:if test="$col/@display='true'">
+				<td nowrap="nowrap" class="tabletd">Dollar_symbol{current.<c:get select="$foreign/@referenceTable"/>.<c:get select="lowercaseFirst($col/@name)"/>} &nbsp;</td>
+			</c:if>
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:if>
+			</c:iterate>
+			</c:iterate>
+			<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+			<c:iterate select="$referenceTables/table" var="referenceTable">
+			<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:if test="$i=0">
+			<c:if test="$j=0">
+			<c:iterate select="$referenceTable/foreigns/column" var="foreig">
+			<c:choose>
+			<c:when test="$foreig/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+				<td nowrap="nowrap" class="tabletd">
+				%Left_angle_bracketsc:if test="Dollar_symbol{empty(current.<c:get select="$foreig/@referenceTable"/>s) }"%Right_angle_brackets
+				<span style="color:red">暂无<c:get select="$foreig/@referenceTable"/></span>
+				%Left_angle_brackets/c:if%Right_angle_brackets 
+				%Left_angle_bracketsc:set var="isDone" value="0"/%Right_angle_brackets 
+				%Left_angle_bracketsc:forEach items="Dollar_symbol{current.<c:get select="$foreig/@referenceTable"/>s}" var="referenced" varStatus="i"%Right_angle_brackets
+				%Left_angle_bracketsc:if test="Dollar_symbol{isDone == '0' }"%Right_angle_brackets
+				%Left_angle_bracketsc:choose>
+				%Left_angle_bracketsc:when test="Dollar_symbol{i.count <6 }"%Right_angle_brackets
+			<c:iterate select="$referenceTables/table" var="rt">
+			<c:if test="$rt/@name=$foreig/@referenceTable">
+			<c:iterate select="$rt/columns/column" var="col">
+			<c:choose>
+			<c:when test="$col/@name='name'">
+				Dollar_symbol{referenced.name}<br />
+			</c:when>
+			<c:otherwise>
+			<c:if test="$col/@display='true'">
+				Dollar_symbol{referenced.<c:get select="lowercaseFirst($col/@name)"/>}<br />
+			</c:if>
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:if>
+			</c:iterate>
+				%Left_angle_brackets/c:when%Right_angle_brackets
+				%Left_angle_bracketsc:otherwise%Right_angle_brackets
+				%Left_angle_bracketsc:set var="isDone" value="1"/%Right_angle_brackets
+				<a href="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreig/@referenceTable)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{current.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=homePage">更多</a>
+				%Left_angle_brackets/c:otherwise%Right_angle_brackets
+				%Left_angle_brackets/c:choose%Right_angle_brackets
+				%Left_angle_brackets/c:if%Right_angle_brackets
+				%Left_angle_brackets/c:forEach%Right_angle_brackets &nbsp;</td>
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:if>
+			<c:if test="$j>0">
+				<td nowrap="nowrap" class="tabletd">
+				%Left_angle_bracketsc:if test="Dollar_symbol{empty(current.<c:get select="$referenced/@name"/>s) }"%Right_angle_brackets
+				<span style="color:red">暂无<c:get select="$referenced/@name"/>s</span>
+				%Left_angle_brackets/c:if%Right_angle_brackets 
+				%Left_angle_bracketsc:set var="isDone" value="0"/%Right_angle_brackets
+				%Left_angle_bracketsc:forEach items="Dollar_symbol{current.<c:get select="$referenced/@name"/>s}" var="referenced" varStatus="i"%Right_angle_brackets
+				%Left_angle_bracketsc:if test="Dollar_symbol{isDone == '0' }"%Right_angle_brackets
+				%Left_angle_bracketsc:choose%Right_angle_brackets
+				%Left_angle_bracketsc:when test="Dollar_symbol{i.count <6 }"%Right_angle_brackets
+			<c:iterate select="$referenceTables/table" var="rt">
+			<c:if test="$rt/@name=$referenced/@name">
+			<c:iterate select="$rt/columns/column" var="col">
+			<c:choose>
+			<c:when test="$col/@name='name'">
+				Dollar_symbol{referenced.name}<br />
+			</c:when>
+			<c:otherwise>
+			<c:if test="$col/@display='true'">
+				Dollar_symbol{referenced.<c:get select="lowercaseFirst($col/@name)"/>}<br />
+			</c:if>
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:if>
+			</c:iterate>
+				%Left_angle_brackets/c:when%Right_angle_brackets
+				%Left_angle_bracketsc:otherwise%Right_angle_brackets
+				%Left_angle_bracketsc:set var="isDone" value="1"/%Right_angle_brackets
+				<a href="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{current.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=homePage">更多</a>
+				%Left_angle_brackets/c:otherwise%Right_angle_brackets
+				%Left_angle_brackets/c:choose%Right_angle_brackets
+				%Left_angle_brackets/c:if%Right_angle_brackets
+				%Left_angle_brackets/c:forEach%Right_angle_brackets &nbsp;</td>
+			</c:if>
+			</c:if>
+			<c:if test="$i>0">
+	       	    <td nowrap="nowrap" class="tabletd">
+				%Left_angle_bracketsc:if test="Dollar_symbol{empty(current.<c:get select="$referenced/@name"/>s) }"%Right_angle_brackets
+				<span style="color:red">暂无<c:get select="$referenced/@name"/>s</span>
+				%Left_angle_brackets/c:if%Right_angle_brackets 
+				%Left_angle_bracketsc:set var="isDone" value="0"/%Right_angle_brackets
+				%Left_angle_bracketsc:forEach items="Dollar_symbol{current.<c:get select="$referenced/@name"/>s}" var="referenced" varStatus="i"%Right_angle_brackets
+				%Left_angle_bracketsc:if test="Dollar_symbol{isDone == '0' }"%Right_angle_brackets
+				%Left_angle_bracketsc:choose%Right_angle_brackets
+				%Left_angle_bracketsc:when test="Dollar_symbol{i.count <6 }"%Right_angle_brackets
+			<c:iterate select="$referenceTables/table" var="rt">
+			<c:if test="$rt/@name=$referenced/@name">
+			<c:iterate select="$rt/columns/column" var="col">
+			<c:choose>
+			<c:when test="$col/@name='name'">
+				Dollar_symbol{referenced.name}<br />
+			</c:when>
+			<c:otherwise>
+			<c:if test="$col/@display='true'">
+				Dollar_symbol{referenced.<c:get select="lowercaseFirst($col/@name)"/>}<br />
+			</c:if>
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:if>
+			</c:iterate>
+				%Left_angle_brackets/c:when%Right_angle_brackets
+				%Left_angle_bracketsc:otherwise%Right_angle_brackets
+				%Left_angle_bracketsc:set var="isDone" value="1"/%Right_angle_brackets
+				<a href="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{current.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=homePage">更多</a>
+				%Left_angle_brackets/c:otherwise%Right_angle_brackets
+				%Left_angle_brackets/c:choose%Right_angle_brackets
+				%Left_angle_brackets/c:if%Right_angle_brackets
+				%Left_angle_brackets/c:forEach%Right_angle_brackets &nbsp;</td>
+			</c:if>
+		</c:if>
+	</c:iterate>
+	</c:iterate>
+			</tr>
+		%Left_angle_brackets/c:forEach%Right_angle_brackets
+		</tbody></c:replaceStrings></f:replaceAll>

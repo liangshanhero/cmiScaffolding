@@ -1,0 +1,44 @@
+			<thead>
+				<tr>
+					<th class="thead">&nbsp;</th>
+			<c:iterate select="$eachTable/columns/column" var="attribute">
+					<th class="thead"><fmt:message key="<c:get select="$eachTable/@name"/>.<c:get select="$attribute/@name"/>.title"/></th>
+			</c:iterate>
+			<c:iterate select="$eachTable/foreigns/column" var="foreign">
+					<th class="thead"><fmt:message key="<c:get select="$foreign/@referenceTable"/>.title"/></th>
+			</c:iterate>
+			<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+			<c:iterate select="$referenceTables/table" var="referenceTable">
+			<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:if test="$i=0">
+			<c:if test="$j=0">
+			<c:iterate select="$referenceTable/foreigns/column" var="foreig">
+			<c:choose>
+			<c:when test="$foreig/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+					<th class="thead"><fmt:message key="<c:get select="$foreig/@referenceTable"/>s.title"/></th>
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:if>
+			<c:if test="$j>0">
+					<th class="thead"><fmt:message key="<c:get select="$referenced/@name"/>s.title"/></th>
+			</c:if>
+			</c:if>
+			<c:if test="$i>0">
+					<th class="thead"><fmt:message key="<c:get select="$referenced/@name"/>s.title"/></th>
+			</c:if>
+		</c:if>
+	</c:iterate>
+	</c:iterate>
+				</tr>
+			</thead>

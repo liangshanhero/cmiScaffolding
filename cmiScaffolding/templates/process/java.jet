@@ -1,0 +1,107 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+<ws:folder path="{$projectName}/cmi"/>
+<%--
+<c:setVariable select="0" var="i"/>
+<c:iterate select="$eachTable/columns/column" var="col">
+<c:setVariable select="$i+1" var="i"/>
+</c:iterate>
+
+<c:setVariable select="0" var="j"/>
+<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+<c:setVariable select="$j+1" var="j"/>
+</c:iterate>
+<c:if test="$i!=0 or $j!=0">
+--%>
+<java:package name="{$packageName}.dao" srcFolder="{$projectName}/cmi">
+<c:iterate var="eachTable" select="$table"> 
+<%-- 生成DAO --%>
+<java:class name="{uppercaseFirst($eachTable/@name)}DAO" template="templates/content/java/dao.jet"/>
+
+<%-- 生成DAOImpl --%>
+<java:class name="{uppercaseFirst($eachTable/@name)}DAOImpl" template="templates/content/java/daoImpl.jet"/>
+</c:iterate>
+
+<%-- 生成JpaDao--%>
+<java:class name="AbstractJpaDao" template="templates/content/java/AbstractJpaDao.jet"/>
+<java:class name="JpaDao" template="templates/content/java/JpaDao.jet"/>
+
+</java:package>
+
+<java:package name="{$packageName}.domain" srcFolder="{$projectName}/cmi">
+<c:iterate var="eachTable" select="$table"> 
+<%-- 生成domain --%>
+<%--<ws:file template="templates/content/java/class/domain/domain.jet" path="{$projectName}/generated/{$packageName}.daomain/{uppercaseFirst($eachTable/@name)}.java"/>--%>
+<java:class name="{uppercaseFirst($eachTable/@name)}" template="templates/content/java/domain.jet"/>
+</c:iterate>
+</java:package>
+
+<java:package name="{$packageName}.service" srcFolder="{$projectName}/cmi">
+<c:iterate var="eachTable" select="$table"> 
+<c:setVariable select="0" var="i"/>
+<c:iterate select="$eachTable/columns/column" var="col">
+<c:setVariable select="$i+1" var="i"/>
+</c:iterate>
+
+<c:setVariable select="0" var="j"/>
+<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+<c:setVariable select="$j+1" var="j"/>
+</c:iterate>
+<c:if test="$i!=0 or $j!=0">
+<%-- 生成Service --%>
+<%--<ws:file template="templates/content/java/class/service/service.jet" path="{$projectName}/generated/{$packageName}.service/{uppercaseFirst($eachTable/@name)}Service.java"/>--%>
+<java:class name="{uppercaseFirst($eachTable/@name)}Service" template="templates/content/java/service.jet"/>
+
+<%-- 生成ServiceImpl --%>
+<%--<ws:file template="templates/content/java/class/serviceImpl/serviceImpl.jet" path="{$projectName}/generated/{$packageName}.service/{uppercaseFirst($eachTable/@name)}ServiceImpl.java"/>--%>
+<java:class name="{uppercaseFirst($eachTable/@name)}ServiceImpl" template="templates/content/java/serviceImpl.jet"/>
+</c:if>
+</c:iterate>
+</java:package>
+
+<java:package name="{$packageName}.web" srcFolder="{$projectName}/cmi">
+<c:iterate var="eachTable" select="$table"> 
+<c:setVariable select="0" var="i"/>
+<c:iterate select="$eachTable/columns/column" var="col">
+<c:setVariable select="$i+1" var="i"/>
+</c:iterate>
+
+<c:setVariable select="0" var="j"/>
+<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+<c:setVariable select="$j+1" var="j"/>
+</c:iterate>
+<c:if test="$i!=0 or $j!=0">
+<%-- 生成Controller --%>
+<java:class name="{uppercaseFirst($eachTable/@name)}Controller" template="templates/content/java/controller.jet"/>
+</c:if>
+</c:iterate>
+
+<%-- 生成绑定器 --%>
+<java:class name="CmiController" template="templates/content/java/initBinder/CmiController.jet"/>
+</java:package>
+
+<java:package name="{$packageName}.RS" srcFolder="{$projectName}/cmi">
+<c:iterate var="eachTable" select="$table"> 
+<c:setVariable select="0" var="i"/>
+<c:iterate select="$eachTable/columns/column" var="col">
+<c:setVariable select="$i+1" var="i"/>
+</c:iterate>
+
+<c:setVariable select="0" var="j"/>
+<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+<c:setVariable select="$j+1" var="j"/>
+</c:iterate>
+<c:if test="$i!=0 or $j!=0">
+<%-- 生成RSController --%>
+<java:class name="{uppercaseFirst($eachTable/@name)}RestController" template="templates/content/java/rscontroller.jet"/>
+</c:if>
+</c:iterate>
+</java:package>
+
+<%--生成绑定器的每一个类--%>
+<java:package name="{$packageName}.initBinder" srcFolder="{$projectName}/cmi">
+<c:iterate var="eachTable" select="$table"> 
+<java:class name="{uppercaseFirst($eachTable/@name)}Editor" template="templates/content/java/initBinder/propertyEditor.jet"/>
+<java:class name="{uppercaseFirst($eachTable/@name)}sEditor" template="templates/content/java/initBinder/propertiesEditor.jet"/>
+</c:iterate>
+</java:package>
+<%--</c:if>--%>

@@ -1,0 +1,19 @@
+public String toString() {
+
+		<java:import>java.lang.StringBuilder</java:import> buffer = new StringBuilder();
+		<c:iterate select="$eachTable/primaryKeys/column" var="p">
+		buffer.append("<c:get select="$p/@name"/>=[").append(<c:get select="lowercaseFirst($p/@name)"/>).append("] ");
+		</c:iterate>
+		<c:iterate select="$eachTable/columns/column" var="c">
+		<c:choose>
+		<c:when test="$c/@name='id'">
+		buffer.append("<c:get select="$c/@name"/>_1=[").append(<c:get select="lowercaseFirst($c/@name)"/>_1).append("] ");
+		</c:when>
+		<c:otherwise>
+		buffer.append("<c:get select="$c/@name"/>=[").append(<c:get select="lowercaseFirst($c/@name)"/>).append("] ");
+		</c:otherwise>
+		</c:choose>
+		</c:iterate>
+
+		return buffer.toString();
+	}

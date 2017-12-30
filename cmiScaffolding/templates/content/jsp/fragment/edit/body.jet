@@ -1,0 +1,15 @@
+<f:replaceAll value="Dollar_symbol" replacement="$"><c:replaceStrings replace="%Left_angle_brackets,%Right_angle_brackets" with="<,>"><body>
+	<div id="content">
+		<h1><fmt:message key="navigation.edit" /><fmt:message key="<c:get select="$eachTable/@name"/>.title" /></h1>
+		<div class="navitem"><a class="button" href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=homePage"><span><img src="images/icons/back.gif" /> <fmt:message key="navigation.back" /></span></a></div>
+		<form:form action="Dollar_symbol{pageContext.request.contextPath}/save<c:get select="uppercaseFirst($eachTable/@name)"/>" method="POST" modelAttribute="<c:get select="$eachTable/@name"/>">
+		<table cellpadding="0" cellspacing="0" id="viewTable">
+		<c:include template="templates/content/jsp/fragment/edit/tbody.jet"/>
+		</table>
+		<span class="inputbutton"><input class="savebutton" id="save" type="submit" value="<fmt:message key="navigation.save"/>" /></span>
+		<script type="text/javascript">Spring.addDecoration(new Spring.ValidateAllDecoration({elementId : 'save',event : 'onclick'}));</script>
+		</form:form>
+		<div class="clear">&nbsp;</div>
+	</div>
+</body></c:replaceStrings>
+</f:replaceAll>

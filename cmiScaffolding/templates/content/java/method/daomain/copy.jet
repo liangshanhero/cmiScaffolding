@@ -1,0 +1,24 @@
+public void copy(<c:get select="uppercaseFirst($eachTable/@name)"/> that) {
+		<c:iterate select="$eachTable/primaryKeys/column" var="p">
+		set<c:get select="uppercaseFirst($p/@name)"/>(that.get<c:get select="uppercaseFirst($p/@name)"/>());
+		</c:iterate>
+		<c:iterate select="$eachTable/columns/column" var="c">
+		set<c:get select="uppercaseFirst($c/@name)"/>(that.get<c:get select="uppercaseFirst($c/@name)"/>());
+		</c:iterate>
+	<c:iterate select="$eachTable/referenceds/referenced" var="r">
+	<c:setVariable select="$r/@name" var="preTable"/>
+	<c:iterate select="$project/model/dataBaseType/tables/table" var="t">
+	<c:if test="$t/@name=$preTable">
+	<c:iterate select="$t/foreigns/column" var="c">
+	<c:choose>
+	<c:when test="$c/@referenceTable=$table/@name">
+	</c:when>
+	<c:otherwise>
+		set<c:get select="uppercaseFirst($c/@referenceTable)"/>s(new java.util.LinkedHashSet<<c:get select="$packageName"/>.domain.<c:get select="uppercaseFirst($c/@referenceTable)"/>>(that.get<c:get select="uppercaseFirst($c/@referenceTable)"/>s()));
+	</c:otherwise>
+	</c:choose>
+	</c:iterate>
+	</c:if>
+	</c:iterate>
+	</c:iterate>
+	}

@@ -1,0 +1,26 @@
+<f:replaceAll value="Dollar_symbol" replacement="$">
+<c:replaceStrings replace="%Left_angle_brackets,%Right_angle_brackets" with="<,>">
+<body>
+	<div id="contentarea">
+		<div id="content">
+			<h3>
+			<fmt:message key="navigation.view" />
+			<fmt:message key="<c:get select="$relateTableName"/>.title" />
+			</h3>
+			<div class="navitem">
+			<a class="button" href="doller_sign{pageContext.request.contextPath}/select<c:get select="$eachTable/@name"/>?idKey=doller_sign{<c:get select="$eachTable/@name"/>_id}&page=firstPage"><span><img
+			src="images/icons/back.gif" />
+			<fmt:message key="navigation.back" /></span></a>
+			</div>
+		<c:include template="templates/content/jsp/fragment/deleteRelate/tbody.jet"/>
+			<div class="navitem">
+				<a class="button" href="Dollar_symbol{pageContext.request.contextPath}/delete<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($relateTableName)"/>s?<c:get select="$eachTable/@name"/>_id=Dollar_symbol{<c:get select="$eachTable/@name"/>_id}&related_<c:get select="$relateTableName"/>s_id=Dollar_symbol{<c:get select="$relateTableName"/>.id}&"><span><img
+					src="images/icons/delete.gif" />
+				<fmt:message key="navigation.delete" /></span></a>
+				</div>
+			<div class="clear">&nbsp;</div>
+		</div>
+	</div>
+</body>
+</c:replaceStrings>
+</f:replaceAll>

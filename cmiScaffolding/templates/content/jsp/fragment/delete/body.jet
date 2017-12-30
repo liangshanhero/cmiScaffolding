@@ -1,0 +1,12 @@
+<f:replaceAll value="Dollar_symbol" replacement="$"><c:replaceStrings replace="%Left_angle_brackets,%Right_angle_brackets" with="<,>"><c:setVariable select="0" var="count"/><c:iterate select="$eachTable/primaryKeys/column" var="PK"><c:setVariable select="$count+1" var="count"/></c:iterate><c:setVariable select="$count" var="num"/><body>
+	<div id="content">
+		<h1><fmt:message key="<c:get select="$eachTable/@name"/>.title"/>Details</h1>
+		<div class="navitem"><a class="button" href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=homePage"><span><img src="images/icons/back.gif" /><fmt:message key="navigation.back"/></span></a></div>
+		<table cellpadding="0" cellspacing="0" id="viewTable">
+		<c:include template="templates/content/jsp/fragment/delete/tbody.jet"/>
+		</table>
+		<div class="navitem"><a class="button" href="Dollar_symbol{pageContext.request.contextPath}/delete<c:get select="uppercaseFirst($eachTable/@name)"/>?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$primaryKey/@name"/>=Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>"><span><img src="images/icons/delete.gif" /><fmt:message key="navigation.delete"/></span></a></div>
+		<div class="clear">&nbsp;</div>
+	</div>
+</body></c:replaceStrings>
+</f:replaceAll>

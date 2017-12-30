@@ -1,0 +1,43 @@
+package <c:get select="$packageName"/>.web;
+<java:importsLocation package="org.example"/>
+import java.util.Set;
+import <c:get select="$packageName"/>.dao.*;
+import <c:get select="$packageName"/>.domain.*;
+import <c:get select="$packageName"/>.service.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+<java:format>
+@Controller("<c:get select="uppercaseFirst($eachTable/@name)"/>Controller")
+public class <c:get select="uppercaseFirst($eachTable/@name)"/>Controller extends CmiController {
+	<c:include template="templates/content/java/method/controller/variable.jet"/>
+	
+	<c:include template="templates/content/java/method/controller/indexEntity.jet"/>
+	
+	<c:include template="templates/content/java/method/controller/selectEntity.jet"/>
+	
+	<c:include template="templates/content/java/method/controller/confirmDeleteEntity.jet"/>
+	
+	<c:include template="templates/content/java/method/controller/deleteEntity.jet"/>
+	
+	<c:include template="templates/content/java/method/controller/editEntity.jet"/>
+	
+	<c:include template="templates/content/java/method/controller/newEntity.jet"/>
+	
+	<c:include template="templates/content/java/method/controller/listEntity.jet"/>
+	
+	<c:include template="templates/content/java/method/controller/saveEntity.jet"/>
+	
+	<c:include template="templates/content/java/method/controller/streamBinary.jet"/>
+	
+}
+</java:format>

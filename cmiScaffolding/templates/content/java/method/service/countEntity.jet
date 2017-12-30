@@ -1,0 +1,35 @@
+public Integer count<c:get select="$eachTable/@name"/>s();
+
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+	<c:iterate select="$referenceTables/table" var="existTable">
+	<c:if test="$foreign/@referenceTable=$existTable/@name">
+	public Integer countRelative<c:get select="uppercaseFirst($foreign/@referenceTable)"/><c:get select="uppercaseFirst($eachTable/@name)"/>s(Integer <c:get select="$foreign/@referenceTable"/>);
+	</c:if>
+	</c:iterate>
+	</c:iterate>
+	
+	<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+	<c:iterate select="$referenceTables/table" var="referenceTable">
+		<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:if test="$i=0and$j=0">
+			<c:iterate select="$referenceTable/foreigns/column" var="rc">
+			<c:choose>
+			<c:when test="$rc/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+			public Integer count<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($rc/@referenceTable)"/>s(Integer <c:get select="$eachTable/@name"/>);
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:if>
+		</c:if>
+	</c:iterate>
+	</c:iterate>	

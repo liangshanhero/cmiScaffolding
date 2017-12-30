@@ -1,0 +1,10 @@
+	@Transactional
+	public <java:import>java.util.Set</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>> load<c:get select="uppercaseFirst($eachTable/@name)"/>s(){
+		return <c:get select="$eachTable/@name"/>DAO.findAll<c:get select="uppercaseFirst($eachTable/@name)"/>s();
+
+	}
+	
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> load<c:get select="uppercaseFirst($eachTable/@name)"/>s(int index,int size) {
+		return <c:get select="$eachTable/@name"/>DAO.findAll<c:get select="uppercaseFirst($eachTable/@name)"/>s(index,size);
+	}

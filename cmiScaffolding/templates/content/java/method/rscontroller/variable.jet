@@ -1,0 +1,93 @@
+	@<java:import>org.springframework.beans.factory.annotation.Autowired</java:import>
+	private <java:import><c:get select="$packageName"/>.dao.<c:get select="uppercaseFirst($eachTable/@name)"/>DAO</java:import> <c:get select="$eachTable/@name"/>DAO;
+	
+	@Autowired
+	private <java:import><c:get select="$packageName"/>.service.<c:get select="uppercaseFirst($eachTable/@name)"/>Service</java:import> <c:get select="$eachTable/@name"/>Service;
+	
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+	<c:choose>
+	<c:when test="$foreign/@referenceTable=$eachTable/@name">
+	</c:when>
+	<c:otherwise>
+	@Autowired
+	private <c:get select="uppercaseFirst($foreign/@referenceTable)"/>DAO <c:get select="$foreign/@referenceTable"/>DAO;
+	</c:otherwise>
+	</c:choose>
+	</c:iterate>
+	
+	<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+	<c:iterate select="$referenceTables/table" var="referenceTable">
+		<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:choose>
+			<c:when test="$i=0and$j=0">
+			<c:iterate select="$referenceTable/foreigns/column" var="foreig">
+			<c:choose>
+			<c:when test="$foreig/@referenceTable=$eachTable/@name">
+			@Autowired
+			private <c:get select="uppercaseFirst($referenced/@name)"/>DAO <c:get select="$referenced/@name"/>DAO;
+			
+			</c:when>
+			<c:otherwise>
+			
+			<c:setVariable select="0" var="flag"/>
+			<c:iterate select="$eachTable/foreigns/column" var="foreign">
+			<c:choose>
+			<c:when test="$foreign/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+			<c:if test="$foreig/@referenceTable=$foreign/@referenceTable">
+			<c:setVariable select="1" var="flag"/>
+			</c:if>
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			<c:if test="$flag=0">
+			@Autowired
+			private <c:get select="uppercaseFirst($foreig/@referenceTable)"/>DAO <c:get select="$foreig/@referenceTable"/>DAO;
+			</c:if>
+			
+			@Autowired
+			private <c:get select="uppercaseFirst($foreig/@referenceTable)"/>Service <c:get select="$foreig/@referenceTable"/>Service;
+			
+			</c:otherwise></c:choose></c:iterate>
+			</c:when>
+			
+			<c:otherwise>
+			<c:choose>
+			<c:when test="$referenced/@name=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+			<c:setVariable select="0" var="flag"/>
+			<c:iterate select="$eachTable/foreigns/column" var="foreign">
+			<c:choose>
+			<c:when test="$foreign/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+			<c:if test="$referenced/@name=$foreign/@referenceTable">
+			<c:setVariable select="1" var="flag"/>
+			</c:if>
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			<c:if test="$flag=0">
+			@Autowired
+			private <c:get select="uppercaseFirst($referenced/@name)"/>DAO <c:get select="$referenced/@name"/>DAO;
+			</c:if>
+			
+			@Autowired
+			private <c:get select="uppercaseFirst($referenced/@name)"/>Service <c:get select="$referenced/@name"/>Service;
+			</c:otherwise>
+			</c:choose>
+			</c:otherwise>
+			</c:choose>
+		</c:if>
+	</c:iterate>
+	</c:iterate>

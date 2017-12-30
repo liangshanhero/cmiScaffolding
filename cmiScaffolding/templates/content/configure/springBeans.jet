@@ -1,0 +1,19 @@
+<c:replaceStrings replace="%Left_angle_brackets,%Right_angle_brackets" with="<,>">%Left_angle_brackets?xml version="1.0" encoding="UTF-8"?%Right_angle_brackets
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.3.0.me201310081624]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+		<config>src/applicationContext.xml</config>
+		<config>resources/<c:get select="$projectName"/>-dao-context.xml</config>
+		<config>resources/<c:get select="$projectName"/>-security-context.xml</config>
+		<config>resources/<c:get select="$projectName"/>-service-context.xml</config>
+		<config>resources/<c:get select="$projectName"/>-web-context.xml</config>
+	</configs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>
+</c:replaceStrings>

@@ -1,0 +1,5 @@
+	@Transactional
+	public <java:import>java.util.List</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>> findAll<c:get select="uppercaseFirst($eachTable/@name)"/>s(Integer startResult, Integer maxRows){
+		return new java.util.ArrayList<<c:get select="uppercaseFirst($eachTable/@name)"/>>(<c:get select="$eachTable/@name"/>DAO.findAll<c:get select="uppercaseFirst($eachTable/@name)"/>s(
+				startResult, maxRows));
+	}

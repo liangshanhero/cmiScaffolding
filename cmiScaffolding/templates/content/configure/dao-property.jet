@@ -1,0 +1,18 @@
+<c:get select="$project/model/dataBaseType/@schema"/>.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+
+<c:get select="$project/model/dataBaseType/@schema"/>.show_sql=false
+
+<c:get select="$project/model/dataBaseType/@schema"/>.generateDdl=false
+
+<c:get select="$project/model/dataBaseType/@schema"/>.minPoolSize=1
+
+<c:get select="$project/model/dataBaseType/@schema"/>.maxPoolSize=10
+
+<c:get select="$project/model/dataBaseType/@schema"/>.connection.url=jdbc\:mysql\://202.116.162.90\:3306/<c:get select="$project/model/dataBaseType/@schema"/>
+
+<c:get select="$project/model/dataBaseType/@schema"/>.connection.username=<c:get select="$project/model/dataBaseType/@username"/>
+
+<c:get select="$project/model/dataBaseType/@schema"/>.connection.password=<c:get select="$project/model/dataBaseType/@password"/>
+
+<c:get select="$project/model/dataBaseType/@schema"/>.connection.driver_class=com.mysql.jdbc.Driver
+

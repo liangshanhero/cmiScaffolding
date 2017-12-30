@@ -1,0 +1,81 @@
+	<c:setVariable select="0" var="x"/>
+	<c:setVariable select="0" var="y"/>
+	<c:iterate select="$eachTable/columns/column" var="col">
+		<c:setVariable select="$x+1" var="x"/>
+	</c:iterate>
+	<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+		<c:setVariable select="$y+1" var="y"/>
+	</c:iterate>
+	<c:choose>
+	<c:when test="($x=0)and($y=0)">
+	public void delete<c:get select="uppercaseFirst($eachTable/@name)"/>(<c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="($eachTable/@name)"/>);
+	</c:when>
+	<c:otherwise>
+	public void delete<c:get select="uppercaseFirst($eachTable/@name)"/>(<c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="($eachTable/@name)"/>);
+
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+	<c:setVariable select="0" var="count"/>
+	<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+	<c:setVariable select="$count+1" var="count"/>
+	</c:iterate>
+	<c:setVariable select="$count" var="num"/>
+	<c:iterate select="$referenceTables/table" var="rt">
+	<c:if test="$rt/@name=$foreign/@referenceTable">
+	<c:setVariable select="0" var="pkCount"/>
+	<c:iterate select="$rt/primaryKeys/column" var="pk">
+	<c:setVariable select="$pkCount+1" var="pkCount"/>
+	</c:iterate>
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> delete<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">String <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">Integer <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>java.util.Date</java:import> <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, <c:iterate select="$rt/primaryKeys/column" var="priKey"><c:if test="$priKey/@type='VARCHAR'or$priKey/@type='CHAR'or$priKey/@type='SET'or$priKey/@type='ENUM'or$priKey/@type='TINYTEXT'or$priKey/@type='TEXT'or$priKey/@type='MEDIUMTEXT'or$priKey/@type='LONGTEXT'">String related_<c:get select="$foreign/@referenceTable"/>_<c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='SMALLINT'or$priKey/@type='MEDIUMINT'or$priKey/@type='INT'or$priKey/@type='INTEGER'or$priKey/@type='BIGINT'">Integer related_<c:get select="$foreign/@referenceTable"/>_<c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='TIMESTAMP'or$priKey/@type='DATE'or$priKey/@type='TIME'or$priKey/@type='YEAR'or$priKey/@type='DATETIME'"><java:import>java.util.Date</java:import> related_<c:get select="$foreign/@referenceTable"/>_<c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='DOUBLE'or$priKey/@type='FLOAT'or$priKey/@type='REAL'or$priKey/@type='DECIMAL'or$priKey/@type='NUMERIC'"><java:import>java.math.BigDecimal</java:import> related_<c:get select="$foreign/@referenceTable"/>_<c:get select="$priKey/@name"/></c:if><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+	</c:if>
+	</c:iterate>
+	</c:iterate>
+	<c:setVariable select="0" var="count"/>
+	<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+	<c:setVariable select="$count+1" var="count"/>
+	</c:iterate>
+	<c:setVariable select="$count" var="num"/>
+	<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+	<c:iterate select="$referenceTables/table" var="referenceTable">
+		<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:if test="$i=0">
+			<c:if test="$j=0">
+			public <c:get select="uppercaseFirst($eachTable/@name)"/> delete<c:get select="uppercaseFirst($eachTable/@name)"/><c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="uppercaseFirst($foreig/@referenceTable)"/></c:otherwise></c:choose></c:iterate>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">String <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">Integer <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>java.util.Date</java:import> <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,<c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:iterate select="$referenceTables/table" var="rt"><c:if test="$rt/@name=$foreig/@referenceTable"><c:setVariable select="0" var="pcount"/><c:iterate select="$rt/primaryKeys/column" var="p"><c:setVariable select="$pcount+1" var="pcount"/></c:iterate><c:iterate select="$rt/primaryKeys/column" var="rpk"><c:if test="$rpk/@type='VARCHAR'or$rpk/@type='CHAR'or$rpk/@type='SET'or$rpk/@type='ENUM'or$rpk/@type='TINYTEXT'or$rpk/@type='TEXT'or$rpk/@type='MEDIUMTEXT'or$rpk/@type='LONGTEXT'">String related_<c:get select="$foreig/@referenceTable"/>s_<c:get select="$rpk/@name"/></c:if><c:if test="$rpk/@type='SMALLINT'or$rpk/@type='MEDIUMINT'or$rpk/@type='INT'or$rpk/@type='INTEGER'or$rpk/@type='BIGINT'">Integer related_<c:get select="$foreig/@referenceTable"/>s_<c:get select="$rpk/@name"/></c:if><c:if test="$rpk/@type='TIMESTAMP'or$rpk/@type='DATE'or$rpk/@type='TIME'or$rpk/@type='YEAR'or$rpk/@type='DATETIME'"><java:import>java.util.Date</java:import> related_<c:get select="$foreig/@referenceTable"/>s_<c:get select="$rpk/@name"/></c:if><c:if test="$rpk/@type='DOUBLE'or$rpk/@type='FLOAT'or$rpk/@type='REAL'or$rpk/@type='DECIMAL'or$rpk/@type='NUMERIC'"><java:import>java.math.BigDecimal</java:import> related_<c:get select="$foreig/@referenceTable"/>s_<c:get select="$rpk/@name"/></c:if><c:setVariable select="$pcount+(-1)" var="pcount"/><c:if test="$pcount>0">,</c:if></c:iterate></c:if></c:iterate></c:otherwise></c:choose></c:iterate>);
+			</c:if>
+			<c:if test="$j>0">
+			<c:iterate select="$referenceTables/table" var="rt">
+		<c:if test="$rt/@name=$referenced/@name">
+		<c:setVariable select="0" var="pkCount"/>
+		<c:iterate select="$rt/primaryKeys/column" var="pk">
+		<c:setVariable select="$pkCount+1" var="pkCount"/>
+		</c:iterate>
+			<c:setVariable select="$num" var="count"/>
+			public <c:get select="uppercaseFirst($eachTable/@name)"/> delete<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">String <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">Integer <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>java.util.Date</java:import> <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, <c:iterate select="$rt/primaryKeys/column" var="priKey"><c:if test="$priKey/@type='VARCHAR'or$priKey/@type='CHAR'or$priKey/@type='SET'or$priKey/@type='ENUM'or$priKey/@type='TINYTEXT'or$priKey/@type='TEXT'or$priKey/@type='MEDIUMTEXT'or$priKey/@type='LONGTEXT'">String related_<c:get select="$referenced/@name"/>s_<c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='SMALLINT'or$priKey/@type='MEDIUMINT'or$priKey/@type='INT'or$priKey/@type='INTEGER'or$priKey/@type='BIGINT'">Integer related_<c:get select="$referenced/@name"/>s_<c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='TIMESTAMP'or$priKey/@type='DATE'or$priKey/@type='TIME'or$priKey/@type='YEAR'or$priKey/@type='DATETIME'"><java:import>java.util.Date</java:import> related_<c:get select="$referenced/@name"/>s_<c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='DOUBLE'or$priKey/@type='FLOAT'or$priKey/@type='REAL'or$priKey/@type='DECIMAL'or$priKey/@type='NUMERIC'"><java:import>java.math.BigDecimal</java:import> related_<c:get select="$referenced/@name"/>s_<c:get select="$priKey/@name"/></c:if><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+			</c:if>
+			</c:iterate>
+			</c:if>
+			</c:if>
+			<c:if test="$i>0">
+			<c:iterate select="$referenceTables/table" var="rt">
+		<c:if test="$rt/@name=$referenced/@name">
+		<c:setVariable select="0" var="pkCount"/>
+		<c:iterate select="$rt/primaryKeys/column" var="pk">
+		<c:setVariable select="$pkCount+1" var="pkCount"/>
+		</c:iterate>
+			<c:setVariable select="$num" var="count"/>
+			public <c:get select="uppercaseFirst($eachTable/@name)"/> delete<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">String <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">Integer <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>java.util.Date</java:import> <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, <c:iterate select="$rt/primaryKeys/column" var="priKey"><c:if test="$priKey/@type='VARCHAR'or$priKey/@type='CHAR'or$priKey/@type='SET'or$priKey/@type='ENUM'or$priKey/@type='TINYTEXT'or$priKey/@type='TEXT'or$priKey/@type='MEDIUMTEXT'or$priKey/@type='LONGTEXT'">String related_<c:get select="$referenced/@name"/>s_<c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='SMALLINT'or$priKey/@type='MEDIUMINT'or$priKey/@type='INT'or$priKey/@type='INTEGER'or$priKey/@type='BIGINT'">Integer related_<c:get select="$referenced/@name"/>s_<c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='TIMESTAMP'or$priKey/@type='DATE'or$priKey/@type='TIME'or$priKey/@type='YEAR'or$priKey/@type='DATETIME'"><java:import>java.util.Date</java:import> related_<c:get select="$referenced/@name"/>s_<c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='DOUBLE'or$priKey/@type='FLOAT'or$priKey/@type='REAL'or$priKey/@type='DECIMAL'or$priKey/@type='NUMERIC'"><java:import>java.math.BigDecimal</java:import> related_<c:get select="$referenced/@name"/>s_<c:get select="$priKey/@name"/></c:if><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+			</c:if>
+			</c:iterate>
+			</c:if>
+		</c:if>
+	</c:iterate>
+	</c:iterate>
+	</c:otherwise>
+	</c:choose>

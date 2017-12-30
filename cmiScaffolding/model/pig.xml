@@ -1,0 +1,1183 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project xmlns:ns1="cn.edu.scau.cmi.liangshanero" name="pigMedicineTest">
+	<package ns1:name="cn.edu.scau.cmi.liangzaoqing" />
+	<model>
+		<dataBaseType name="MySql" ip="120.78.190.240" port="3306"
+			username="root" password="root" schema="pig">
+			<tables>
+				<table name="cure_medicine">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Quantity" ns1:type="FLOAT" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="CureMethodId" ns1:referenceTable="cure_method"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="MedicineId" ns1:referenceTable="medicine"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="UnitId" ns1:referenceTable="unit"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="cure_method">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="CureTaskCourseId" ns1:referenceTable="cure_task_course"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="CureTypeId" ns1:referenceTable="cure_type"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="cure_medicine">
+							<column ns1:name="CureMethodId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="cure_pig">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="CureTime" ns1:type="DATETIME" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="CureTaskCourseId" ns1:referenceTable="cure_task_course"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="EmployeeId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="PigId" ns1:referenceTable="pig"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="cure_task_course">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Step" ns1:type="INT" />
+						<column ns1:name="Time" ns1:type="DATETIME" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="cure_method">
+							<column ns1:name="CureTaskCourseId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="cure_pig">
+							<column ns1:name="CureTaskCourseId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="cure_task_method">
+							<column ns1:name="CureTaskCourseId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="cure_task_medicine">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Quantity" ns1:type="FLOAT" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="CureTaskMethodId" ns1:referenceTable="cure_task_method"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="MedicineId" ns1:referenceTable="medicine"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="UnitId" ns1:referenceTable="unit"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="cure_task_method">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="CureTaskCourseId" ns1:referenceTable="cure_task_course"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="CureTypeId" ns1:referenceTable="cure_type"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="cure_task_medicine">
+							<column ns1:name="CureTaskMethodId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="cure_type">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="VARCHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="cure_method">
+							<column ns1:name="CureTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="cure_task_method">
+							<column ns1:name="CureTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="customer">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="VARCHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="task">
+							<column ns1:name="CustomerId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="employee">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Number" ns1:type="VARCHAR" />
+						<column ns1:name="Name" ns1:type="CHAR" />
+						<column ns1:name="Password" ns1:type="CHAR" />
+						<column ns1:name="LogOn" ns1:type="BIT" />
+						<column ns1:name="RFID" ns1:type="VARCHAR" />
+						<column ns1:name="Sex" ns1:type="CHAR" />
+						<column ns1:name="Birthday" ns1:type="DATETIME" />
+						<column ns1:name="State" ns1:type="BIT" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="cure_pig">
+							<column ns1:name="EmployeeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="except">
+							<column ns1:name="Reportor" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="exception_type_employee">
+							<column ns1:name="EmployeeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="feed">
+							<column ns1:name="EmployeeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="fodder_storage">
+							<column ns1:name="WarehousekepperId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="fodder_take">
+							<column ns1:name="EmployeeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="fodder_take">
+							<column ns1:name="WarehousekepperId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="inspection">
+							<column ns1:name="EmployeeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="medicine_storage">
+							<column ns1:name="PharmaciseId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="medicine_take">
+							<column ns1:name="TakerId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="medicine_take">
+							<column ns1:name="PharmacistId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="prevention">
+							<column ns1:name="EmployeeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="role_employee">
+							<column ns1:name="EmployeeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="sale">
+							<column ns1:name="EmployeeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task">
+							<column ns1:name="CreateEmployeeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_employee">
+							<column ns1:name="EmployeeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_manage">
+							<column ns1:name="EmployeeId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="except">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Barcode" ns1:type="VARCHAR" />
+						<column ns1:name="ReportTime" ns1:type="DATETIME" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="Reportor" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="ExceptionTypeId" ns1:referenceTable="exception_type"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="exception_type">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="VARCHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="except">
+							<column ns1:name="ExceptionTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="exception_type_employee">
+							<column ns1:name="ExceptionTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="inspection_exception">
+							<column ns1:name="ExceptionTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="exception_type_employee">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="IsExceptionManager" ns1:type="BIT" />
+					</columns>
+					<foreigns>
+						<column ns1:name="EmployeeId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="ExceptionTypeId" ns1:referenceTable="exception_type"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="feed">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Time" ns1:type="DATETIME" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="EmployeeId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="PigstyId" ns1:referenceTable="pigsty"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="feed_task_quality">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="FodderTypeId" ns1:referenceTable="fodder_type"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskPigstyId" ns1:referenceTable="task_pigsty"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="fodder_storage">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Quantity" ns1:type="FLOAT" />
+						<column ns1:name="Time" ns1:type="DATETIME" />
+					</columns>
+					<foreigns>
+						<column ns1:name="WarehousekepperId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="FodderTypeId" ns1:referenceTable="fodder_type"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="fodder_take">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Quantity" ns1:type="FLOAT" />
+						<column ns1:name="Time" ns1:type="DATETIME" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="EmployeeId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="WarehousekepperId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="FodderTypeId" ns1:referenceTable="fodder_type"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="fodder_type">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="VARCHAR" />
+						<column ns1:name="Supply" ns1:type="VARCHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="UnitId" ns1:referenceTable="unit"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="feed_task_quality">
+							<column ns1:name="FodderTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="fodder_storage">
+							<column ns1:name="FodderTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="fodder_take">
+							<column ns1:name="FodderTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="function">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="VARCHAR" />
+						<column ns1:name="Meno" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="role_authority">
+							<column ns1:name="FunctionId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="inspection">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Time" ns1:type="DATETIME" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="EmployeeId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="PigHouseId" ns1:referenceTable="pig_house"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="inspection_exception">
+							<column ns1:name="InspectionId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="inspection_exception">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="ExceptionTypeId" ns1:referenceTable="exception_type"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="InspectionId" ns1:referenceTable="inspection"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="PigstyId" ns1:referenceTable="pigsty"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="medicine">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="VARCHAR" />
+						<column ns1:name="Number" ns1:type="VARCHAR" />
+						<column ns1:name="Company" ns1:type="VARCHAR" />
+						<column ns1:name="QuantityPerPackage" ns1:type="INT" />
+						<column ns1:name="Phone" ns1:type="VARCHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="cure_medicine">
+							<column ns1:name="MedicineId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="cure_task_medicine">
+							<column ns1:name="MedicineId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="medicine_storage_detail">
+							<column ns1:name="MedicineId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="medicine_supplier">
+							<column ns1:name="Medicine" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="medicine_take_detail">
+							<column ns1:name="MedicineId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="prevention_type">
+							<column ns1:name="MedicineId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="prevention_type">
+							<column ns1:name="ReportMedicineId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="medicine_price">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Price" ns1:type="FLOAT" />
+					</columns>
+					<foreigns>
+						<column ns1:name="MedicineStorage" ns1:referenceTable="medicine_storage"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="MedicineSupplier" ns1:referenceTable="medicine_supplier"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="medicine_storage">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Time" ns1:type="DATETIME" />
+					</columns>
+					<foreigns>
+						<column ns1:name="PharmaciseId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="Supplier" ns1:referenceTable="supplier"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="medicine_price">
+							<column ns1:name="MedicineStorage" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="medicine_storage_detail">
+							<column ns1:name="MedicineStorageId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="medicine_storage_detail">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="TraceCode" ns1:type="VARCHAR" />
+						<column ns1:name="IsBox" ns1:type="SMALLINT" />
+					</columns>
+					<foreigns>
+						<column ns1:name="MedicineId" ns1:referenceTable="medicine"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="MedicineStorageId" ns1:referenceTable="medicine_storage"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="medicine_supplier">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="Medicine" ns1:referenceTable="medicine"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="Supplier" ns1:referenceTable="supplier"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="medicine_price">
+							<column ns1:name="MedicineSupplier" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="medicine_take">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Time" ns1:type="DATETIME" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="TakerId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="PharmacistId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="medicine_take_detail">
+							<column ns1:name="MedicineTakeId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="medicine_take_detail">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="TraceCode" ns1:type="VARCHAR" />
+						<column ns1:name="IsBox" ns1:type="SMALLINT" />
+					</columns>
+					<foreigns>
+						<column ns1:name="MedicineId" ns1:referenceTable="medicine"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="MedicineTakeId" ns1:referenceTable="medicine_take"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="pig">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Number" ns1:type="VARCHAR" />
+						<column ns1:name="EarNumber" ns1:type="BIGINT" />
+						<column ns1:name="RFID" ns1:type="VARCHAR" />
+						<column ns1:name="Birthday" ns1:type="DATETIME" />
+						<column ns1:name="State" ns1:type="BIT" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="FemaleParentId" ns1:referenceTable="pig"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="MostLikelyMaleParentId"
+							ns1:referenceTable="pig" ns1:referenceColumn="Id" />
+						<column ns1:name="PigTypeId" ns1:referenceTable="pig_type"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="SecondLikelyMaleParentId"
+							ns1:referenceTable="pig" ns1:referenceColumn="Id" />
+						<column ns1:name="ThirdLikelyMaleParentId"
+							ns1:referenceTable="pig" ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="cure_pig">
+							<column ns1:name="PigId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="pig">
+							<column ns1:name="FemaleParentId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="pig">
+							<column ns1:name="MostLikelyMaleParentId"
+								ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="pig">
+							<column ns1:name="SecondLikelyMaleParentId"
+								ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="pig">
+							<column ns1:name="ThirdLikelyMaleParentId"
+								ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="pig_weight">
+							<column ns1:name="PigId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="sale_pig">
+							<column ns1:name="PigId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_pig">
+							<column ns1:name="PigId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="transfer">
+							<column ns1:name="PigId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="pig_house">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Number" ns1:type="INT" />
+						<column ns1:name="RFID" ns1:type="VARCHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="PigHouseTypeId" ns1:referenceTable="pig_house_type"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="inspection">
+							<column ns1:name="PigHouseId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="pigsty">
+							<column ns1:name="PigHouseId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_pighouse">
+							<column ns1:name="PigHouseId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="pig_house_type">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="VARCHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="pig_house">
+							<column ns1:name="PigHouseTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="pig_type">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="VARCHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="pig">
+							<column ns1:name="PigTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="sale_task_quality">
+							<column ns1:name="PigTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_pigsty">
+							<column ns1:name="PigTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="pig_weight">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Weight" ns1:type="FLOAT" />
+						<column ns1:name="Time" ns1:type="DATETIME" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="PigId" ns1:referenceTable="pig"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="pigsty">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Number" ns1:type="INT" />
+						<column ns1:name="RFID" ns1:type="VARCHAR" />
+						<column ns1:name="Capacity" ns1:type="INT" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="PigHouseId" ns1:referenceTable="pig_house"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="feed">
+							<column ns1:name="PigstyId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="inspection_exception">
+							<column ns1:name="PigstyId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="prevention">
+							<column ns1:name="PigstyId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_pigsty">
+							<column ns1:name="PigstyId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="transfer">
+							<column ns1:name="PigstyId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="prevention">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Time" ns1:type="DATETIME" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="EmployeeId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="PigstyId" ns1:referenceTable="pigsty"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="prevention_type">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="VARCHAR" />
+						<column ns1:name="ReportQuality" ns1:type="INT" />
+						<column ns1:name="Quality" ns1:type="FLOAT" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="MedicineId" ns1:referenceTable="medicine"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="ReportMedicineId" ns1:referenceTable="medicine"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="ReportUnitId" ns1:referenceTable="unit"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="UnitId" ns1:referenceTable="unit"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="task_prevention">
+							<column ns1:name="PreventionTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="role">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="CHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="role_authority">
+							<column ns1:name="RoleId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="role_employee">
+							<column ns1:name="RoleId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="role_authority">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Add" ns1:type="BIT" />
+						<column ns1:name="Delete" ns1:type="BIT" />
+						<column ns1:name="Check" ns1:type="BIT" />
+						<column ns1:name="Edit" ns1:type="BIT" />
+						<column ns1:name="Meno" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="FunctionId" ns1:referenceTable="function"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="RoleId" ns1:referenceTable="role"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="role_employee">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="EmployeeId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="RoleId" ns1:referenceTable="role"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="sale">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="SaleType" ns1:type="CHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="EmployeeId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="sale_pig">
+							<column ns1:name="SaleId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="sale_pig">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Time" ns1:type="DATETIME" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="PigId" ns1:referenceTable="pig"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="SaleId" ns1:referenceTable="sale"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="sale_task_quality">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Price" ns1:type="FLOAT" />
+						<column ns1:name="Quality" ns1:type="INT" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="PigTypeId" ns1:referenceTable="pig_type"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="supplier">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="medicine_storage">
+							<column ns1:name="Supplier" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="medicine_supplier">
+							<column ns1:name="Supplier" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="task">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="TaskNumber" ns1:type="VARCHAR" />
+						<column ns1:name="CreateTime" ns1:type="DATETIME" />
+						<column ns1:name="StartTime" ns1:type="DATETIME" />
+						<column ns1:name="EndTime" ns1:type="DATETIME" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="CustomerId" ns1:referenceTable="customer"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="CreateEmployeeId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskStatusId" ns1:referenceTable="task_status_type"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskTypeId" ns1:referenceTable="task_type"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="cure_task_course">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="except">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="feed">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="fodder_take">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="inspection">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="medicine_take">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="prevention">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="sale">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="sale_task_quality">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_employee">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_interval_cycle">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_manage">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_pig">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_pighouse">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_pigsty">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="task_prevention">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="transfer">
+							<column ns1:name="TaskId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="task_employee">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="EmployeeId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="task_interval_cycle">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="FirstExecuteDate" ns1:type="DATETIME" />
+						<column ns1:name="CycleDays" ns1:type="INT" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="task_manage">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Remind" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="EmployeeId" ns1:referenceTable="employee"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="task_pig">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="PigId" ns1:referenceTable="pig"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="task_pighouse">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="PigHouseId" ns1:referenceTable="pig_house"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="task_pigsty">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="PigTypeId" ns1:referenceTable="pig_type"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="PigstyId" ns1:referenceTable="pigsty"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="feed_task_quality">
+							<column ns1:name="TaskPigstyId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="task_prevention">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="PreventionTypeId" ns1:referenceTable="prevention_type"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="task_status_type">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="VARCHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="task">
+							<column ns1:name="TaskStatusId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="task_type">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="VARCHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="task">
+							<column ns1:name="TaskTypeId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="transfer">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Time" ns1:type="DATETIME" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="PigId" ns1:referenceTable="pig"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="PigstyId" ns1:referenceTable="pigsty"
+							ns1:referenceColumn="Id" />
+						<column ns1:name="TaskId" ns1:referenceTable="task"
+							ns1:referenceColumn="Id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="unit">
+					<primaryKeys>
+						<column ns1:name="Id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="Name" ns1:type="VARCHAR" />
+						<column ns1:name="Memo" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="cure_medicine">
+							<column ns1:name="UnitId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="cure_task_medicine">
+							<column ns1:name="UnitId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="fodder_type">
+							<column ns1:name="UnitId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="prevention_type">
+							<column ns1:name="ReportUnitId" ns1:referencedColumn="Id" />
+						</referenced>
+						<referenced name="prevention_type">
+							<column ns1:name="UnitId" ns1:referencedColumn="Id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="foddertakenview">
+					<primaryKeys />
+					<columns>
+						<column ns1:name="TaskId" ns1:type="BIGINT" />
+						<column ns1:name="TaskType" ns1:type="VARCHAR" />
+						<column ns1:name="StartTime" ns1:type="DATETIME" />
+						<column ns1:name="EndTime" ns1:type="DATETIME" />
+						<column ns1:name="TaskStatus" ns1:type="VARCHAR" />
+						<column ns1:name="EmployeeName" ns1:type="CHAR" />
+					</columns>
+					<foreigns />
+					<referenceds />
+				</table>
+			</tables>
+		</dataBaseType>
+	</model>
+</project>

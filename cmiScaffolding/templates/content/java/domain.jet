@@ -1,0 +1,28 @@
+package <c:get select="$packageName"/>.domain;
+<java:importsLocation package="org.example"/>
+import javax.persistence.*;
+import javax.xml.bind.annotation.*;
+import <c:get select="$packageName"/>.domain.*;
+
+<java:format>
+<c:include template="templates/content/java/method/daomain/namedQuery.jet"/>
+
+public class <c:get select="uppercaseFirst($eachTable/@name)"/> implements <java:import>java.io.Serializable</java:import> {
+
+<c:include template="templates/content/java/method/daomain/variable.jet"/>
+
+<c:include template="templates/content/java/method/daomain/getAndSet.jet"/>
+
+<c:include template="templates/content/java/method/daomain/copy.jet"/>
+
+
+<c:include template="templates/content/java/method/daomain/toString.jet"/>
+
+
+<c:include template="templates/content/java/method/daomain/hashCode.jet"/>
+
+
+<c:include template="templates/content/java/method/daomain/equals.jet"/>
+
+}
+</java:format>

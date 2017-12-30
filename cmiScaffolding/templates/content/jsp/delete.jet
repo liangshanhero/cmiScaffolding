@@ -1,0 +1,5 @@
+<c:setVariable var="operate" select="'Delete'"/>
+<c:include template="templates/content/jsp/fragment/fileHead.jet"/><html>
+<c:include template="templates/content/jsp/fragment/head.jet"/>
+<c:include template="templates/content/jsp/fragment/delete/body.jet"/>
+</html>

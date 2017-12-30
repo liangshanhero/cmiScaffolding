@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="test">
+	<package name="cn.edu.scau.cmi.liangzaoqing"/>
+	<model>
+		<dataBaseType name="MySql" ip="127.0.0.1" port="3306" username="root" password="root" schema="test">
+			<tables>
+				<table name="book">
+					<primaryKeys>
+						<column name="id" type="BIGINT"/>
+					</primaryKeys>
+					<columns>
+						<column name="name" type="VARCHAR"/>
+					</columns>
+					<foreigns/>
+					<referenceds>
+						<referenced name="book2course">
+							<column name="book" referencedColumn="id"/>
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="book2course">
+					<primaryKeys>
+						<column name="id" type="BIGINT"/>
+					</primaryKeys>
+					<columns>
+						<column name="name" type="VARCHAR"/>
+					</columns>
+					<foreigns>
+						<column name="book" referenceTable="book" referenceColumn="id"/>
+						<column name="course" referenceTable="course" referenceColumn="id"/>
+					</foreigns>
+					<referenceds/>
+				</table>
+				<table name="course">
+					<primaryKeys>
+						<column name="id" type="BIGINT"/>
+					</primaryKeys>
+					<columns>
+						<column name="name" type="VARCHAR"/>
+					</columns>
+					<foreigns/>
+					<referenceds>
+						<referenced name="book2course">
+							<column name="course" referencedColumn="id"/>
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="department">
+					<primaryKeys>
+						<column name="id" type="BIGINT"/>
+					</primaryKeys>
+					<columns>
+						<column name="name" type="VARCHAR"/>
+					</columns>
+					<foreigns>
+						<column name="housecertificate" referenceTable="housecertificate" referenceColumn="id"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="housecertificate">
+							<column name="depart" referencedColumn="id"/>
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="device">
+					<primaryKeys>
+						<column name="id" type="BIGINT"/>
+					</primaryKeys>
+					<columns>
+						<column name="name" type="VARCHAR"/>
+					</columns>
+					<foreigns/>
+					<referenceds>
+						<referenced name="room2device">
+							<column name="device" referencedColumn="id"/>
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="housecertificate">
+					<primaryKeys>
+						<column name="id" type="BIGINT"/>
+					</primaryKeys>
+					<columns>
+						<column name="number" type="VARCHAR"/>
+						<column name="address" type="VARCHAR"/>
+					</columns>
+					<foreigns>
+						<column name="depart" referenceTable="department" referenceColumn="id"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="department">
+							<column name="housecertificate" referencedColumn="id"/>
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="idcard">
+					<primaryKeys>
+						<column name="id" type="BIGINT"/>
+					</primaryKeys>
+					<columns>
+						<column name="number" type="VARCHAR"/>
+						<column name="address" type="VARCHAR"/>
+						<column name="birthday" type="DATE"/>
+					</columns>
+					<foreigns>
+						<column name="student" referenceTable="student" referenceColumn="id"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="student">
+							<column name="idcard" referencedColumn="id"/>
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="office">
+					<primaryKeys>
+						<column name="id" type="BIGINT"/>
+					</primaryKeys>
+					<columns>
+						<column name="name" type="VARCHAR"/>
+						<column name="department" type="BIGINT"/>
+					</columns>
+					<foreigns/>
+					<referenceds>
+						<referenced name="teacher">
+							<column name="office" referencedColumn="id"/>
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="room">
+					<primaryKeys>
+						<column name="id" type="BIGINT"/>
+					</primaryKeys>
+					<columns>
+						<column name="name" type="VARCHAR"/>
+					</columns>
+					<foreigns/>
+					<referenceds>
+						<referenced name="room2device">
+							<column name="room" referencedColumn="id"/>
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="room2device">
+					<primaryKeys>
+						<column name="room" type="BIGINT"/>
+						<column name="device" type="BIGINT"/>
+					</primaryKeys>
+					<columns>
+						<column name="id" type="BIGINT"/>
+						<column name="name" type="VARCHAR"/>
+					</columns>
+					<foreigns>
+						<column name="device" referenceTable="device" referenceColumn="id"/>
+						<column name="room" referenceTable="room" referenceColumn="id"/>
+					</foreigns>
+					<referenceds/>
+				</table>
+				<table name="student">
+					<primaryKeys>
+						<column name="id" type="BIGINT"/>
+					</primaryKeys>
+					<columns>
+						<column name="name" type="VARCHAR"/>
+					</columns>
+					<foreigns>
+						<column name="idcard" referenceTable="idcard" referenceColumn="id"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="idcard">
+							<column name="student" referencedColumn="id"/>
+						</referenced>
+						<referenced name="student2teacher">
+							<column name="student" referencedColumn="id"/>
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="student2teacher">
+					<primaryKeys>
+						<column name="student" type="BIGINT"/>
+						<column name="teacher" type="BIGINT"/>
+					</primaryKeys>
+					<columns/>
+					<foreigns>
+						<column name="student" referenceTable="student" referenceColumn="id"/>
+						<column name="teacher" referenceTable="teacher" referenceColumn="id"/>
+					</foreigns>
+					<referenceds/>
+				</table>
+				<table name="teacher">
+					<primaryKeys>
+						<column name="id" type="BIGINT"/>
+					</primaryKeys>
+					<columns>
+						<column name="name" type="VARCHAR"/>
+					</columns>
+					<foreigns>
+						<column name="office" referenceTable="office" referenceColumn="id"/>
+						<column name="leader" referenceTable="teacher" referenceColumn="id"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="student2teacher">
+							<column name="teacher" referencedColumn="id"/>
+						</referenced>
+						<referenced name="teacher">
+							<column name="leader" referencedColumn="id"/>
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="book2courseview">
+					<primaryKeys/>
+					<columns>
+						<column name="courseName" type="VARCHAR"/>
+						<column name="bookName" type="VARCHAR"/>
+					</columns>
+					<foreigns/>
+					<referenceds/>
+				</table>
+				<table name="room2deviceview">
+					<primaryKeys/>
+					<columns>
+						<column name="roomName" type="VARCHAR"/>
+						<column name="deviceName" type="VARCHAR"/>
+					</columns>
+					<foreigns/>
+					<referenceds/>
+				</table>
+			</tables>
+		</dataBaseType>
+	</model>
+</project>

@@ -1,0 +1,3 @@
+<head>
+<title><c:get select="$operate"/><fmt:message key="<c:get select="$eachTable/@name"/>.title"/></title>
+</head>

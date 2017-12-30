@@ -1,0 +1,251 @@
+	<c:setVariable select="0" var="count"/>
+	<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+	<c:setVariable select="$count+1" var="count"/>
+	</c:iterate>
+	<c:setVariable select="$count" var="num"/>
+	private static final long serialVersionUID = 1L;
+	
+	<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+	<c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">
+	@Column(name = "<c:get select="$primaryKey/@name"/>",nullable = false)
+	@Basic(fetch = FetchType.EAGER)
+	@<java:import>javax.persistence.Id</java:import>
+	<c:if test="$count<2">
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	</c:if>
+	@XmlElement
+	<c:if test="$count<2">
+	String <c:get select="lowercaseFirst($primaryKey/@name)"/>;
+	</c:if>
+	<c:if test="$count>1">
+	String <c:get select="lowercaseFirst($primaryKey/@name)"/>Field;
+	</c:if>
+	
+	</c:if>
+	
+	<c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">
+	@Column(name = "<c:get select="$primaryKey/@name"/>",nullable = false)
+	@Basic(fetch = FetchType.EAGER)
+	@<java:import>javax.persistence.Id</java:import>
+	<c:if test="$count<2">
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	</c:if>
+	@XmlElement
+	<c:if test="$count<2">
+	Integer <c:get select="lowercaseFirst($primaryKey/@name)"/>;
+	</c:if>
+	<c:if test="$count>1">
+	Integer <c:get select="lowercaseFirst($primaryKey/@name)"/>Field;
+	</c:if>
+	
+	</c:if>
+	
+	<c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'">
+	@Column(name = "<c:get select="$primaryKey/@name"/>",nullable = false)
+	@Basic(fetch = FetchType.EAGER)
+	@<java:import>javax.persistence.Id</java:import>
+	<c:if test="$count<2">
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	</c:if>
+	@XmlElement
+	<c:if test="$count<2">
+	<java:import>java.util.Date</java:import> <c:get select="lowercaseFirst($primaryKey/@name)"/>;
+	</c:if>
+	<c:if test="$count>1">
+	<java:import>java.util.Date</java:import> <c:get select="lowercaseFirst($primaryKey/@name)"/>Field;
+	</c:if>
+	
+	</c:if>
+	
+	<c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'">
+	@Column(name = "<c:get select="$primaryKey/@name"/>",nullable = false)
+	@Basic(fetch = FetchType.EAGER)
+	@<java:import>javax.persistence.Id</java:import>
+	<c:if test="$count<2">
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	</c:if>
+	@XmlElement
+	<c:if test="$count<2">
+	<java:import>java.math.BigDecimal</java:import> <c:get select="lowercaseFirst($primaryKey/@name)"/>;
+	</c:if>
+	<c:if test="$count>1">
+	<java:import>java.math.BigDecimal</java:import> <c:get select="lowercaseFirst($primaryKey/@name)"/>Field;
+	</c:if>
+	
+	</c:if>
+	
+	</c:iterate>
+	
+	<c:iterate select="$eachTable/columns/column" var="attribute">
+	<c:if test="$attribute/@type='BINARY'or$attribute/@type='VARBINARY'or$attribute/@type='POINT'or$attribute/@type='LINESTRING'or$attribute/@type='POLYGON'or$attribute/@type='GEOMETRY'or$attribute/@type='MULTIPOINT'or$attribute/@type='MULTILINESTRING'or$attribute/@type='MULTIPOLYGON'or$attribute/@type='TINYBLOB'or$attribute/@type='BLOB'or$attribute/@type='MEDIUMBLOB'or$attribute/@type='LONGBLOB'">
+	@Column(name = "<c:get select="$attribute/@name"/>", columnDefinition = "BLOB")
+	@Basic(fetch = FetchType.EAGER)
+	@Lob
+	@XmlElement
+	<c:choose>
+	<c:when test="$attribute/@name='id'">
+	byte[] <c:get select="lowercaseFirst($attribute/@name)"/>_1;
+	</c:when>
+	<c:otherwise>
+	byte[] <c:get select="lowercaseFirst($attribute/@name)"/>;
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	
+	<c:if test="$attribute/@type='CHAR'or$attribute/@type='VARCHAR'or$attribute/@type='SET'or$attribute/@type='ENUM'or$attribute/@type='TINYTEXT'or$attribute/@type='TEXT'or$attribute/@type='MEDIUMTEXT'or$attribute/@type='LONGTEXT'">
+	@Column(name = "<c:get select="$attribute/@name"/>")
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	<c:choose>
+	<c:when test="$attribute/@name='id'">
+	String <c:get select="lowercaseFirst($attribute/@name)"/>_1;
+	</c:when>
+	<c:otherwise>
+	String <c:get select="lowercaseFirst($attribute/@name)"/>;
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	
+	<c:if test="$attribute/@type='DOUBLE'or$attribute/@type='FLOAT'or$attribute/@type='REAL'or$attribute/@type='DECIMAL'or$attribute/@type='NUMERIC'">
+	@Column(name = "<c:get select="$attribute/@name"/>", precision = 22)
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	<c:choose>
+	<c:when test="$attribute/@name='id'">
+	<java:import>java.math.BigDecimal</java:import> <c:get select="lowercaseFirst($attribute/@name)"/>_1;
+	</c:when>
+	<c:otherwise>
+	<java:import>java.math.BigDecimal</java:import> <c:get select="lowercaseFirst($attribute/@name)"/>;
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	
+	<c:if test="$attribute/@type='SMALLINT'or$attribute/@type='MEDIUMINT'or$attribute/@type='INT'or$attribute/@type='INTEGER'or$attribute/@type='BIGINT'">
+	@Column(name = "<c:get select="$attribute/@name"/>")
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	<c:choose>
+	<c:when test="$attribute/@name='id'">
+	Integer <c:get select="lowercaseFirst($attribute/@name)"/>_1;
+	</c:when>
+	<c:otherwise>
+	Integer <c:get select="lowercaseFirst($attribute/@name)"/>;
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	
+	<c:if test="$attribute/@type='TIMESTAMP'or$attribute/@type='DATE'or$attribute/@type='TIME'or$attribute/@type='YEAR'or$attribute/@type='DATETIME'">
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "<c:get select="$attribute/@name"/>")
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	<c:choose>
+	<c:when test="$attribute/@name='id'">
+	<java:import>java.util.Date</java:import> <c:get select="lowercaseFirst($attribute/@name)"/>_1;
+	</c:when>
+	<c:otherwise>
+	<java:import>java.util.Date</java:import> <c:get select="lowercaseFirst($attribute/@name)"/>;
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	
+	<c:if test="$attribute/@type='TINYINT'or$attribute/@type='BIT'">
+	@Column(name = "<c:get select="$attribute/@name"/>")
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	<c:choose>
+	<c:when test="$attribute/@name='id'">
+	Boolean <c:get select="lowercaseFirst($attribute/@name)"/>_1;
+	</c:when>
+	<c:otherwise>
+	Boolean <c:get select="lowercaseFirst($attribute/@name)"/>;
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	</c:iterate>
+	
+	<c:setVariable select="0" var="x"/>
+	<c:setVariable select="0" var="y"/>
+	<c:iterate select="$eachTable/columns/column" var="col">
+		<c:setVariable select="$x+1" var="x"/>
+	</c:iterate>
+	<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+		<c:setVariable select="$y+1" var="y"/>
+	</c:iterate>
+	<c:choose>
+	<c:when test="($x=0)and($y=0)">
+	
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+	<c:iterate select="$referenceTables/table" var="existTable">
+	<c:if test="$foreign/@referenceTable=$existTable/@name">
+	<c:setVariable select="$num" var="count"/>
+	<c:if test="$count<2">
+	@Column(name = "<c:get select="$foreign/@name"/>")
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	Integer <c:get select="$foreign/@name"/>Id;
+	</c:if>
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({ @JoinColumn(name = "<c:get select="$foreign/@name"/>", referencedColumnName = "<c:get select="$foreign/@referenceColumn"/>", nullable = false, insertable = false, updatable = false) })
+	@XmlTransient
+	<c:get select="uppercaseFirst($foreign/@referenceTable)"/> <c:get select="$foreign/@name"/>;
+	</c:if>
+	</c:iterate>
+	</c:iterate>
+	
+	</c:when>
+	<c:otherwise>
+	<c:setVariable select="$num" var="count"/>
+	
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+	<c:iterate select="$referenceTables/table" var="existTable">
+	<c:if test="$foreign/@referenceTable=$existTable/@name">
+	<c:if test="$count<2">
+	@Column(name = "<c:get select="$foreign/@name"/>")
+	@Basic(fetch = FetchType.EAGER)
+	@XmlElement
+	Integer <c:get select="$foreign/@name"/>Id;
+	</c:if>
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumns({ @JoinColumn(name = "<c:get select="$foreign/@name"/>", referencedColumnName = "<c:get select="$foreign/@referenceColumn"/>",nullable = false, insertable = false, updatable = false) })
+	@XmlTransient
+	<c:get select="uppercaseFirst($foreign/@referenceTable)"/> <c:get select="$foreign/@name"/>;
+	
+	</c:if>
+	</c:iterate>
+	</c:iterate>
+	
+	</c:otherwise>
+	</c:choose>
+	
+	<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+	<c:iterate select="$referenceTables/table" var="referenceTable">
+		<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:choose>
+			<c:when test="$i=0and$j=0">
+			@ManyToMany(fetch = FetchType.LAZY)
+			@JoinTable(catalog = "<c:get select="$project/model/dataBaseType/@schema"/>", name = "<c:get select="$referenceTable/@name"/>", joinColumns = { @JoinColumn(name = "<c:iterate select="$referenceTable/foreigns/column" var="rec"><c:choose><c:when test="($rec/@referenceTable)=($eachTable/@name)"><c:get select="$rec/@name"/></c:when><c:otherwise></c:otherwise></c:choose></c:iterate>", referencedColumnName = "<c:get select="$eachTable/referenceds/referenced/column/@referencedColumn"/>", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "<c:iterate select="$referenceTable/foreigns/column" var="rec"><c:choose><c:when test="($rec/@referenceTable)=($eachTable/@name)"></c:when><c:otherwise><c:get select="$rec/@name"/></c:otherwise></c:choose></c:iterate>", referencedColumnName = "<c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="$foreig/@referenceColumn"/></c:otherwise></c:choose></c:iterate>", nullable = false, updatable = false) })
+			@XmlElement(name = "", namespace = "")
+			java.util.Set<<c:get select="$packageName"/>.domain.<c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="uppercaseFirst($foreig/@referenceTable)"/></c:otherwise></c:choose></c:iterate>> <c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="$foreig/@referenceTable"/><c:get select="uppercaseFirst($referenced/column/@name)"/></c:otherwise></c:choose></c:iterate>s;
+			
+			</c:when>
+			<c:otherwise>
+			@OneToMany(mappedBy = "<c:get select="$eachTable/@name"/>", cascade = { CascadeType.REMOVE }, fetch = FetchType.LAZY)
+			@XmlElement(name = "", namespace = "")
+			java.util.Set<<c:get select="$packageName"/>.domain.<c:get select="uppercaseFirst($referenced/@name)"/>> <c:get select="$referenced/@name"/><c:get select="uppercaseFirst($referenced/column/@name)"/>s;
+			
+			</c:otherwise>
+			</c:choose>
+		</c:if>
+	</c:iterate>
+	</c:iterate>

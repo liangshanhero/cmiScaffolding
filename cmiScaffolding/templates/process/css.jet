@@ -1,0 +1,5 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+
+<ws:copyFile src="templates/content/css/dashboard.css" target="{$projectName}/WebRoot/css/dashboard.css"/>
+
+<ws:copyFile src="templates/content/css/style.css" target="{$projectName}/WebRoot/css/style.css"/>

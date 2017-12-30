@@ -1,0 +1,311 @@
+	<c:setVariable select="0" var="count"/>
+	<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+	<c:setVariable select="$count+1" var="count"/>
+	</c:iterate>
+	<c:setVariable select="$count" var="num"/>
+	<c:setVariable select="0" var="x"/>
+	<c:setVariable select="0" var="y"/>
+	<c:iterate select="$eachTable/columns/column" var="col">
+		<c:setVariable select="$x+1" var="x"/>
+	</c:iterate>
+	<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+		<c:setVariable select="$y+1" var="y"/>
+	</c:iterate>
+	<c:choose>
+	<c:when test="($x=0)and($y=0)">
+	@RequestMapping("/select<c:get select="uppercaseFirst($eachTable/@name)"/>")
+	public ModelAndView select<c:get select="uppercaseFirst($eachTable/@name)"/>(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">@RequestParam String <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">@RequestParam Integer <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>){
+		ModelAndView mav = new ModelAndView();
+		
+		<c:setVariable select="$num" var="count"/>
+		mav.addObject("<c:get select="$eachTable/@name"/>", <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>));
+		mav.setViewName("<c:get select="$eachTable/@name"/>/view<c:get select="uppercaseFirst($eachTable/@name)"/>.jsp");
+
+		return mav;
+	}
+	</c:when>
+	<c:otherwise>
+	@RequestMapping("/select<c:get select="uppercaseFirst($eachTable/@name)"/>")
+	public ModelAndView select<c:get select="uppercaseFirst($eachTable/@name)"/>(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">@RequestParam String <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">@RequestParam Integer <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,<java:import>javax.servlet.http.HttpServletRequest</java:import> request){
+		ModelAndView mav = new ModelAndView();
+		<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+		<c:iterate select="$referenceTables/table" var="referenceTable">
+		<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:choose>
+			<c:when test="$i=0and$j=0">
+			<c:iterate select="$referenceTable/foreigns/column" var="foreign">
+			<c:choose>
+			<c:when test="$foreign/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+			<%--待添加多对多的分页--%>
+			Set<<c:get select="uppercaseFirst($foreign/@referenceTable)"/>> <c:get select="$foreign/@referenceTable"/>Set=new <java:import>java.util.HashSet</java:import><<c:get select="uppercaseFirst($foreign/@referenceTable)"/>>();
+			int <c:get select="$foreign/@referenceTable"/>TotalPage=<c:get select="$eachTable/@name"/>Service.count<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>s(id)/<c:get select="$foreign/@referenceTable"/>PageSize;
+			String <c:get select="$foreign/@referenceTable"/>PageType = request.getParameter("<c:get select="$foreign/@referenceTable"/>Page");
+			switch(<c:get select="$foreign/@referenceTable"/>PageType){
+				case "homePage":<c:get select="$foreign/@referenceTable"/>PageNumber = 0;break;
+				case "previousPage":if (<c:get select="$foreign/@referenceTable"/>PageNumber >= 1)
+									<c:get select="$foreign/@referenceTable"/>PageNumber = <c:get select="$foreign/@referenceTable"/>PageNumber - 1;
+									else
+									<c:get select="$foreign/@referenceTable"/>PageNumber = 0;
+				break;
+				case "nextPage":if (<c:get select="$foreign/@referenceTable"/>PageNumber < <c:get select="$foreign/@referenceTable"/>TotalPage)
+									<c:get select="$foreign/@referenceTable"/>PageNumber = <c:get select="$foreign/@referenceTable"/>PageNumber + 1;
+										else
+										<c:get select="$foreign/@referenceTable"/>PageNumber = <c:get select="$foreign/@referenceTable"/>TotalPage;
+									break;
+				case "lastPage":<c:get select="$foreign/@referenceTable"/>PageNumber = <c:get select="$foreign/@referenceTable"/>TotalPage;break;
+				case "jumpPage":<c:get select="$foreign/@referenceTable"/>PageNumber = Integer.parseInt(request.getParameter("<c:get select="$foreign/@referenceTable"/>WantToPage")) - 1;break;
+				case "eachPageShow":<c:get select="$foreign/@referenceTable"/>PageNumber = 0;
+									<c:get select="$foreign/@referenceTable"/>PageSize = Integer.parseInt(request.getParameter("<c:get select="$foreign/@referenceTable"/>PageSize"));
+									<c:get select="$foreign/@referenceTable"/>TotalPage = <c:get select="$eachTable/@name"/>Service.count<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>s(id) / <c:get select="$foreign/@referenceTable"/>PageSize;
+							break;
+				default:System.out.println("error input!");break; 
+			}
+		if (<c:get select="$foreign/@referenceTable"/>PageNumber >= 0 && <c:get select="$foreign/@referenceTable"/>PageNumber <= <c:get select="$foreign/@referenceTable"/>TotalPage){
+			Set<<c:get select="uppercaseFirst($referenced/@name)"/>> <c:get select="$referenced/@name"/>Set=<c:get select="$referenced/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(id, <c:get select="$foreign/@referenceTable"/>PageNumber*<c:get select="$foreign/@referenceTable"/>PageSize, <c:get select="$foreign/@referenceTable"/>PageSize);
+			for(<c:get select="uppercaseFirst($referenced/@name)"/> <c:get select="$referenced/@name"/>:<c:get select="$referenced/@name"/>Set){
+				<c:setVariable select="0" var="pkCount"/>
+				<c:iterate select="$referenceTables/table" var="rt">
+				<c:if test="$rt/@name=$referenced/@name">
+				<c:iterate select="$rt/primaryKeys/column" var="PK">
+				<c:setVariable select="$pkCount+1" var="pkCount"/>
+				</c:iterate>
+				</c:if>
+				</c:iterate>
+				<c:if test="$pkCount<2">
+				<c:get select="$foreign/@referenceTable"/>Set.add(<c:get select="$foreign/@referenceTable"/>DAO.find<c:get select="uppercaseFirst($foreign/@referenceTable)"/>ByPrimaryKey(<c:get select="$referenced/@name"/>.get<c:get select="uppercaseFirst($foreign/@referenceTable)"/>()));
+				</c:if>
+				<c:if test="$pkCount>1">
+				<c:get select="$foreign/@referenceTable"/>Set.add(<c:get select="$foreign/@referenceTable"/>DAO.find<c:get select="uppercaseFirst($foreign/@referenceTable)"/>ByPrimaryKey(<c:get select="$referenced/@name"/>.get<c:get select="uppercaseFirst($foreign/@referenceTable)"/>Field()));
+				</c:if>
+			}
+		}
+			mav.addObject("<c:get select="$foreign/@referenceTable"/>s", <c:get select="$foreign/@referenceTable"/>Set);
+		mav.addObject("<c:get select="$foreign/@referenceTable"/>PageNumber",<c:get select="$foreign/@referenceTable"/>PageNumber);
+		mav.addObject("<c:get select="$foreign/@referenceTable"/>Page",<c:get select="$foreign/@referenceTable"/>PageType);
+		mav.addObject("<c:get select="$foreign/@referenceTable"/>WantToPagePage",request.getParameter("<c:get select="$foreign/@referenceTable"/>WantToPage"));
+		mav.addObject("<c:get select="$foreign/@referenceTable"/>PageSize",<c:get select="$foreign/@referenceTable"/>PageSize);
+		mav.addObject("<c:get select="$foreign/@referenceTable"/>TotalPage",<c:get select="$foreign/@referenceTable"/>TotalPage);
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:when>
+			<c:otherwise>
+		int <c:get select="$referenced/@name"/>TotalPage=<c:get select="$referenced/@name"/>Service.countRelative<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(id)/<c:get select="$referenced/@name"/>PageSize;
+		String <c:get select="$referenced/@name"/>PageType = request.getParameter("<c:get select="$referenced/@name"/>Page");
+			switch(<c:get select="$referenced/@name"/>PageType){
+				case "homePage":<c:get select="$referenced/@name"/>PageNumber = 0;break;
+				case "previousPage":if (<c:get select="$referenced/@name"/>PageNumber >= 1)
+				<c:get select="$referenced/@name"/>PageNumber = <c:get select="$referenced/@name"/>PageNumber - 1;
+			else
+				<c:get select="$referenced/@name"/>PageNumber = 0;
+				break;
+				case "nextPage":if (<c:get select="$referenced/@name"/>PageNumber < <c:get select="$referenced/@name"/>TotalPage)
+				<c:get select="$referenced/@name"/>PageNumber = <c:get select="$referenced/@name"/>PageNumber + 1;
+			else
+				<c:get select="$referenced/@name"/>PageNumber = <c:get select="$referenced/@name"/>TotalPage;
+									break;
+				case "lastPage":<c:get select="$referenced/@name"/>PageNumber = <c:get select="$referenced/@name"/>TotalPage;break;
+				case "jumpPage":<c:get select="$referenced/@name"/>PageNumber = Integer.parseInt(request.getParameter("<c:get select="$referenced/@name"/>WantToPage")) - 1;break;
+				case "eachPageShow":<c:get select="$referenced/@name"/>PageNumber = 0;
+			<c:get select="$referenced/@name"/>PageSize = Integer.parseInt(request.getParameter("<c:get select="$referenced/@name"/>PageSize"));
+			<c:get select="$referenced/@name"/>TotalPage = <c:get select="$referenced/@name"/>Service.countRelative<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(id) / <c:get select="$referenced/@name"/>PageSize;
+							break;
+				default:System.out.println("error input!");break; 
+			}
+		if (<c:get select="$referenced/@name"/>PageNumber >= 0 && <c:get select="$referenced/@name"/>PageNumber <= <c:get select="$referenced/@name"/>TotalPage)
+			mav.addObject("<c:get select="$referenced/@name"/>s", <c:get select="$referenced/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(id, <c:get select="$referenced/@name"/>PageNumber*<c:get select="$referenced/@name"/>PageSize, <c:get select="$referenced/@name"/>PageSize));
+		mav.addObject("<c:get select="$referenced/@name"/>PageNumber",<c:get select="$referenced/@name"/>PageNumber);
+		mav.addObject("<c:get select="$referenced/@name"/>Page",<c:get select="$referenced/@name"/>PageType);
+		mav.addObject("<c:get select="$referenced/@name"/>WantToPagePage",request.getParameter("<c:get select="$referenced/@name"/>WantToPage"));
+		mav.addObject("<c:get select="$referenced/@name"/>PageSize",<c:get select="$referenced/@name"/>PageSize);
+		mav.addObject("<c:get select="$referenced/@name"/>TotalPage",<c:get select="$referenced/@name"/>TotalPage);
+			</c:otherwise>
+			</c:choose>
+		</c:if>
+		</c:iterate>
+		</c:iterate>
+		<c:setVariable select="$num" var="count"/>
+		mav.addObject("<c:get select="$eachTable/@name"/>", <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>));
+		mav.setViewName("<c:get select="$eachTable/@name"/>/view<c:get select="uppercaseFirst($eachTable/@name)"/>.jsp");
+
+		return mav;
+	}
+	
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+	<c:iterate select="$referenceTables/table" var="existTable">
+	<c:if test="$foreign/@referenceTable=$existTable/@name">
+	<c:setVariable select="$num" var="count"/>
+		<c:iterate select="$referenceTables/table" var="rt">
+		<c:if test="$rt/@name=$foreign/@referenceTable">
+		<c:setVariable select="0" var="pkCount"/>
+		<c:iterate select="$rt/primaryKeys/column" var="pk">
+		<c:setVariable select="$pkCount+1" var="pkCount"/>
+		</c:iterate>
+		<c:setVariable select="$pkCount" var="pkNum"/>
+	@RequestMapping("/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>")
+	public ModelAndView select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">@RequestParam String <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">@RequestParam Integer <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,<c:iterate select="$rt/primaryKeys/column" var="priKey"><c:if test="$priKey/@type='VARCHAR'or$priKey/@type='CHAR'or$priKey/@type='SET'or$priKey/@type='ENUM'or$priKey/@type='TINYTEXT'or$priKey/@type='TEXT'or$priKey/@type='MEDIUMTEXT'or$priKey/@type='LONGTEXT'">@RequestParam String <c:get select="$foreign/@name"/>_<c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='SMALLINT'or$priKey/@type='MEDIUMINT'or$priKey/@type='INT'or$priKey/@type='INTEGER'or$priKey/@type='BIGINT'">@RequestParam Integer <c:get select="$foreign/@name"/>_<c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='TIMESTAMP'or$priKey/@type='DATE'or$priKey/@type='TIME'or$priKey/@type='YEAR'or$priKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$foreign/@name"/>_<c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='DOUBLE'or$priKey/@type='FLOAT'or$priKey/@type='REAL'or$priKey/@type='DECIMAL'or$priKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$foreign/@name"/>_<c:get select="$priKey/@name"/></c:if><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>){
+		<c:setVariable select="$pkNum" var="pkCount"/>
+		<c:get select="uppercaseFirst($foreign/@referenceTable)"/> <c:get select="$foreign/@name"/> = <c:get select="$foreign/@referenceTable"/>DAO.find<c:get select="uppercaseFirst($foreign/@referenceTable)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey"><c:get select="$foreign/@name"/>_<c:get select="$priKey/@name"/><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>, -1, -1);
+		</c:if>
+		</c:iterate>
+		ModelAndView mav = new ModelAndView();
+		<c:setVariable select="$num" var="count"/>
+		<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+		mav.addObject("<c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>", <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>);
+		<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0"></c:if></c:iterate>
+		
+		mav.addObject("<c:get select="$foreign/@referenceTable"/>", <c:get select="$foreign/@name"/>);
+		mav.setViewName("<c:get select="$eachTable/@name"/>/<c:get select="$foreign/@referenceTable"/>/view<c:get select="uppercaseFirst($foreign/@referenceTable)"/>.jsp");
+
+		return mav;
+	}
+	</c:if>
+	</c:iterate>
+	</c:iterate>
+	
+	<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+	<c:iterate select="$referenceTables/table" var="referenceTable">
+		<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:choose>
+			<c:when test="$i=0and$j=0">
+			<c:iterate select="$referenceTable/foreigns/column" var="foreign">
+			<c:choose>
+			<c:when test="$foreign/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+			<c:setVariable select="$num" var="count"/>
+			@RequestMapping("/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>s")
+			public ModelAndView select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">@RequestParam String <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">@RequestParam Integer <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,HttpServletRequest request){
+				ModelAndView mav = new ModelAndView();
+				
+				Set<<c:get select="uppercaseFirst($foreign/@referenceTable)"/>> <c:get select="$foreign/@referenceTable"/>Set=new <java:import>java.util.HashSet</java:import><<c:get select="uppercaseFirst($foreign/@referenceTable)"/>>();
+			<c:setVariable select="$num" var="count"/>
+			int <c:get select="$foreign/@referenceTable"/>TotalPage=<c:get select="$eachTable/@name"/>Service.count<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>)/<c:get select="$foreign/@referenceTable"/>PageSize;
+			String <c:get select="$foreign/@referenceTable"/>PageType = request.getParameter("page");
+			switch(<c:get select="$foreign/@referenceTable"/>PageType){
+				case "homePage":<c:get select="$foreign/@referenceTable"/>PageNumber = 0;break;
+				case "previousPage":if (<c:get select="$foreign/@referenceTable"/>PageNumber >= 1)
+				<c:get select="$foreign/@referenceTable"/>PageNumber = <c:get select="$foreign/@referenceTable"/>PageNumber - 1;
+			else
+				<c:get select="$foreign/@referenceTable"/>PageNumber = 0;
+				break;
+				case "nextPage":if (<c:get select="$foreign/@referenceTable"/>PageNumber < <c:get select="$foreign/@referenceTable"/>TotalPage)
+				<c:get select="$foreign/@referenceTable"/>PageNumber = <c:get select="$foreign/@referenceTable"/>PageNumber + 1;
+			else
+				<c:get select="$foreign/@referenceTable"/>PageNumber = <c:get select="$foreign/@referenceTable"/>TotalPage;
+									break;
+				case "lastPage":<c:get select="$foreign/@referenceTable"/>PageNumber = <c:get select="$foreign/@referenceTable"/>TotalPage;break;
+				case "jumpPage":<c:get select="$foreign/@referenceTable"/>PageNumber = Integer.parseInt(request.getParameter("WantToPage")) - 1;break;
+				case "eachPageShow":<c:get select="$foreign/@referenceTable"/>PageNumber = 0;
+			<c:get select="$foreign/@referenceTable"/>PageSize = Integer.parseInt(request.getParameter("pageSize"));
+			<c:setVariable select="$num" var="count"/>
+			<c:get select="$foreign/@referenceTable"/>TotalPage = <c:get select="$eachTable/@name"/>Service.count<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>) / <c:get select="$foreign/@referenceTable"/>PageSize;
+							break;
+				default:System.out.println("error input!");break; 
+			}
+		if (<c:get select="$foreign/@referenceTable"/>PageNumber >= 0 && <c:get select="$foreign/@referenceTable"/>PageNumber <= <c:get select="$foreign/@referenceTable"/>TotalPage){
+			<c:setVariable select="$num" var="count"/>
+			Set<<c:get select="uppercaseFirst($referenced/@name)"/>> <c:get select="$referenced/@name"/>Set=<c:get select="$referenced/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, <c:get select="$foreign/@referenceTable"/>PageNumber*<c:get select="$foreign/@referenceTable"/>PageSize, <c:get select="$foreign/@referenceTable"/>PageSize);
+			for(<c:get select="uppercaseFirst($referenced/@name)"/> <c:get select="$referenced/@name"/>:<c:get select="$referenced/@name"/>Set){
+				<c:setVariable select="0" var="pkCount"/>
+				<c:iterate select="$referenceTables/table" var="rt">
+				<c:if test="$rt/@name=$referenced/@name">
+				<c:iterate select="$rt/primaryKeys/column" var="PK">
+				<c:setVariable select="$pkCount+1" var="pkCount"/>
+				</c:iterate>
+				</c:if>
+				</c:iterate>
+				<c:if test="$pkCount<2">
+				<c:get select="$foreign/@referenceTable"/>Set.add(<c:get select="$foreign/@referenceTable"/>DAO.find<c:get select="uppercaseFirst($foreign/@referenceTable)"/>ByPrimaryKey(<c:get select="$referenced/@name"/>.get<c:get select="uppercaseFirst($foreign/@referenceTable)"/>()));
+				</c:if>
+				<c:if test="$pkCount>1">
+				<c:get select="$foreign/@referenceTable"/>Set.add(<c:get select="$foreign/@referenceTable"/>DAO.find<c:get select="uppercaseFirst($foreign/@referenceTable)"/>ByPrimaryKey(<c:get select="$referenced/@name"/>.get<c:get select="uppercaseFirst($foreign/@referenceTable)"/>Field()));
+				</c:if>
+			}
+		}
+			mav.addObject("<c:get select="$foreign/@referenceTable"/>s", <c:get select="$foreign/@referenceTable"/>Set);
+		mav.addObject("<c:get select="$foreign/@referenceTable"/>PageNumber",<c:get select="$foreign/@referenceTable"/>PageNumber);
+		mav.addObject("<c:get select="$foreign/@referenceTable"/>PageSize",pageSize);
+		mav.addObject("<c:get select="$foreign/@referenceTable"/>Page",<c:get select="$foreign/@referenceTable"/>PageType);
+		mav.addObject("<c:get select="$foreign/@referenceTable"/>WantToPage",request.getParameter("WantToPage"));
+		mav.addObject("<c:get select="$foreign/@referenceTable"/>TotalPage",<c:get select="$foreign/@referenceTable"/>TotalPage);
+			<c:setVariable select="$num" var="count"/>
+		mav.addObject("<c:get select="$eachTable/@name"/>", <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>));
+		
+				mav.setViewName("<c:get select="$eachTable/@name"/>/<c:get select="$foreign/@referenceTable"/>s/view<c:get select="uppercaseFirst($foreign/@referenceTable)"/>s.jsp");
+
+				return mav;
+			}
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:when>
+			<c:otherwise>
+			<c:setVariable select="$num" var="count"/>			
+			@RequestMapping("/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s")
+			public ModelAndView select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">@RequestParam String <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">@RequestParam Integer <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,HttpServletRequest request){
+				<c:setVariable select="$num" var="count"/>
+				ModelAndView mav = new ModelAndView();
+		<c:setVariable select="$num" var="count"/>
+		int <c:get select="$referenced/@name"/>TotalPage = <c:get select="$referenced/@name"/>Service.countRelative<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>) / <c:get select="$referenced/@name"/>PageSize;
+		String <c:get select="$referenced/@name"/>PageType = request.getParameter("page");
+		switch(<c:get select="$referenced/@name"/>PageType){
+				case "homePage":<c:get select="$referenced/@name"/>PageNumber = 0;break;
+				case "previousPage":if (<c:get select="$referenced/@name"/>PageNumber >= 1)
+				<c:get select="$referenced/@name"/>PageNumber = <c:get select="$referenced/@name"/>PageNumber - 1;
+			else
+				<c:get select="$referenced/@name"/>PageNumber = 0;
+				break;
+				case "nextPage":if (<c:get select="$referenced/@name"/>PageNumber < <c:get select="$referenced/@name"/>TotalPage)
+				<c:get select="$referenced/@name"/>PageNumber = <c:get select="$referenced/@name"/>PageNumber + 1;
+			else
+				<c:get select="$referenced/@name"/>PageNumber = <c:get select="$referenced/@name"/>TotalPage;
+									break;
+				case "lastPage":<c:get select="$referenced/@name"/>PageNumber = <c:get select="$referenced/@name"/>TotalPage;break;
+				case "jumpPage":<c:get select="$referenced/@name"/>PageNumber = Integer.parseInt(request.getParameter("WantToPage")) - 1;break;
+				case "eachPageShow":<c:get select="$referenced/@name"/>PageNumber = 0;
+			<c:get select="$referenced/@name"/>PageSize = Integer.parseInt(request.getParameter("pageSize"));
+			<c:setVariable select="$num" var="count"/>
+			<c:get select="$referenced/@name"/>TotalPage = <c:get select="$referenced/@name"/>Service.countRelative<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>)/ <c:get select="$referenced/@name"/>PageSize;
+							break;
+				default:System.out.println("error input!");break; 
+			}
+		if (<c:get select="$referenced/@name"/>PageNumber >= 0&& <c:get select="$referenced/@name"/>PageNumber <= <c:get select="$referenced/@name"/>TotalPage)
+		<c:setVariable select="$num" var="count"/>
+			mav.addObject("<c:get select="$referenced/@name"/>s", <c:get select="$referenced/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, <c:get select="$referenced/@name"/>PageNumber* <c:get select="$referenced/@name"/>PageSize, <c:get select="$referenced/@name"/>PageSize));
+		mav.addObject("<c:get select="$referenced/@name"/>PageNumber", <c:get select="$referenced/@name"/>PageNumber);
+		mav.addObject("<c:get select="$referenced/@name"/>PageSize", pageSize);
+		mav.addObject("<c:get select="$referenced/@name"/>Page",<c:get select="$referenced/@name"/>PageType);
+		mav.addObject("<c:get select="$referenced/@name"/>WantToPage",request.getParameter("WantToPage"));
+		mav.addObject("<c:get select="$referenced/@name"/>TotalPage", <c:get select="$referenced/@name"/>TotalPage);
+		<c:setVariable select="$num" var="count"/>
+		mav.addObject("<c:get select="$eachTable/@name"/>", <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>));
+				mav.setViewName("<c:get select="$eachTable/@name"/>/<c:get select="$referenced/@name"/>s/view<c:get select="uppercaseFirst($referenced/@name)"/>s.jsp");
+
+				return mav;
+			}
+			</c:otherwise>
+			</c:choose>
+		</c:if>
+	</c:iterate>
+	</c:iterate>
+	</c:otherwise>
+	</c:choose>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project xmlns:ns1="cn.edu.scau.cmi.liangshanero" name="testJet">
+	<package ns1:name="cn.edu.scau.cmi" />
+	<model>
+		<dataBaseType name="MySql" ip="127.0.0.1" port="3306"
+			username="root" password="root" schema="test">
+			<tables>
+				<table name="book">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="true"/>
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="book2course">
+							<column ns1:name="book" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="book2course">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="book" ns1:referenceTable="book"
+							ns1:referenceColumn="id" ns1:nullable="false"/>
+						<column ns1:name="course" ns1:referenceTable="course"
+							ns1:referenceColumn="id" ns1:nullable="false"/>
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="course">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="false"/>
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="book2course">
+							<column ns1:name="course" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="device">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="false"/>
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="room2device">
+							<column ns1:name="device" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="idcard">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="number" ns1:type="VARCHAR" ns1:display="true" ns1:nullable="true"/>
+						<column ns1:name="address" ns1:type="VARCHAR" ns1:nullable="true"/>
+						<column ns1:name="birthday" ns1:type="DATE" ns1:nullable="true"/>
+						<column ns1:name="student" ns1:type="BIGINT" ns1:nullable="true"/>
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="idcard2student">
+							<column ns1:name="idcard" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="idcard2student">
+					<primaryKeys>
+						<column ns1:name="idcard" ns1:type="BIGINT" ns1:nullable="false"/>
+						<column ns1:name="student" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="idcard" ns1:referenceTable="idcard"
+							ns1:referenceColumn="id" />
+						<column ns1:name="student" ns1:referenceTable="student"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="office">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="false"/>
+						<column ns1:name="department" ns1:type="BIGINT" ns1:nullable="false"/>
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="teacher">
+							<column ns1:name="office" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="room">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="false"/>
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="room2device">
+							<column ns1:name="room" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="room2device">
+					<primaryKeys>
+						<column ns1:name="room" ns1:type="BIGINT" ns1:nullable="false"/>
+						<column ns1:name="device" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="device" ns1:referenceTable="device"
+							ns1:referenceColumn="id" />
+						<column ns1:name="room" ns1:referenceTable="room"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="student">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="false"/>
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="idcard2student">
+							<column ns1:name="student" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="student2teacher">
+							<column ns1:name="student" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="student2teacher">
+					<primaryKeys>
+						<column ns1:name="student" ns1:type="BIGINT" ns1:nullable="fasle"/>
+						<column ns1:name="teacher" ns1:type="BIGINT" ns1:nullable="fasle"/>
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="student" ns1:referenceTable="student"
+							ns1:referenceColumn="id" />
+						<column ns1:name="teacher" ns1:referenceTable="teacher"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="teacher">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="fasle"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="fasle"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="office" ns1:referenceTable="office"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+						<column ns1:name="leader" ns1:referenceTable="teacher"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="student2teacher">
+							<column ns1:name="teacher" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="teacher">
+							<column ns1:name="leader" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+			</tables>
+		</dataBaseType>
+	</model>
+</project>

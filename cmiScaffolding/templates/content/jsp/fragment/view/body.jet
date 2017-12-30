@@ -1,0 +1,8 @@
+<body>
+	<div id="contentarea">
+		<div id="content">
+			<c:include template="templates/content/jsp/fragment/view/table.jet"/>
+			<div class="clear">&nbsp;</div>
+		</div>
+	</div>
+</body>

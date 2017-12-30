@@ -1,0 +1,3 @@
+public <java:import>java.util.Set</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>> load<c:get select="uppercaseFirst($eachTable/@name)"/>s();
+
+public <java:import>java.util.Set</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>> load<c:get select="uppercaseFirst($eachTable/@name)"/>s(int index,int size);

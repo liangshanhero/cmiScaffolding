@@ -1,0 +1,26 @@
+package <c:get select="$packageName"/>.service;
+<java:importsLocation package="org.example"/>
+import <c:get select="$packageName"/>.domain.*;
+
+<java:format>
+public interface <c:get select="uppercaseFirst($eachTable/@name)"/>Service {
+
+<c:include template="templates/content/java/method/service/saveEntity.jet"/>
+
+
+<c:include template="templates/content/java/method/service/loadEntity.jet"/>
+
+
+<c:include template="templates/content/java/method/service/deleteEntity.jet"/>
+
+
+<c:include template="templates/content/java/method/service/findAllEntity.jet"/>
+
+
+<c:include template="templates/content/java/method/service/findEntityByPrimaryKey.jet"/>
+
+
+<c:include template="templates/content/java/method/service/countEntity.jet"/>
+
+}
+</java:format>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         id="cmiScaffolding"
+         name="cmiScaffolding"
+         point="org.eclipse.jet.transform">
+      <transform 
+            startTemplate="templates/process/main.jet" 
+            templateLoaderClass="cn.edu.scau.cmi.jet.compiled._jet_transformation" 
+            enableEmbeddedExpressions="true"
+            >
+         <description></description>
+         <tagLibraries>
+            <importLibrary id="org.eclipse.jet.controlTags" usePrefix="c" autoImport="true"/>
+            <importLibrary id="org.eclipse.jet.javaTags" usePrefix="java" autoImport="true"/>
+            <importLibrary id="org.eclipse.jet.formatTags" usePrefix="f" autoImport="true"/>
+            <importLibrary id="org.eclipse.jet.workspaceTags" usePrefix="ws" autoImport="false"/>
+         </tagLibraries>
+      </transform>
+   </extension>
+</plugin>

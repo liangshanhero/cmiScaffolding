@@ -1,0 +1,24 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+<%-- 生成项目根目录下的配置文件  --%>
+<c:include template="templates/process/project.jet"/>
+
+<%-- 生成.setting根目录下的配置文件 --%>
+<c:include template="templates/process/settings.jet"/>
+
+<%-- 生成bundles目录下的配置文件 --%>
+<c:include template="templates/process/properties.jet"/>
+
+<%-- 生成jaxws目录下的配置文件 --%>
+<c:include template="templates/process/jaxws.jet"/>
+
+<%-- META-INF目录下的配置文件 --%>
+<c:include template="templates/process/meta-inf.jet"/>
+
+<%-- resources目录下的配置文件 --%>
+<c:include template="templates/process/resources.jet"/>
+
+<%-- 生成WEB-INF根目录下的配置文件 --%>
+<c:include template="templates/process/web-inf.jet"/>
+
+<%-- 生成applicationContext.xml文件  --%>
+<ws:file template="templates/content/configure/applicationContext.xml.jet" path="{$projectName}/cmi/applicationContext.xml"/>

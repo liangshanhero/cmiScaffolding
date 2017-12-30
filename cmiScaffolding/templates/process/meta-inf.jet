@@ -1,0 +1,7 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+
+<%-- 生成persistence.xml文件 --%>
+<ws:file template="templates/content/configure/persistence.jet" path="{$projectName}/cmi/META-INF/persistence.xml"/>
+
+<%-- 生成MANIFEST.MF文件 --%>
+<ws:file template="templates/content/configure/MANIFEST.MF.jet" path="{$projectName}/WebRoot/META-INF/MANIFEST.MF"/>

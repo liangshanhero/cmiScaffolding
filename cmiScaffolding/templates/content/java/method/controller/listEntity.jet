@@ -1,0 +1,110 @@
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+	<c:iterate select="$referenceTables/table" var="existTable">
+	<c:if test="$foreign/@referenceTable=$existTable/@name">
+	<c:iterate select="$referenceTables/table" var="rt">
+		<c:if test="$rt/@name=$foreign/@referenceTable">
+		<c:setVariable select="0" var="pkCount"/>
+		<c:iterate select="$rt/primaryKeys/column" var="pk">
+		<c:setVariable select="$pkCount+1" var="pkCount"/>
+		</c:iterate>
+		<c:setVariable select="$pkCount" var="pkNum"/>
+	@RequestMapping("/list<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>")
+	public ModelAndView list<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>(<c:iterate select="$rt/primaryKeys/column" var="priKey"><c:if test="$priKey/@type='VARCHAR'or$priKey/@type='CHAR'or$priKey/@type='SET'or$priKey/@type='ENUM'or$priKey/@type='TINYTEXT'or$priKey/@type='TEXT'or$priKey/@type='MEDIUMTEXT'or$priKey/@type='LONGTEXT'">@RequestParam String <c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='SMALLINT'or$priKey/@type='MEDIUMINT'or$priKey/@type='INT'or$priKey/@type='INTEGER'or$priKey/@type='BIGINT'">@RequestParam Integer <c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='TIMESTAMP'or$priKey/@type='DATE'or$priKey/@type='TIME'or$priKey/@type='YEAR'or$priKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='DOUBLE'or$priKey/@type='FLOAT'or$priKey/@type='REAL'or$priKey/@type='DECIMAL'or$priKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$priKey/@name"/></c:if><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>){
+		ModelAndView mav = new ModelAndView();
+		<c:setVariable select="$pkNum" var="pkCount"/>
+		mav.addObject("<c:get select="$foreign/@referenceTable"/>", <c:get select="$foreign/@referenceTable"/>DAO.find<c:get select="uppercaseFirst($foreign/@referenceTable)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey"><c:get select="$priKey/@name"/><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>));
+		</c:if>
+		</c:iterate>
+		mav.setViewName("<c:get select="$eachTable/@name"/>/<c:get select="$foreign/@referenceTable"/>/list<c:get select="uppercaseFirst($foreign/@referenceTable)"/>.jsp");
+
+		return mav;
+	}
+	<c:get select="uppercaseFirst($foreign/@referenceTable)"/> <c:get select="$foreign/@referenceTable"/>;
+	</c:if>
+	</c:iterate>
+	</c:iterate>
+	
+	<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+	<c:iterate select="$referenceTables/table" var="referenceTable">
+		<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:if test="$i=0">
+			<c:if test="$j=0">
+			<c:iterate select="$referenceTable/foreigns/column" var="foreig">
+			<c:choose>
+			<c:when test="$foreig/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+			<c:iterate select="$referenceTables/table" var="rt">
+		<c:if test="$rt/@name=$foreig/@referenceTable">
+		<c:setVariable select="0" var="pkCount"/>
+		<c:iterate select="$rt/primaryKeys/column" var="pk">
+		<c:setVariable select="$pkCount+1" var="pkCount"/>
+		</c:iterate>
+		<c:setVariable select="$pkCount" var="pkNum"/>
+			@RequestMapping("/list<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreig/@referenceTable)"/>s")
+			public ModelAndView list<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreig/@referenceTable)"/>s(<c:iterate select="$rt/primaryKeys/column" var="priKey"><c:if test="$priKey/@type='VARCHAR'or$priKey/@type='CHAR'or$priKey/@type='SET'or$priKey/@type='ENUM'or$priKey/@type='TINYTEXT'or$priKey/@type='TEXT'or$priKey/@type='MEDIUMTEXT'or$priKey/@type='LONGTEXT'">@RequestParam String <c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='SMALLINT'or$priKey/@type='MEDIUMINT'or$priKey/@type='INT'or$priKey/@type='INTEGER'or$priKey/@type='BIGINT'">@RequestParam Integer <c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='TIMESTAMP'or$priKey/@type='DATE'or$priKey/@type='TIME'or$priKey/@type='YEAR'or$priKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='DOUBLE'or$priKey/@type='FLOAT'or$priKey/@type='REAL'or$priKey/@type='DECIMAL'or$priKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$priKey/@name"/></c:if><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>){
+				ModelAndView mav = new ModelAndView();
+				<c:setVariable select="$pkNum" var="pkCount"/>
+				mav.addObject("<c:get select="$foreig/@referenceTable"/>", <c:get select="$foreig/@referenceTable"/>DAO.find<c:get select="uppercaseFirst($foreig/@referenceTable)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey"><c:get select="$priKey/@name"/><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>));
+				</c:if>
+				</c:iterate>
+				mav.setViewName("<c:get select="$eachTable/@name"/>/<c:get select="$foreig/@referenceTable"/>s/list<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s.jsp");
+
+				return mav;
+			}
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:if>
+			<c:if test="$j>0">
+			<c:iterate select="$referenceTables/table" var="rt">
+		<c:if test="$rt/@name=$referenced/@name">
+		<c:setVariable select="0" var="pkCount"/>
+		<c:iterate select="$rt/primaryKeys/column" var="pk">
+		<c:setVariable select="$pkCount+1" var="pkCount"/>
+		</c:iterate>
+		<c:setVariable select="$pkCount" var="pkNum"/>
+			@RequestMapping("/list<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s")
+			public ModelAndView list<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$rt/primaryKeys/column" var="priKey"><c:if test="$priKey/@type='VARCHAR'or$priKey/@type='CHAR'or$priKey/@type='SET'or$priKey/@type='ENUM'or$priKey/@type='TINYTEXT'or$priKey/@type='TEXT'or$priKey/@type='MEDIUMTEXT'or$priKey/@type='LONGTEXT'">@RequestParam String <c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='SMALLINT'or$priKey/@type='MEDIUMINT'or$priKey/@type='INT'or$priKey/@type='INTEGER'or$priKey/@type='BIGINT'">@RequestParam Integer <c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='TIMESTAMP'or$priKey/@type='DATE'or$priKey/@type='TIME'or$priKey/@type='YEAR'or$priKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='DOUBLE'or$priKey/@type='FLOAT'or$priKey/@type='REAL'or$priKey/@type='DECIMAL'or$priKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$priKey/@name"/></c:if><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>){
+				ModelAndView mav = new ModelAndView();
+				<c:setVariable select="$pkNum" var="pkCount"/>
+				mav.addObject("<c:get select="$referenced/@name"/>", <c:get select="$referenced/@name"/>DAO.find<c:get select="uppercaseFirst($referenced/@name)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey"><c:get select="$priKey/@name"/><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>));
+				</c:if>
+				</c:iterate>
+				mav.setViewName("<c:get select="$eachTable/@name"/>/<c:get select="$referenced/@name"/>s/list<c:get select="uppercaseFirst($referenced/@name)"/>s.jsp");
+
+				return mav;
+			}
+			</c:if>
+			</c:if>
+			<c:if test="$i>0">
+				<c:iterate select="$referenceTables/table" var="rt">
+		<c:if test="$rt/@name=$referenced/@name">
+		<c:setVariable select="0" var="pkCount"/>
+		<c:iterate select="$rt/primaryKeys/column" var="pk">
+		<c:setVariable select="$pkCount+1" var="pkCount"/>
+		</c:iterate>
+		<c:setVariable select="$pkCount" var="pkNum"/>
+			@RequestMapping("/list<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s")
+			public ModelAndView list<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$rt/primaryKeys/column" var="priKey"><c:if test="$priKey/@type='VARCHAR'or$priKey/@type='CHAR'or$priKey/@type='SET'or$priKey/@type='ENUM'or$priKey/@type='TINYTEXT'or$priKey/@type='TEXT'or$priKey/@type='MEDIUMTEXT'or$priKey/@type='LONGTEXT'">@RequestParam String <c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='SMALLINT'or$priKey/@type='MEDIUMINT'or$priKey/@type='INT'or$priKey/@type='INTEGER'or$priKey/@type='BIGINT'">@RequestParam Integer <c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='TIMESTAMP'or$priKey/@type='DATE'or$priKey/@type='TIME'or$priKey/@type='YEAR'or$priKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$priKey/@name"/></c:if><c:if test="$priKey/@type='DOUBLE'or$priKey/@type='FLOAT'or$priKey/@type='REAL'or$priKey/@type='DECIMAL'or$priKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$priKey/@name"/></c:if><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>){
+				ModelAndView mav = new ModelAndView();
+				<c:setVariable select="$pkNum" var="pkCount"/>
+				mav.addObject("<c:get select="$referenced/@name"/>", <c:get select="$referenced/@name"/>DAO.find<c:get select="uppercaseFirst($referenced/@name)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey"><c:get select="$priKey/@name"/><c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>));
+				</c:if>
+				</c:iterate>
+				mav.setViewName("<c:get select="$eachTable/@name"/>/<c:get select="$referenced/@name"/>s/list<c:get select="uppercaseFirst($referenced/@name)"/>s.jsp");
+
+				return mav;
+			}
+			</c:if>
+		</c:if>
+	</c:iterate>
+	</c:iterate>

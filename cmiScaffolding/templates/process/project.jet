@@ -1,0 +1,14 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+
+<%-- 生成.project文件 --%>
+<%--<ws:file template="templates/content/configure/project/project.jet" path="{$projectName/.project"/>--%>
+<ws:copyFile src="templates/content/configure/.project" target="{$projectName}/.project"/>
+
+<%-- 生成.classpath文件 --%>
+<ws:copyFile src="templates/content/configure/.classpath" target="{$projectName}/.classpath"/>
+
+<%-- 生成.merge.xml文件 --%>
+<ws:file template="templates/content/configure/merge.jet" path="{$projectName}/.merge.xml"/>
+
+<%-- 生成.springBeans文件 --%>
+<ws:file template="templates/content/configure/springBeans.jet" path="{$projectName}/.springBeans"/>

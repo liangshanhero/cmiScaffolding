@@ -1,0 +1,26 @@
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> findAll<c:get select="uppercaseFirst($eachTable/@name)"/>s() throws DataAccessException {
+
+		return findAll<c:get select="uppercaseFirst($eachTable/@name)"/>s(-1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> findAll<c:get select="uppercaseFirst($eachTable/@name)"/>s(int startResult, int maxRows) throws <java:import>org.springframework.dao.DataAccessException</java:import> {
+		Query query = createNamedQuery("findAll<c:get select="uppercaseFirst($eachTable/@name)"/>s", startResult, maxRows);
+		return new <java:import>java.util.LinkedHashSet</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+	<c:iterate select="$referenceTables/table" var="existTable">
+	<c:if test="$foreign/@referenceTable=$existTable/@name">
+	@SuppressWarnings("unchecked")
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($foreign/@name)"/><c:get select="uppercaseFirst($eachTable/@name)"/>s(Integer <c:get select="$foreign/@referenceTable"/>,int start,int max)throws DataAccessException{
+			Query query = createNamedQuery("findAll<c:get select="uppercaseFirst($foreign/@referenceTable)"/><c:get select="uppercaseFirst($eachTable/@name)"/>s", start, max,<c:get select="$foreign/@referenceTable"/>);
+			return new LinkedHashSet<<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+	</c:if>
+	</c:iterate>
+	</c:iterate>
+	
+	

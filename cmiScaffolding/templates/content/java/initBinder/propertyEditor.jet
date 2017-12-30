@@ -1,0 +1,33 @@
+<c:setVariable select="0" var="pkcount"/>
+<c:iterate select="$eachTable/primaryKeys/column" var="pk">
+<c:setVariable select="$pkcount+1" var="pkcount"/>
+</c:iterate>
+<c:setVariable select="$pkcount" var="pknum"/>
+package <c:get select="$packageName"/>.initBinder;
+<java:importsLocation package="org.example"/>
+import <c:get select="$packageName"/>.dao.*;
+import <c:get select="$packageName"/>.domain.*;
+
+@<java:import>org.springframework.stereotype.Component</java:import>("<c:get select="uppercaseFirst($eachTable/@name)"/>Editor")
+public class <c:get select="uppercaseFirst($eachTable/@name)"/>Editor extends <java:import>java.beans.PropertyEditorSupport</java:import>{
+
+	@<java:import>org.springframework.beans.factory.annotation.Autowired</java:import>
+	private <c:get select="uppercaseFirst($eachTable/@name)"/>DAO <c:get select="$eachTable/@name"/>DAO;
+	
+	public void setAsText(String <c:get select="$eachTable/@name"/>String){
+		<c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="$eachTable/@name"/>=new <c:get select="uppercaseFirst($eachTable/@name)"/>();
+		if(<c:get select="$eachTable/@name"/>String.length()>0){
+		String[] <c:get select="$eachTable/@name"/>StringSet=<c:get select="$eachTable/@name"/>String.split("\\] ");
+		<c:setVariable select="0" var="i"/>
+		<c:iterate select="$eachTable/primaryKeys/column" var="primariKey">	
+		String[] room2deviceId<c:get select="$i+1"/>=<c:get select="$eachTable/@name"/>StringSet[<c:get select="$i"/>].split("\\=\\[");
+		<c:setVariable select="$i+1" var="i"/>
+		</c:iterate>
+				
+		<c:get select="$eachTable/@name"/>=<c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:setVariable select="0" var="i"/><c:iterate select="$eachTable/primaryKeys/column" var="primariKey"><c:setVariable select="$i+1" var="i"/>Integer.parseInt(room2deviceId<c:get select="$i"/>[1])<c:if test="$i<$pknum">,</c:if></c:iterate>);
+		setValue(<c:get select="$eachTable/@name"/>);
+		}
+		else
+		setValue(null);
+	}
+}

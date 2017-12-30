@@ -1,0 +1,32 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+
+<%-- 定义获取数据的变量 --%>
+<c:setVariable var="project" select="project"/>
+<c:setVariable var="projectName" select="project/@name"/>
+<c:setVariable var="packageName" select="project/package/@name"/> 
+<c:setVariable var="referenceTables" select="project/model/dataBaseType/tables"/>
+<c:setVariable var="table" select="project/model/dataBaseType/tables/table"/>
+
+<ws:project name="{$projectName}">
+</ws:project>
+
+<ws:folder path="{$projectName}/src">
+</ws:folder>
+
+<%-- 生成配置文件  --%>
+<c:include template="templates/process/configure.jet"/>
+
+<%-- 生成java代码  --%>
+<c:include template="templates/process/java.jet"/>
+ 
+<%-- 生成lib文件 --%>
+<c:include template="templates/process/jar.jet"/>
+ 
+<%-- 生成jsp代码  --%>
+<c:include template="templates/process/jsp.jet"/>
+
+<%-- 生成css文件 --%>
+<c:include template="templates/process/css.jet"/>
+
+<%-- 生成image文件 --%>
+<c:include template="templates/process/image.jet"/>

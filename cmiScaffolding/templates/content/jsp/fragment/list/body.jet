@@ -1,0 +1,77 @@
+<f:replaceAll value="Dollar_symbol" replacement="$"><c:replaceStrings replace="%Left_angle_brackets,%Right_angle_brackets" with="<,>"><body>
+	<div id="content">
+		<h1>Manage<fmt:message key="<c:get select="$eachTable/@name"/>.title"/>s</h1>
+		<div class="navitem"><a class="button" href="Dollar_symbol{pageContext.request.contextPath}/new<c:get select="uppercaseFirst($eachTable/@name)"/>?<c:iterate select="$eachTable/referenceds/referenced" var="referenced"><c:iterate select="$referenceTables/table" var="referenceTable"><c:if test="$referenceTable/@name=$referenced/@name"><c:setVariable select="0" var="i"/><c:setVariable select="0" var="j"/><c:iterate select="$referenceTable/columns/column" var="col"><c:setVariable select="$i+1" var="i"/></c:iterate><c:iterate select="$referenceTable/referenceds/referenced" var="ref"><c:setVariable select="$j+1" var="j"/></c:iterate><c:choose><c:when test="$i=0and$j=0"><c:iterate select="$referenceTable/foreigns/column" var="foreign"><c:choose><c:when test="$foreign/@referenceTable=$eachTable/@name"></c:when><c:otherwise>&<c:get select="$foreign/@referenceTable"/>Page=previousPage</c:otherwise></c:choose></c:iterate></c:when><c:otherwise>&<c:get select="$referenceTable/@name"/>Page=previousPage</c:otherwise></c:choose></c:if></c:iterate></c:iterate>"><span><img src="Dollar_symbol{pageContext.request.contextPath}/images/icons/new.gif" /><fmt:message key="navigation.new"/> <fmt:message key="<c:get select="$eachTable/@name"/>.title"/></span></a></div>
+		<div>
+			<form action="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=eachPageShow" method="post">
+			 	选择每页显示<input type="text" id="pageSize" name="pageSize" style="height:15px;width:50px">条 
+			 	<input type="submit" id="sure" value="确认" style="height:22px;width:35px">
+			</form>
+		<div id="tablewrapper">
+		<table id="listTable" cellpadding="0" cellspacing="0">
+			<c:include template="templates/content/jsp/fragment/list/thead.jet"/>
+			<c:include template="templates/content/jsp/fragment/list/tbody.jet"/>
+		</table>
+		</div>
+		<tr>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=homePage">首页</a></td>
+			%Left_angle_bracketsc:if test="Dollar_symbol{totalPage>=9}"%Right_angle_brackets
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=previousPage">上一页</a></td>
+			%Left_angle_bracketsc:if test="Dollar_symbol{prePage-3>0&&prePage+5<=totalPage}"%Right_angle_brackets
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{prePage-3}">Dollar_symbol{prePage-3}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{prePage-2}">Dollar_symbol{prePage-2}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{prePage-1}">Dollar_symbol{prePage-1}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{prePage}">Dollar_symbol{prePage}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{prePage+1}">Dollar_symbol{prePage+1}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{prePage+2}">Dollar_symbol{prePage+2}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{prePage+3}">Dollar_symbol{prePage+3}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{prePage+4}">Dollar_symbol{prePage+4}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{prePage+5}">Dollar_symbol{prePage+5}</a></td>
+			%Left_angle_brackets/c:if%Right_angle_brackets
+			%Left_angle_bracketsc:if test="Dollar_symbol{prePage-3<=0}"%Right_angle_brackets
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=1">1</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=2">2</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=3">3</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=4">4</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=5">5</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=6">6</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=7">7</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=8">8</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=9">9</a></td>
+			%Left_angle_brackets/c:if%Right_angle_brackets
+			%Left_angle_bracketsc:if test="Dollar_symbol{prePage+5>totalPage}"%Right_angle_brackets
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{totalPage-7}">Dollar_symbol{totalPage-7}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{totalPage-6}">Dollar_symbol{totalPage-6}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{totalPage-5}">Dollar_symbol{totalPage-5}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{totalPage-4}">Dollar_symbol{totalPage-4}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{totalPage-3}">Dollar_symbol{totalPage-3}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{totalPage-2}">Dollar_symbol{totalPage-2}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{totalPage-1}">Dollar_symbol{totalPage-1}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{totalPage}">Dollar_symbol{totalPage}</a></td>
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=Dollar_symbol{totalPage+1}">Dollar_symbol{totalPage+1}</a></td>
+			%Left_angle_brackets/c:if%Right_angle_brackets
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=nextPage">下一页</a></td>
+			%Left_angle_brackets/c:if%Right_angle_brackets
+			%Left_angle_bracketsc:if test="Dollar_symbol{totalPage<9}"%Right_angle_brackets
+			%Left_angle_brackets% 
+			   String pageCount2 = request.getAttribute("totalPage").toString();
+			   int pageCount = Integer.parseInt(pageCount2);
+			   for (int i = 1; i <= pageCount+1; i++) {
+			%%Right_angle_brackets
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage&WantToPage=%Left_angle_brackets%=i%%Right_angle_brackets">%Left_angle_brackets%=i%%Right_angle_brackets</a></td>
+			%Left_angle_brackets%}%%Right_angle_brackets
+			%Left_angle_brackets/c:if%Right_angle_brackets
+			<td><a href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=lastPage">尾页</a></td>
+		</tr>
+		<br>
+		<tr>
+			<td>当前为第Dollar_symbol{prePage+1}页</td>&nbsp&nbsp&nbsp
+		</tr>每页显示Dollar_symbol{prePageSize}条数据 &nbsp&nbsp总共Dollar_symbol{totalPage+1}页
+		<form action="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=jumpPage" method="post">
+		跳转到第<input type="text" id="WantToPage" name="WantToPage" style="height:15px;width:100px">页 
+		<input type="submit" id="skip" value="跳转" style="height:22px;width:35px">
+		</form>
+	</div>
+</body>
+</c:replaceStrings>
+</f:replaceAll>

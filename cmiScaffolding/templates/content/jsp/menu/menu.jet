@@ -1,0 +1,31 @@
+<f:replaceAll value="Dollar_symbol" replacement="$"><c:replaceStrings replace="%Left_angle_brackets,%Right_angle_brackets" with="<,>">%Left_angle_brackets%@page language="java" isELIgnored="false"
+	contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%Right_angle_brackets
+<jsp:directive.include file="/WEB-INF/sitemesh-decorators/include.jsp" />
+<style>
+#content {
+	text-align: center;
+}
+</style>
+<div id="contentarea">
+	<div id="content">
+<c:iterate select="$table" var="eachtable">
+		<c:setVariable select="0" var="i"/>
+		<c:iterate select="$eachtable/columns/column" var="col">
+		<c:setVariable select="$i+1" var="i"/>
+		</c:iterate>
+		<c:setVariable select="0" var="j"/>
+		<c:iterate select="$eachtable/referenceds/referenced" var="ref">
+		<c:setVariable select="$j+1" var="j"/>
+		</c:iterate>
+		<c:if test="$i!=0 or $j!=0">
+<jsp:include page="/WEB-INF/pages/<c:get select="$eachtable/@name"/>/menu.jsp" />
+</c:if>
+</c:iterate>
+		<div class="clear">&nbsp;</div>
+	</div>
+</div>
+</c:replaceStrings>
+</f:replaceAll>
+
+
+

@@ -1,0 +1,9 @@
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+		result = (int) (prime * result + ((<c:get select="lowercaseFirst($primaryKey/@name)"/> == null) ? 0 : <c:get select="lowercaseFirst($primaryKey/@name)"/>.hashCode()));
+		</c:iterate>
+		return result;
+	}

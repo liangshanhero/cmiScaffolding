@@ -1,0 +1,1 @@
+public <java:import>java.util.List</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>> findAll<c:get select="uppercaseFirst($eachTable/@name)"/>s(Integer startResult, Integer maxRows);

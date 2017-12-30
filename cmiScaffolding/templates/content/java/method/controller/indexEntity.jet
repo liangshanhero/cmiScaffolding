@@ -1,0 +1,40 @@
+	@RequestMapping("/index<c:get select="uppercaseFirst($eachTable/@name)"/>")
+	public ModelAndView list<c:get select="uppercaseFirst($eachTable/@name)"/>s(<java:import>javax.servlet.http.HttpServletRequest</java:import> request) {
+		ModelAndView mav = new ModelAndView();
+		int totalPage=<c:get select="$eachTable/@name"/>Service.count<c:get select="$eachTable/@name"/>s()/pageSize;
+		String pageType = null;
+		String sessionAttribute=(String) request.getSession().getAttribute("page");
+		String requestAttribute=request.getParameter("page");
+		if(sessionAttribute!=null)
+			pageType=sessionAttribute;
+		if(requestAttribute!=null)
+			pageType = requestAttribute;
+		
+		switch (pageType){
+			case "homePage":pageNumber=0;break;
+			case "previousPage":if(pageNumber>=1)pageNumber=pageNumber-1;
+								else pageNumber=0;break;
+			case "nextPage":if(pageNumber<totalPage)pageNumber=pageNumber+1;
+							else pageNumber=totalPage;break;
+			case "lastPage":pageNumber=totalPage;break;
+			case "jumpPage":pageNumber=Integer.parseInt(request.getParameter("WantToPage"))-1;break;
+			case "eachPageShow":pageNumber=0;
+								pageSize=Integer.parseInt(request.getParameter("pageSize"));
+								totalPage=<c:get select="$eachTable/@name"/>Service.count<c:get select="$eachTable/@name"/>s()/pageSize;
+								break;
+			default:
+				System.out.println("error input!");	break;
+		}
+		if(pageNumber>=0&&pageNumber<=totalPage)
+			mav.addObject("<c:get select="$eachTable/@name"/>s", <c:get select="$eachTable/@name"/>Service.load<c:get select="uppercaseFirst($eachTable/@name)"/>s(pageNumber*pageSize,pageSize));	
+		
+		mav.addObject("totalPage", totalPage);
+		mav.addObject("prePageSize", pageSize);
+		mav.addObject("prePage", pageNumber);
+		mav.setViewName("<c:get select="$eachTable/@name"/>/list<c:get select="uppercaseFirst($eachTable/@name)"/>s.jsp");
+		return mav;
+	}
+
+	public String index<c:get select="uppercaseFirst($eachTable/@name)"/>() {
+		return "redirect:/index<c:get select="uppercaseFirst($eachTable/@name)"/>";
+	}

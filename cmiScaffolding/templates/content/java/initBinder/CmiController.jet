@@ -1,0 +1,70 @@
+package <c:get select="$packageName"/>.web;
+<java:importsLocation package="org.example"/>
+import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import <c:get select="$packageName"/>.initBinder.*;
+import <c:get select="$packageName"/>.domain.*;
+
+@Controller("CmiController")
+public class CmiController {
+
+	<c:iterate select="$table" var="eachTable">
+	<c:setVariable select="0" var="colcount"/>
+	<c:setVariable select="0" var="refcount"/>
+	<c:iterate select="$eachTable/columns/column" var="col">
+	<c:setVariable select="$colcount+1" var="colcount"/>
+	</c:iterate>
+	<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+	<c:setVariable select="$refcount+1" var="refcount"/>
+	</c:iterate>
+	<c:if test="$colcount!=0or$refcount!=0">
+	@Autowired
+	private <c:get select="uppercaseFirst($eachTable/@name)"/>Editor <c:get select="$eachTable/@name"/>Editor;
+	
+	@Autowired
+	private <c:get select="uppercaseFirst($eachTable/@name)"/>sEditor <c:get select="$eachTable/@name"/>sEditor;
+	</c:if>
+	</c:iterate>
+	/**
+	 * Register custom, context-specific property editors
+	 * 
+	 */
+	@InitBinder
+	public void initBinder(WebDataBinder binder, HttpServletRequest request) { 
+		<c:iterate select="$table" var="eachTable">
+		<c:setVariable select="0" var="colcount"/>
+		<c:setVariable select="0" var="refcount"/>
+		<c:iterate select="$eachTable/columns/column" var="col">
+		<c:setVariable select="$colcount+1" var="colcount"/>
+		</c:iterate>
+		<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+		<c:setVariable select="$refcount+1" var="refcount"/>
+		</c:iterate>
+		<c:if test="$colcount!=0or$refcount!=0">
+		binder.registerCustomEditor(<c:get select="uppercaseFirst($eachTable/@name)"/>.class, "relative<c:get select="uppercaseFirst($eachTable/@name)"/>",<c:get select="$eachTable/@name"/>Editor);
+		binder.registerCustomEditor(Set.class, "relative<c:get select="uppercaseFirst($eachTable/@name)"/>s",<c:get select="$eachTable/@name"/>sEditor);
+		</c:if>
+		</c:iterate>
+		
+		<java:import>java.text.SimpleDateFormat</java:import> dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");  
+		dateFormat.setLenient(false);  
+		binder.registerCustomEditor(<java:import>java.util.Date</java:import>.class, new <java:import>org.springframework.beans.propertyeditors.CustomDateEditor</java:import>(dateFormat, true));
+		
+		binder.registerCustomEditor(boolean.class, new cn.edu.scau.cmi.liangzaoqing.initbinder.EnhancedBooleanEditor(false));
+		binder.registerCustomEditor(Boolean.class, new cn.edu.scau.cmi.liangzaoqing.initbinder.EnhancedBooleanEditor(true));
+//		binder.registerCustomEditor(java.util.Date.class, new cn.edu.scau.cmi.liangzaoqing.initbinder.CustomDateEditor());
+//		binder.registerCustomEditor(java.util.Date.class, new cn.edu.scau.cmi.liangzaoqing.initbinder.CustomDateEditor());
+		binder.registerCustomEditor(java.util.Calendar.class, new cn.edu.scau.cmi.liangzaoqing.initbinder.CustomCalendarEditor());
+		binder.registerCustomEditor(byte[].class, new org.springframework.web.multipart.support.ByteArrayMultipartFileEditor());
+		binder.registerCustomEditor(java.math.BigDecimal.class, new cn.edu.scau.cmi.liangzaoqing.initbinder.NaNHandlingNumberEditor(java.math.BigDecimal.class, true));
+		binder.registerCustomEditor(Integer.class, new cn.edu.scau.cmi.liangzaoqing.initbinder.NaNHandlingNumberEditor(Integer.class, true));
+		binder.registerCustomEditor(String.class, new cn.edu.scau.cmi.liangzaoqing.initbinder.StringEditor());
+		binder.registerCustomEditor(Long.class, new cn.edu.scau.cmi.liangzaoqing.initbinder.NaNHandlingNumberEditor(Long.class, true));
+		binder.registerCustomEditor(Double.class, new cn.edu.scau.cmi.liangzaoqing.initbinder.NaNHandlingNumberEditor(Double.class, true));
+		}
+
+}

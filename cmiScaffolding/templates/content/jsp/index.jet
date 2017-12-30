@@ -1,0 +1,23 @@
+<c:replaceStrings replace="%Left_angle_brackets,%Right_angle_brackets" with="<,>">%Left_angle_brackets%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%%Right_angle_brackets
+%Left_angle_brackets%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%%Right_angle_brackets
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <base href="%Left_angle_brackets%=basePath%%Right_angle_brackets">
+    
+    <title>My JSP 'index.jsp' starting page</title>
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+  </head>
+  <body>
+  
+  </body>
+</html>
+</c:replaceStrings>

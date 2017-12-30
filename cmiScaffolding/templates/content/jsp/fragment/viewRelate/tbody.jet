@@ -1,0 +1,104 @@
+<f:replaceAll value="Dollar_symbol" replacement="$"><c:replaceStrings replace="%Left_angle_brackets,%Right_angle_brackets" with="<,>">
+								<c:setVariable select="0" var="count"/>
+								<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+								<c:setVariable select="$count+1" var="count"/>
+								</c:iterate>
+								<c:setVariable select="$count" var="num"/>
+								<form action="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($relateTableName)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=eachPageShow" method="post">
+									选择每页显示<input type="text" id="pageSize" name="pageSize" style="height:15px;width:50px">条 
+									<input type="submit" id="sure" value="确认" style="height:22px;width:35px">
+								</form>
+								<table cellpadding="0" cellspacing="0" id="viewTable">
+												<thead>
+													<tr>
+													<c:iterate select="$referenceTables/table" var="ft">
+													<c:if test="$ft/@name=$relateTableName">
+													<%--
+													<c:iterate select="$ft/primaryKeys/column" var="fc">
+														<th class="thead"><fmt:message key="<c:get select="$relateTableName"/>.<c:get select="$fc/@name"/>.title"/></th>
+													</c:iterate>
+													--%>
+													<c:iterate select="$ft/columns/column" var="fc">
+														<th class="thead"><fmt:message key="<c:get select="$relateTableName"/>.<c:get select="$fc/@name"/>.title"/></th>
+													</c:iterate>
+													</c:if>
+													</c:iterate>
+													</tr>
+												</thead>
+											<tbody>
+												%Left_angle_bracketsc:forEach items="Dollar_symbol{<c:get select="$relateTableName"/>s}" var="current"  varStatus="i"%Right_angle_brackets	
+												%Left_angle_bracketsc:choose%Right_angle_brackets
+												%Left_angle_bracketsc:when test="Dollar_symbol{(i.count) % 2 == 0}"%Right_angle_brackets
+					    						%Left_angle_bracketsc:set var="rowclass" value="rowtwo"/%Right_angle_brackets
+												%Left_angle_brackets/c:when%Right_angle_brackets
+												%Left_angle_bracketsc:otherwise%Right_angle_brackets
+					    						%Left_angle_bracketsc:set var="rowclass" value="rowone"/%Right_angle_brackets
+												%Left_angle_brackets/c:otherwise%Right_angle_brackets
+												%Left_angle_brackets/c:choose%Right_angle_brackets
+												<tr class="Dollar_symbol{rowclass}">
+												<c:iterate select="$referenceTables/table" var="ft">
+												<c:if test="$ft/@name=$relateTableName">
+												<%--
+												<c:iterate select="$ft/primaryKeys/column" var="fc">
+												<td>Dollar_symbol{current.<c:get select="$fc/@name"/>}&nbsp;</td>
+												</c:iterate>
+												--%>
+												<c:iterate select="$ft/columns/column" var="fc">
+												<td>Dollar_symbol{current.<c:get select="$fc/@name"/>}&nbsp;</td>
+												</c:iterate>
+												</c:if>
+												</c:iterate>
+												</tr>
+												%Left_angle_brackets/c:forEach%Right_angle_brackets
+											</tbody>
+										</table>
+										<tr><c:setVariable select="$num" var="count"/>
+											<td><a  href="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($relateTableName)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=homePage">首页</a></td>
+											<c:setVariable select="$num" var="count"/>
+											<td><a  href="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($relateTableName)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=previousPage">上一页</a></td>
+											%Left_angle_bracketsc:if test="Dollar_symbol{<c:get select="$relateTableName"/>TotalPage>=7}"%Right_angle_brackets
+											%Left_angle_bracketsc:if test="Dollar_symbol{<c:get select="$relateTableName"/>PageNumber-2>0&&<c:get select="$relateTableName"/>PageNumber+4<=<c:get select="$relateTableName"/>TotalPage}"%Right_angle_brackets
+											%Left_angle_brackets%String pageCount2 = request.getAttribute("<c:get select="$relateTableName"/>PageNumber").toString();
+											int pageCount = Integer.parseInt(pageCount2);
+											for(int i=pageCount-2;i<pageCount+5;i++){%%Right_angle_brackets
+											<c:setVariable select="$num" var="count"/>
+											<td><a  href="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($relateTableName)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=jumpPage&WantToPage=%Left_angle_brackets%=i%%Right_angle_brackets">%Left_angle_brackets%=i%%Right_angle_brackets</a></td>
+											%Left_angle_brackets%}%%Right_angle_brackets
+										%Left_angle_brackets/c:if%Right_angle_brackets
+										%Left_angle_bracketsc:if test="Dollar_symbol{<c:get select="$relateTableName"/>PageNumber-2<=0}"%Right_angle_brackets
+										 %Left_angle_brackets%for(int i=1;i<8;i++){%%Right_angle_brackets
+										 <c:setVariable select="$num" var="count"/>
+											<td><a  href="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($relateTableName)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=jumpPage&WantToPage=%Left_angle_brackets%=i%%Right_angle_brackets">%Left_angle_brackets%=i%%Right_angle_brackets</a></td>
+										%Left_angle_brackets%}%%Right_angle_brackets
+			   							%Left_angle_brackets/c:if%Right_angle_brackets		    
+			   							 %Left_angle_bracketsc:if test="Dollar_symbol{<c:get select="$relateTableName"/>PageNumber+4><c:get select="$relateTableName"/>TotalPage }"%Right_angle_brackets
+			   							 %Left_angle_brackets%String pageCount2 = request.getAttribute("<c:get select="$relateTableName"/>TotalPage").toString();
+											int pageCount = Integer.parseInt(pageCount2);
+			   							 for(int i=pageCount-5;i<pageCount+2;i++){%%Right_angle_brackets
+			   							 <c:setVariable select="$num" var="count"/>
+			   							 <td><a  href="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($relateTableName)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=jumpPage&WantToPage=%Left_angle_brackets%=i%%Right_angle_brackets">%Left_angle_brackets%=i%%Right_angle_brackets</a></td>
+			    						%Left_angle_brackets%}%%Right_angle_brackets
+			   							 %Left_angle_brackets/c:if%Right_angle_brackets
+			   							 %Left_angle_brackets/c:if%Right_angle_brackets			
+										%Left_angle_bracketsc:if test="Dollar_symbol{<c:get select="$relateTableName"/>TotalPage<7}"%Right_angle_brackets
+										%Left_angle_brackets% 
+											String pageCount2 = request.getAttribute("<c:get select="$relateTableName"/>TotalPage").toString();
+											int pageCount = Integer.parseInt(pageCount2);
+											for (int i = 1; i <= pageCount+1; i++) {%%Right_angle_brackets
+										<c:setVariable select="$num" var="count"/>
+										 <td><a href="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($relateTableName)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=jumpPage&WantToPage=%Left_angle_brackets%=i%%Right_angle_brackets">%Left_angle_brackets%=i%%Right_angle_brackets</a></td>
+										%Left_angle_brackets%}%%Right_angle_brackets
+										%Left_angle_brackets/c:if%Right_angle_brackets
+										<c:setVariable select="$num" var="count"/>
+										<td><a  href="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($relateTableName)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=nextPage">下一页</a></td>
+										<c:setVariable select="$num" var="count"/>
+										<td><a  href="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($relateTableName)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=lastPage">尾页</a> 	</td>
+								</tr><br>
+									当前为第Dollar_symbol{<c:get select="$relateTableName"/>PageNumber+1}页         每页显示Dollar_symbol{<c:get select="$relateTableName"/>PageSize}条      总共Dollar_symbol{<c:get select="$relateTableName"/>TotalPage+1}页<br>
+									<c:setVariable select="$num" var="count"/>
+									<form action="Dollar_symbol{pageContext.request.contextPath}/select<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($relateTableName)"/>s?<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>=Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$primaryKey/@name"/>}<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">&</c:if></c:iterate>&page=jumpPage" method="post">
+									跳转到第<input type="text" id="WantToPage" name="WantToPage" style="height:15px;width:100px">页 
+									<input type="submit" id="skip" value="跳转" style="height:22px;width:35px">
+								</form>
+</c:replaceStrings>
+</f:replaceAll>

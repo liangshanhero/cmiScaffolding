@@ -1,0 +1,3 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+<%-- 生成.classpath文件 --%>
+<ws:file template="templates/content/configure/jaxws-web-context.jet" path="{$projectName}/cmi/jaxws/jaxws-web-context.xml"/>

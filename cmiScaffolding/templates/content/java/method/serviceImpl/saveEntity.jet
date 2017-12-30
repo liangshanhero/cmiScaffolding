@@ -1,0 +1,358 @@
+	<c:setVariable select="0" var="x"/>
+	<c:setVariable select="0" var="y"/>
+	<c:iterate select="$eachTable/columns/column" var="col">
+		<c:setVariable select="$x+1" var="x"/>
+	</c:iterate>
+	<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+		<c:setVariable select="$y+1" var="y"/>
+	</c:iterate>
+	<c:choose>
+	<c:when test="($x=0)and($y=0)">
+	<c:setVariable select="0" var="count"/>
+	<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+	<c:setVariable select="$count+1" var="count"/>
+	</c:iterate>
+	@Transactional
+	public void save<c:get select="uppercaseFirst($eachTable/@name)"/>(<c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="$eachTable/@name"/>) {
+		<c:if test="$count<2">
+		<c:get select="uppercaseFirst($eachTable/@name)"/> existing<c:get select="uppercaseFirst($eachTable/@name)"/> = <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($primaryKey/@name)"/>()<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>);
+		</c:if>
+		<c:if test="$count>1">
+		<c:get select="uppercaseFirst($eachTable/@name)"/> existing<c:get select="uppercaseFirst($eachTable/@name)"/> = <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($primaryKey/@name)"/>Field()<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>);
+		</c:if>
+		if (existing<c:get select="uppercaseFirst($eachTable/@name)"/> != null) {
+			if (existing<c:get select="uppercaseFirst($eachTable/@name)"/> != <c:get select="$eachTable/@name"/>) {
+				<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+				existing<c:get select="uppercaseFirst($eachTable/@name)"/>.set<c:get select="uppercaseFirst($PK/@name)"/>(<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($PK/@name)"/>());
+				</c:iterate>
+			}
+			
+			<c:iterate select="$eachTable/foreigns/column" var="foreign">
+			if(<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($foreign/@referenceTable)"/>()!=null){
+			entityManager.persist(<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($foreign/@referenceTable)"/>());
+			existing<c:get select="uppercaseFirst($eachTable/@name)"/>.set<c:get select="uppercaseFirst($foreign/@referenceTable)"/>(<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($foreign/@referenceTable)"/>());
+			}
+			else
+				existing<c:get select="uppercaseFirst($eachTable/@name)"/>.set<c:get select="uppercaseFirst($foreign/@referenceTable)"/>(null);
+			</c:iterate>
+			
+			<c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>DAO.store(existing<c:get select="uppercaseFirst($eachTable/@name)"/>);
+		} else {
+			entityManager.persist(<c:get select="$eachTable/@name"/>);
+			<c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>DAO.store(<c:get select="$eachTable/@name"/>);
+		}
+		<c:get select="$eachTable/@name"/>DAO.flush();
+	}
+	</c:when>
+	<c:otherwise>
+	<c:setVariable select="0" var="count"/>
+	<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+	<c:setVariable select="$count+1" var="count"/>
+	</c:iterate>
+	<c:setVariable select="$count" var="num"/>
+	@SuppressWarnings({ "unchecked", "unused" })
+	@Transactional
+	public void save<c:get select="uppercaseFirst($eachTable/@name)"/>(<c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="$eachTable/@name"/>){
+		<c:if test="$count<2">
+		<c:get select="uppercaseFirst($eachTable/@name)"/> existing<c:get select="uppercaseFirst($eachTable/@name)"/> = <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($primaryKey/@name)"/>()<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>);
+		</c:if>
+		<c:if test="$count>1">
+		<c:get select="uppercaseFirst($eachTable/@name)"/> existing<c:get select="uppercaseFirst($eachTable/@name)"/> = <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($primaryKey/@name)"/>Field()<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>);
+		</c:if>
+		if (existing<c:get select="uppercaseFirst($eachTable/@name)"/> != null) {
+			if(existing<c:get select="uppercaseFirst($eachTable/@name)"/>!=<c:get select="$eachTable/@name"/>){
+			<c:iterate select="$eachTable/columns/column" var="attribute">
+			existing<c:get select="uppercaseFirst($eachTable/@name)"/>.set<c:get select="uppercaseFirst($attribute/@name)"/>(<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($attribute/@name)"/>());
+			</c:iterate>
+			}
+			
+			<c:iterate select="$eachTable/foreigns/column" var="foreign">
+			if(<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($foreign/@referenceTable)"/>()!=null){
+			entityManager.persist(<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($foreign/@referenceTable)"/>());
+			existing<c:get select="uppercaseFirst($eachTable/@name)"/>.set<c:get select="uppercaseFirst($foreign/@referenceTable)"/>(<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($foreign/@referenceTable)"/>());
+			}
+			else
+				existing<c:get select="uppercaseFirst($eachTable/@name)"/>.set<c:get select="uppercaseFirst($foreign/@referenceTable)"/>(null);
+			</c:iterate>
+			
+			<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+			<c:iterate select="$referenceTables/table" var="referenceTable">
+			<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:choose>
+			<c:when test="$i=0and$j=0">
+			<c:iterate select="$referenceTable/foreigns/column" var="foreig">
+			<c:choose>
+			<c:when test="$foreig/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+			if(<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s()!=null){
+				for(<c:get select="uppercaseFirst($foreig/@referenceTable)"/> relative<c:get select="uppercaseFirst($foreig/@referenceTable)"/>:<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s())
+				entityManager.persist(relative<c:get select="uppercaseFirst($foreig/@referenceTable)"/>);
+				existing<c:get select="uppercaseFirst($eachTable/@name)"/>.set<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s(<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s());
+			}
+			else
+				existing<c:get select="uppercaseFirst($eachTable/@name)"/>.set<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s(null);
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:when>
+			<c:otherwise>
+			if(<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($referenceTable/@name)"/>s()!=null){
+				for(<c:get select="uppercaseFirst($referenceTable/@name)"/> relative<c:get select="uppercaseFirst($referenceTable/@name)"/>:<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($referenceTable/@name)"/>s()){
+				relative<c:get select="uppercaseFirst($referenceTable/@name)"/>.set<c:get select="uppercaseFirst($eachTable/@name)"/>(existing<c:get select="uppercaseFirst($eachTable/@name)"/>);
+				entityManager.persist(relative<c:get select="uppercaseFirst($referenceTable/@name)"/>);
+				}
+				existing<c:get select="uppercaseFirst($eachTable/@name)"/>.set<c:get select="uppercaseFirst($referenceTable/@name)"/>s(<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($referenceTable/@name)"/>s());
+			}
+			else
+				existing<c:get select="uppercaseFirst($eachTable/@name)"/>.set<c:get select="uppercaseFirst($referenceTable/@name)"/>s(null);
+			</c:otherwise>
+			</c:choose>
+			</c:if>
+			</c:iterate>
+			</c:iterate>
+			entityManager.persist(existing<c:get select="uppercaseFirst($eachTable/@name)"/>);			
+		} else {		
+			entityManager.persist(<c:get select="$eachTable/@name"/>);
+			<c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>DAO.store(<c:get select="$eachTable/@name"/>);
+		}
+		<c:get select="$eachTable/@name"/>DAO.flush();
+	}
+	
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+	<c:iterate select="$referenceTables/table" var="existTable">
+	<c:if test="$foreign/@referenceTable=$existTable/@name">
+	<c:setVariable select="$num" var="count"/>
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">String <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">Integer <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>java.util.Date</java:import> <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, <c:get select="uppercaseFirst($foreign/@referenceTable)"/> related_<c:get select="$foreign/@referenceTable"/>){
+		<c:setVariable select="$num" var="count"/>
+		<c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, -1, -1);
+		<c:iterate select="$referenceTables/table" var="rt">
+		<c:if test="$rt/@name=$foreign/@referenceTable">
+		<c:setVariable select="0" var="pkCount"/>
+		<c:iterate select="$rt/primaryKeys/column" var="pk">
+		<c:setVariable select="$pkCount+1" var="pkCount"/>
+		</c:iterate>
+		<c:if test="$pkCount<2">
+		<c:get select="uppercaseFirst($foreign/@referenceTable)"/> existing<c:get select="uppercaseFirst($foreign/@referenceTable)"/> = <c:get select="$foreign/@referenceTable"/>DAO.find<c:get select="uppercaseFirst($foreign/@referenceTable)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey">related_<c:get select="$foreign/@referenceTable"/>.get<c:get select="uppercaseFirst($priKey/@name)"/>()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+		</c:if>
+		<c:if test="$pkCount>1">
+		<c:get select="uppercaseFirst($foreign/@referenceTable)"/> existing<c:get select="uppercaseFirst($foreign/@referenceTable)"/> = <c:get select="$foreign/@referenceTable"/>DAO.find<c:get select="uppercaseFirst($foreign/@referenceTable)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey">related_<c:get select="$foreign/@referenceTable"/>.get<c:get select="uppercaseFirst($priKey/@name)"/>Field()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+		</c:if>
+		</c:if>
+		</c:iterate>
+		if (existing<c:get select="uppercaseFirst($foreign/@referenceTable)"/> != null) {
+			<c:iterate select="$referenceTables/table" var="ref">
+			<c:if test="$ref/@name=$foreign/@referenceTable">
+			<c:iterate select="$ref/primaryKeys/column" var="primaryKey">
+			existing<c:get select="uppercaseFirst($foreign/@referenceTable)"/>.set<c:get select="uppercaseFirst($primaryKey/@name)"/>(related_<c:get select="$foreign/@referenceTable"/>.get<c:get select="uppercaseFirst($primaryKey/@name)"/>());
+			</c:iterate>
+			<c:iterate select="$ref/columns/column" var="attribute">
+			existing<c:get select="uppercaseFirst($foreign/@referenceTable)"/>.set<c:get select="uppercaseFirst($attribute/@name)"/>(related_<c:get select="$foreign/@referenceTable"/>.get<c:get select="uppercaseFirst($attribute/@name)"/>());
+			</c:iterate>
+			</c:if>
+			</c:iterate>
+			related_<c:get select="$foreign/@referenceTable"/> = existing<c:get select="uppercaseFirst($foreign/@referenceTable)"/>;
+		} else {
+			related_<c:get select="$foreign/@referenceTable"/> = <c:get select="$foreign/@referenceTable"/>DAO.store(related_<c:get select="$foreign/@referenceTable"/>);
+			<c:get select="$foreign/@referenceTable"/>DAO.flush();
+		}
+		<c:get select="$eachTable/@name"/>.set<c:get select="uppercaseFirst($foreign/@referenceTable)"/>(related_<c:get select="$foreign/@referenceTable"/>);
+		related_<c:get select="$foreign/@referenceTable"/>.get<c:get select="uppercaseFirst($eachTable/@name)"/>s().add(<c:get select="$eachTable/@name"/>);
+		<c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>DAO.store(<c:get select="$eachTable/@name"/>);
+		<c:get select="$eachTable/@name"/>DAO.flush();
+
+		related_<c:get select="$foreign/@referenceTable"/> = <c:get select="$foreign/@referenceTable"/>DAO.store(related_<c:get select="$foreign/@referenceTable"/>);
+		<c:get select="$foreign/@referenceTable"/>DAO.flush();
+
+		return <c:get select="$eachTable/@name"/>;
+	}
+	</c:if>
+	</c:iterate>
+	</c:iterate>	
+	<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+	<c:iterate select="$referenceTables/table" var="referenceTable">
+		<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:if test="$i=0">
+			<c:if test="$j=0">
+			<c:iterate select="$referenceTable/foreigns/column" var="foreig">
+			<c:choose>
+			<c:when test="$foreig/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+			<c:setVariable select="0" var="count"/>
+			<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+			<c:setVariable select="$count+1" var="count"/>
+			</c:iterate>
+			<c:setVariable select="$count" var="num"/>
+			@Transactional
+			public <c:get select="uppercaseFirst($eachTable/@name)"/> save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreig/@referenceTable)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">String <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">Integer <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>java.util.Date</java:import> <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, <c:get select="uppercaseFirst($foreig/@referenceTable)"/> related_<c:get select="$foreig/@referenceTable"/>s){
+				<c:setVariable select="$num" var="count"/>
+				<c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, -1, -1);
+				<c:iterate select="$referenceTables/table" var="rt">
+				<c:if test="$rt/@name=$foreig/@referenceTable">
+				<c:setVariable select="0" var="pkCount"/>
+				<c:iterate select="$rt/primaryKeys/column" var="pk">
+				<c:setVariable select="$pkCount+1" var="pkCount"/>
+				</c:iterate>
+				<c:if test="$pkCount<2">
+				<c:get select="uppercaseFirst($foreig/@referenceTable)"/> existing<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s = <c:get select="$foreig/@referenceTable"/>DAO.find<c:get select="uppercaseFirst($foreig/@referenceTable)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey">related_<c:get select="$foreig/@referenceTable"/>s.get<c:get select="uppercaseFirst($priKey/@name)"/>()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+				</c:if>
+				<c:if test="$pkCount>1">
+				<c:get select="uppercaseFirst($foreig/@referenceTable)"/> existing<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s = <c:get select="$foreig/@referenceTable"/>DAO.find<c:get select="uppercaseFirst($foreig/@referenceTable)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey">related_<c:get select="$foreig/@referenceTable"/>s.get<c:get select="uppercaseFirst($priKey/@name)"/>Field()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+				</c:if>
+				</c:if>
+				</c:iterate>
+				if (existing<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s != null) {
+					<c:iterate select="$referenceTables/table" var="ref">
+					<c:if test="$ref/@name=$foreig/@referenceTable">
+					<c:iterate select="$ref/primaryKeys/column" var="primaryKey">
+					existing<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s.set<c:get select="uppercaseFirst($primaryKey/@name)"/>(related_<c:get select="$foreig/@referenceTable"/>s.get<c:get select="uppercaseFirst($primaryKey/@name)"/>());
+					</c:iterate>
+					<c:iterate select="$ref/columns/column" var="attribute">
+					existing<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s.set<c:get select="uppercaseFirst($attribute/@name)"/>(related_<c:get select="$foreig/@referenceTable"/>s.get<c:get select="uppercaseFirst($attribute/@name)"/>());
+					</c:iterate>
+					</c:if>
+					</c:iterate>
+					related_<c:get select="$foreig/@referenceTable"/>s = existing<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s;
+					entityManager.persist(related_<c:get select="$foreig/@referenceTable"/>s);
+				} else {
+					entityManager.persist(related_<c:get select="$foreig/@referenceTable"/>s);
+					<c:get select="$foreig/@referenceTable"/>DAO.flush();
+				}
+
+				entityManager.persist(<c:get select="$eachTable/@name"/>);
+				<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($foreig/@referenceTable)"/>s().add(related_<c:get select="$foreig/@referenceTable"/>s);
+				entityManager.persist(related_<c:get select="$foreig/@referenceTable"/>s);
+				<c:get select="$foreig/@referenceTable"/>DAO.flush();
+
+				return <c:get select="$eachTable/@name"/>;
+			}
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:if>
+			<c:if test="$j>0">
+			<c:setVariable select="0" var="count"/>
+			<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+			<c:setVariable select="$count+1" var="count"/>
+			</c:iterate>
+			<c:setVariable select="$count" var="num"/>
+			@Transactional
+			public <c:get select="uppercaseFirst($eachTable/@name)"/> save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">String <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">Integer <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>java.util.Date</java:import> <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, <c:get select="uppercaseFirst($referenced/@name)"/> related_<c:get select="$referenced/@name"/>s){
+				<c:setVariable select="$num" var="count"/>
+				<c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, -1, -1);
+				<c:iterate select="$referenceTables/table" var="rt">
+				<c:if test="$rt/@name=$referenced/@name">
+				<c:setVariable select="0" var="pkCount"/>
+				<c:iterate select="$rt/primaryKeys/column" var="pk">
+				<c:setVariable select="$pkCount+1" var="pkCount"/>
+				</c:iterate>
+				<c:if test="$pkCount<2">
+				<c:get select="uppercaseFirst($referenced/@name)"/> existing<c:get select="uppercaseFirst($referenced/@name)"/>s = <c:get select="$referenced/@name"/>DAO.find<c:get select="uppercaseFirst($referenced/@name)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey">related_<c:get select="$referenced/@name"/>s.get<c:get select="uppercaseFirst($priKey/@name)"/>()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+				</c:if>
+				<c:if test="$pkCount>1">
+				<c:get select="uppercaseFirst($referenced/@name)"/> existing<c:get select="uppercaseFirst($referenced/@name)"/>s = <c:get select="$referenced/@name"/>DAO.find<c:get select="uppercaseFirst($referenced/@name)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey">related_<c:get select="$referenced/@name"/>s.get<c:get select="uppercaseFirst($priKey/@name)"/>Field()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+				</c:if>
+				</c:if>
+				</c:iterate>
+				if (existing<c:get select="uppercaseFirst($referenced/@name)"/>s != null) {
+					<c:iterate select="$referenceTables/table" var="ref">
+					<c:if test="$ref/@name=$referenced/@name">
+					<c:iterate select="$ref/primaryKeys/column" var="primaryKey">
+					existing<c:get select="uppercaseFirst($referenced/@name)"/>s.set<c:get select="uppercaseFirst($primaryKey/@name)"/>(related_<c:get select="$referenced/@name"/>s.get<c:get select="uppercaseFirst($primaryKey/@name)"/>());
+					</c:iterate>
+					<c:iterate select="$ref/columns/column" var="attribute">
+					existing<c:get select="uppercaseFirst($referenced/@name)"/>s.set<c:get select="uppercaseFirst($attribute/@name)"/>(related_<c:get select="$referenced/@name"/>s.get<c:get select="uppercaseFirst($attribute/@name)"/>());
+					</c:iterate>
+					</c:if>
+					</c:iterate>
+					related_<c:get select="$referenced/@name"/>s = existing<c:get select="uppercaseFirst($referenced/@name)"/>s;
+					entityManager.persist(related_<c:get select="$referenced/@name"/>s);
+				} else {
+					entityManager.persist(related_<c:get select="$referenced/@name"/>s);
+					<c:get select="$referenced/@name"/>DAO.flush();
+				}
+					entityManager.persist(<c:get select="$eachTable/@name"/>);
+					related_<c:get select="$referenced/@name"/>s.set<c:get select="uppercaseFirst($eachTable/@name)"/>(<c:get select="$eachTable/@name"/>);
+					<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($referenced/@name)"/>s().add(related_<c:get select="$referenced/@name"/>s);
+					entityManager.persist(<c:get select="$eachTable/@name"/>);
+					entityManager.persist(related_<c:get select="$referenced/@name"/>s);
+					<c:get select="$eachTable/@name"/>DAO.flush();
+
+					return <c:get select="$eachTable/@name"/>;
+				}
+			</c:if>
+			</c:if>
+			<c:if test="$i>0">
+			<c:setVariable select="0" var="count"/>
+			<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+			<c:setVariable select="$count+1" var="count"/>
+			</c:iterate>
+			<c:setVariable select="$count" var="num"/>
+			@Transactional
+			public <c:get select="uppercaseFirst($eachTable/@name)"/> save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">String <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">Integer <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>java.util.Date</java:import> <c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, <c:get select="uppercaseFirst($referenced/@name)"/> related_<c:get select="$referenced/@name"/>s){
+				<c:setVariable select="$num" var="count"/>
+				<c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, -1, -1);
+				<c:iterate select="$referenceTables/table" var="rt">
+				<c:if test="$rt/@name=$referenced/@name">
+				<c:setVariable select="0" var="pkCount"/>
+				<c:iterate select="$rt/primaryKeys/column" var="pk">
+				<c:setVariable select="$pkCount+1" var="pkCount"/>
+				</c:iterate>
+				<c:if test="$pkCount<2">
+				<c:get select="uppercaseFirst($referenced/@name)"/> existing<c:get select="uppercaseFirst($referenced/@name)"/>s = <c:get select="$referenced/@name"/>DAO.find<c:get select="uppercaseFirst($referenced/@name)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey">related_<c:get select="$referenced/@name"/>s.get<c:get select="uppercaseFirst($priKey/@name)"/>()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+				</c:if>
+				<c:if test="$pkCount>1">
+				<c:get select="uppercaseFirst($referenced/@name)"/> existing<c:get select="uppercaseFirst($referenced/@name)"/>s = <c:get select="$referenced/@name"/>DAO.find<c:get select="uppercaseFirst($referenced/@name)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey">related_<c:get select="$referenced/@name"/>s.get<c:get select="uppercaseFirst($priKey/@name)"/>Field()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+				</c:if>
+				</c:if>
+				</c:iterate>
+				if (existing<c:get select="uppercaseFirst($referenced/@name)"/>s != null) {
+					<c:iterate select="$referenceTables/table" var="ref">
+					<c:if test="$ref/@name=$referenced/@name">
+					<c:iterate select="$ref/primaryKeys/column" var="primaryKey">
+					existing<c:get select="uppercaseFirst($referenced/@name)"/>s.set<c:get select="uppercaseFirst($primaryKey/@name)"/>(related_<c:get select="$referenced/@name"/>s.get<c:get select="uppercaseFirst($primaryKey/@name)"/>());
+					</c:iterate>
+					<c:iterate select="$ref/columns/column" var="attribute">
+					existing<c:get select="uppercaseFirst($referenced/@name)"/>s.set<c:get select="uppercaseFirst($attribute/@name)"/>(related_<c:get select="$referenced/@name"/>s.get<c:get select="uppercaseFirst($attribute/@name)"/>());
+					</c:iterate>
+					</c:if>
+					</c:iterate>
+					related_<c:get select="$referenced/@name"/>s = existing<c:get select="uppercaseFirst($referenced/@name)"/>s;
+					entityManager.persist(related_<c:get select="$referenced/@name"/>s);
+				} else {
+					entityManager.persist(related_<c:get select="$referenced/@name"/>s);
+					<c:get select="$referenced/@name"/>DAO.flush();
+				}
+					entityManager.persist(<c:get select="$eachTable/@name"/>);
+					related_<c:get select="$referenced/@name"/>s.set<c:get select="uppercaseFirst($eachTable/@name)"/>(<c:get select="$eachTable/@name"/>);
+					<c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($referenced/@name)"/>s().add(related_<c:get select="$referenced/@name"/>s);
+					entityManager.persist(<c:get select="$eachTable/@name"/>);
+					entityManager.persist(related_<c:get select="$referenced/@name"/>s);
+					<c:get select="$eachTable/@name"/>DAO.flush();
+
+					return <c:get select="$eachTable/@name"/>;
+				}
+			</c:if>
+		</c:if>
+	</c:iterate>
+	</c:iterate>
+	</c:otherwise>
+	</c:choose>

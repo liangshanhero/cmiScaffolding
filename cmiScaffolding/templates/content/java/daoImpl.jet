@@ -1,0 +1,38 @@
+package <c:get select="$packageName"/>.dao;
+<java:importsLocation package="org.example"/>
+
+import <c:get select="$packageName"/>.domain.*;
+
+<java:format>
+@<java:import>org.springframework.stereotype.Repository</java:import>("<c:get select="uppercaseFirst($eachTable/@name)"/>DAO")
+@<java:import>org.springframework.transaction.annotation.Transactional</java:import>
+public class <c:get select="uppercaseFirst($eachTable/@name)"/>DAOImpl extends AbstractJpaDao<<c:get select="uppercaseFirst($eachTable/@name)"/>> implements
+		<c:get select="uppercaseFirst($eachTable/@name)"/>DAO {
+<c:include template="templates/content/java/method/daoImpl/variable.jet"/>
+
+
+<c:include template="templates/content/java/method/daoImpl/constructedFunction.jet"/>
+
+
+<c:include template="templates/content/java/method/daoImpl/entityManager.jet"/>
+
+
+<c:include template="templates/content/java/method/daoImpl/genericity.jet"/>
+
+
+<c:include template="templates/content/java/method/daoImpl/findEntityByPrimaryKeyColumns.jet"/>
+
+
+<c:include template="templates/content/java/method/daoImpl/findEntityByAttributeColumns.jet"/>
+
+
+<c:include template="templates/content/java/method/daoImpl/findEntityByPrimaryKey.jet"/>
+
+
+<c:include template="templates/content/java/method/daoImpl/findAllEntity.jet"/>
+
+
+<c:include template="templates/content/java/method/daoImpl/canBeMerged.jet"/>
+
+}
+</java:format>

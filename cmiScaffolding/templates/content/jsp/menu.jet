@@ -1,0 +1,8 @@
+<f:replaceAll value="Dollar_symbol" replacement="$">
+<c:replaceStrings replace="%Left_angle_brackets,%Right_angle_brackets" with="<,>">
+%Left_angle_brackets%@page language="java" isELIgnored="false" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%%Right_angle_brackets
+<jsp:directive.include file="/WEB-INF/sitemesh-decorators/include.jsp"/>
+<fmt:setBundle basename="bundles.<c:get select="$eachTable/@name"/>-resources"/>
+<a class="button" href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=homePage"><span><img src="images/icons/view.gif" /><fmt:message key="navigation.view"/> <fmt:message key="<c:get select="$eachTable/@name"/>.title"/></span></a>
+</c:replaceStrings> 
+</f:replaceAll>

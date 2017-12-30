@@ -1,0 +1,109 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+
+<%-- 生成index.jsp --%>
+<ws:file template="templates/content/jsp/index.jet" path="{$projectName}/WebRoot/index.jsp"/>
+
+<%-- 生成menu.jsp --%>
+<ws:file template="templates/content/jsp/menu/menu.jet" path="{$projectName}/WebRoot/WEB-INF/pages/menu.jsp"/>
+
+<c:iterate select="$table" var="eachTable">
+<c:setVariable select="0" var="i"/>
+<c:iterate select="$eachTable/columns/column" var="col">
+<c:setVariable select="$i+1" var="i"/>
+</c:iterate>
+
+<c:setVariable select="0" var="j"/>
+<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+<c:setVariable select="$j+1" var="j"/>
+</c:iterate>
+<c:if test="$i!=0 or $j!=0">
+<ws:file template="templates/content/jsp/menu.jet" path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/menu.jsp"/>
+
+<%-- 生成view.jsp --%>
+<ws:file template="templates/content/jsp/view.jet" path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/view{uppercaseFirst($eachTable/@name)}.jsp"/>
+
+<%-- 生成delete.jsp  --%>
+<ws:file template="templates/content/jsp/delete.jet" path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/delete{uppercaseFirst($eachTable/@name)}.jsp"/>
+
+<%-- 生成list.jsp  --%>
+<ws:file template="templates/content/jsp/list.jet" path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/list{uppercaseFirst($eachTable/@name)}s.jsp"/>
+
+<%-- 生成edit.jsp  --%>
+<ws:file template="templates/content/jsp/edit.jet" path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/edit{uppercaseFirst($eachTable/@name)}.jsp"/>
+
+	<%--生成关联实体的jsp页面--%> 
+	<c:setVariable select="0" var="x"/>
+	<c:setVariable select="0" var="y"/>
+	<c:iterate select="$eachTable/columns/column" var="col">
+		<c:setVariable select="$x+1" var="x"/>
+	</c:iterate>
+	<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+		<c:setVariable select="$y+1" var="y"/>
+	</c:iterate>
+	<c:choose>
+	<c:when test="($x!=0)or($y!=0)">
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+		<c:setVariable select="$foreign/@referenceTable" var="relateTableName"/>
+		<ws:file template="templates/content/jsp/viewRelate.jet" path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/{$foreign/@referenceTable}/view{uppercaseFirst($foreign/@referenceTable)}.jsp"/>
+		<%--<ws:file template="templates/content/jsp/deleteRelate.jet"  path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/{$foreign/@referenceTable}/delete{uppercaseFirst($foreign/@referenceTable)}.jsp"/>
+		<ws:file template="templates/content/jsp/editRelate.jet"  path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/{$foreign/@referenceTable}/edit{uppercaseFirst($foreign/@referenceTable)}.jsp"/>
+		--%>
+	</c:iterate>
+	
+	<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+	<c:iterate select="$referenceTables/table" var="referenceTable">
+		<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:if test="$i=0">
+			<c:if test="$j=0">
+			<c:iterate select="$referenceTable/foreigns/column" var="foreig">
+			<c:choose>
+			<c:when test="$foreig/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+				<c:setVariable select="$foreig/@referenceTable" var="relateTableName"/>
+				<ws:file template="templates/content/jsp/viewRelate.jet" path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/{$foreig/@referenceTable}s/view{uppercaseFirst($foreig/@referenceTable)}s.jsp"/>
+				<%--
+				<ws:file template="templates/content/jsp/deleteRelate.jet"  path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/{$foreig/@referenceTable}s/delete{uppercaseFirst($foreig/@referenceTable)}s.jsp"/>
+				<ws:file template="templates/content/jsp/editRelate.jet"  path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/{$foreig/@referenceTable}s/edit{uppercaseFirst($foreig/@referenceTable)}s.jsp"/>
+				--%>
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:if>
+			<c:if test="$j>0">
+				<c:setVariable select="$referenced/@name" var="relateTableName"/>
+				<ws:file template="templates/content/jsp/viewRelate.jet" path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/{$referenced/@name}s/view{uppercaseFirst($referenced/@name)}s.jsp"/>
+				<%--
+				<ws:file template="templates/content/jsp/deleteRelate.jet"  path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/{$referenced/@name}s/delete{uppercaseFirst($referenced/@name)}s.jsp"/>
+				<ws:file template="templates/content/jsp/editRelate.jet"  path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/{$referenced/@name}s/edit{uppercaseFirst($referenced/@name)}s.jsp"/>
+				--%>
+			</c:if>
+			</c:if>
+			<c:if test="$i>0">
+				<c:setVariable select="$referenced/@name" var="relateTableName"/>
+				<ws:file template="templates/content/jsp/viewRelate.jet" path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/{$referenced/@name}s/view{uppercaseFirst($referenced/@name)}s.jsp"/>
+				<%--
+				<ws:file template="templates/content/jsp/deleteRelate.jet"  path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/{$referenced/@name}s/delete{uppercaseFirst($referenced/@name)}s.jsp"/>
+				<ws:file template="templates/content/jsp/editRelate.jet"  path="{$projectName}/WebRoot/WEB-INF/pages/{$eachTable/@name}/{$referenced/@name}s/edit{uppercaseFirst($referenced/@name)}s.jsp"/>
+				--%>
+			</c:if>
+		</c:if>
+	</c:iterate>
+	</c:iterate>
+	</c:when>
+	<c:otherwise>
+	</c:otherwise>
+	</c:choose>
+	
+</c:if>
+</c:iterate>
+<%-- 生成修饰jsp --%>
+<c:include template="templates/content/jsp/sitemesh/fileGenerate/fileGenerate.jet"/>

@@ -1,0 +1,110 @@
+	<c:setVariable select="0" var="count"/>
+	<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+	<c:setVariable select="$count+1" var="count"/>
+	</c:iterate>
+	<c:setVariable select="$count" var="num"/>
+	@RequestMapping(value = "/<c:get select="uppercaseFirst($eachTable/@name)"/>", method = RequestMethod.POST)
+	@ResponseBody
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> new<c:get select="uppercaseFirst($eachTable/@name)"/>(@RequestBody <c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="$eachTable/@name"/>) {
+		<c:get select="$eachTable/@name"/>Service.save<c:get select="uppercaseFirst($eachTable/@name)"/>(<c:get select="$eachTable/@name"/>);
+		<c:if test="$count<2">
+		return <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($primaryKey/@name)"/>()<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>);
+		</c:if>
+		<c:if test="$count>1">
+		return <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>.get<c:get select="uppercaseFirst($primaryKey/@name)"/>Field()<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>);
+		</c:if>
+	}
+	
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+	<c:iterate select="$referenceTables/table" var="existTable">
+	<c:if test="$foreign/@referenceTable=$existTable/@name">
+	<c:setVariable select="$num" var="count"/>
+	<c:setVariable select="0" var="pkCount"/>
+	<c:iterate select="$existTable/primaryKeys/column" var="pk">
+	<c:setVariable select="$pkCount+1" var="pkCount"/>
+	</c:iterate>
+	<c:setVariable select="$pkCount" var="pkNum"/>
+	@RequestMapping(value = "/<c:get select="uppercaseFirst($eachTable/@name)"/><c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">/{<c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>}</c:iterate>/<c:get select="$existTable/@name"/>", method = RequestMethod.POST)
+	@ResponseBody
+	public <c:get select="uppercaseFirst($existTable/@name)"/> new<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($existTable/@name)"/>(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">@PathVariable String <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">@PathVariable Integer <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>@PathVariable java.util.Date</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>@PathVariable java.math.BigDecimal</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, @RequestBody <c:get select="uppercaseFirst($existTable/@name)"/> <c:get select="$existTable/@name"/>){
+		<c:setVariable select="$num" var="count"/>
+		<c:get select="$eachTable/@name"/>Service.save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($existTable/@name)"/>(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, <c:get select="$existTable/@name"/>);
+		<c:if test="$pkCount<2">
+		return <c:get select="$existTable/@name"/>DAO.find<c:get select="uppercaseFirst($existTable/@name)"/>ByPrimaryKey(<c:iterate select="$existTable/primaryKeys/column" var="priKey"><c:get select="$existTable/@name"/>.get<c:get select="uppercaseFirst($priKey/@name)"/>()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+		</c:if>
+		<c:if test="$pkCount>1">
+		return <c:get select="$existTable/@name"/>DAO.find<c:get select="uppercaseFirst($existTable/@name)"/>ByPrimaryKey(<c:iterate select="$existTable/primaryKeys/column" var="priKey"><c:get select="$existTable/@name"/>.get<c:get select="uppercaseFirst($priKey/@name)"/>Field()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+		</c:if>
+	}
+	</c:if>
+	</c:iterate>
+	</c:iterate>
+	
+	<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+	<c:iterate select="$referenceTables/table" var="referenceTable">
+	<c:if test="$referenceTable/@name=$referenced/@name">
+	<c:setVariable select="0" var="i"/>
+	<c:setVariable select="0" var="j"/>
+	<c:iterate select="$referenceTable/columns/column" var="col">
+	<c:setVariable select="$i+1" var="i"/>
+	</c:iterate>
+	<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+	<c:setVariable select="$j+1" var="j"/>
+	</c:iterate>
+	<c:choose>
+	<c:when test="$i=0 and $j=0">
+	<c:iterate select="$referenceTable/foreigns/column" var="foreig">
+	<c:choose>
+	<c:when test="$foreig/@referenceTable=$eachTable/@name">
+	</c:when>
+	<c:otherwise>
+	<c:setVariable select="$num" var="count"/>
+	<c:iterate select="$referenceTables/table" var="rt">
+	<c:if test="$rt/@name=$foreig/@referenceTable">
+	<c:setVariable select="0" var="pkCount"/>
+	<c:iterate select="$rt/primaryKeys/column" var="pk">
+	<c:setVariable select="$pkCount+1" var="pkCount"/>
+	</c:iterate>
+	<c:setVariable select="$pkCount" var="pkNum"/>
+	@RequestMapping(value = "/<c:get select="uppercaseFirst($eachTable/@name)"/><c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">/{<c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>}</c:iterate>/<c:get select="$rt/@name"/>s", method = RequestMethod.POST)
+	@ResponseBody
+	public <c:get select="uppercaseFirst($rt/@name)"/> new<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($rt/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">@PathVariable String <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">@PathVariable Integer <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>@PathVariable java.util.Date</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>@PathVariable java.math.BigDecimal</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, @RequestBody <c:get select="uppercaseFirst($rt/@name)"/> <c:get select="$rt/@name"/>){
+		<c:setVariable select="$num" var="count"/>
+		<c:get select="$eachTable/@name"/>Service.save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($rt/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, <c:get select="$rt/@name"/>);
+		<c:if test="$pkCount<2">
+		return <c:get select="$rt/@name"/>DAO.find<c:get select="uppercaseFirst($rt/@name)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey"><c:get select="$rt/@name"/>.get<c:get select="uppercaseFirst($priKey/@name)"/>()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+		</c:if>
+		<c:if test="$pkCount>1">
+		return <c:get select="$rt/@name"/>DAO.find<c:get select="uppercaseFirst($rt/@name)"/>ByPrimaryKey(<c:iterate select="$rt/primaryKeys/column" var="priKey"><c:get select="$rt/@name"/>.get<c:get select="uppercaseFirst($priKey/@name)"/>Field()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+		</c:if>
+	}
+	</c:if>
+	</c:iterate>
+	</c:otherwise>
+	</c:choose>
+	</c:iterate>
+	</c:when>
+	<c:otherwise>
+	<c:setVariable select="$num" var="count"/>
+	<c:setVariable select="0" var="pkCount"/>
+	<c:iterate select="$referenceTable/primaryKeys/column" var="pk">
+	<c:setVariable select="$pkCount+1" var="pkCount"/>
+	</c:iterate>
+	<c:setVariable select="$pkCount" var="pkNum"/>
+	@RequestMapping(value = "/<c:get select="uppercaseFirst($eachTable/@name)"/><c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">/{<c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>}</c:iterate>/<c:get select="$referenceTable/@name"/>s", method = RequestMethod.POST)
+	@ResponseBody
+	public <c:get select="uppercaseFirst($referenceTable/@name)"/> new<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenceTable/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">@PathVariable String <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">@PathVariable Integer <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>@PathVariable java.util.Date</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>@PathVariable java.math.BigDecimal</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, @RequestBody <c:get select="uppercaseFirst($referenceTable/@name)"/> <c:get select="$referenceTable/@name"/>){
+		<c:setVariable select="$num" var="count"/>
+		<c:get select="$eachTable/@name"/>Service.save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenceTable/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>, <c:get select="$referenceTable/@name"/>);
+		<c:if test="$pkCount<2">
+		return <c:get select="$referenceTable/@name"/>DAO.find<c:get select="uppercaseFirst($referenceTable/@name)"/>ByPrimaryKey(<c:iterate select="$referenceTable/primaryKeys/column" var="priKey"><c:get select="$referenceTable/@name"/>.get<c:get select="uppercaseFirst($priKey/@name)"/>()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+		</c:if>
+		<c:if test="$pkCount>1">
+		return <c:get select="$referenceTable/@name"/>DAO.find<c:get select="uppercaseFirst($referenceTable/@name)"/>ByPrimaryKey(<c:iterate select="$referenceTable/primaryKeys/column" var="priKey"><c:get select="$referenceTable/@name"/>.get<c:get select="uppercaseFirst($priKey/@name)"/>Field()<c:setVariable select="$pkCount+(-1)" var="pkCount"/><c:if test="$pkCount>0">,</c:if></c:iterate>);
+		</c:if>
+	}
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	</c:iterate>
+	</c:iterate>

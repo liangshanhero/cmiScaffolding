@@ -1,0 +1,17 @@
+package <c:get select="$packageName"/>.dao;
+<java:importsLocation package="org.example"/>
+import <c:get select="$packageName"/>.domain.*;
+<java:format>
+
+public interface <c:get select="uppercaseFirst($eachTable/@name)"/>DAO extends JpaDao<<c:get select="uppercaseFirst($eachTable/@name)"/>> {
+	
+	<c:include template="templates/content/java/method/dao/findEntityByPrimaryKeyColumns.jet"/>
+	
+	<c:include template="templates/content/java/method/dao/findEntityByAttributeColumns.jet"/>
+	
+	<c:include template="templates/content/java/method/dao/findEntityByPrimaryKey.jet"/>
+	
+	<c:include template="templates/content/java/method/dao/findAllEntity.jet"/>
+
+}
+</java:format>

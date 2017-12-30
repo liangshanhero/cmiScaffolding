@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name><c:get select="$projectName"/></display-name>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	<listener>
+		<listener-class>
+			org.springframework.web.context.request.RequestContextListener
+		</listener-class>
+	</listener>
+	<filter>
+        <filter-name>encoding</filter-name>
+        <filter-class>
+            org.springframework.web.filter.CharacterEncodingFilter
+        </filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>utf-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encoding</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+	<filter>
+		<description>generated-persistence-filter</description>
+		<filter-name><c:get select="$project/model/dataBaseType/@schema"/>Filter</filter-name>
+		<filter-class>
+			org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter
+		</filter-class>
+		<init-param>
+			<param-name>entityManagerFactoryBeanName</param-name>
+			<param-value><c:get select="$project/model/dataBaseType/@schema"/></param-value>
+		</init-param>
+	</filter>
+	<filter>
+		<description>generated-sitemesh-filter</description>
+		<filter-name>Sitemesh Filter</filter-name>
+		<filter-class>
+			com.opensymphony.module.sitemesh.filter.PageFilter
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name><c:get select="$project/model/dataBaseType/@schema"/>Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>Sitemesh Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<servlet>
+		<description>generated-servlet</description>
+		<servlet-name><c:get select="$projectName"/> Servlet</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:<c:get select="$projectName"/>-web-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<description>generated-resources-servlet</description>
+		<servlet-name>Resource Servlet</servlet-name>
+		<servlet-class>
+			org.springframework.js.resource.ResourceServlet
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Resource Servlet</servlet-name>
+		<url-pattern>/resources/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name><c:get select="$projectName"/> Servlet</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:applicationContext.xml</param-value>
+	</context-param>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>

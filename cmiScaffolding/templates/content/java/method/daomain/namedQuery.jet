@@ -1,0 +1,57 @@
+<c:setVariable select="0" var="count"/>
+<c:iterate select="$eachTable/primaryKeys/column" var="pk">
+<c:setVariable select="$count+1" var="count"/>
+</c:iterate>
+@<java:import>javax.persistence.Entity</java:import>
+@<java:import>javax.persistence.NamedQueries</java:import>({
+		<c:iterate select="$eachTable/foreigns/column" var="foreign">
+		<c:iterate select="$referenceTables/table" var="existTable">
+		<c:if test="$foreign/@referenceTable=$existTable/@name">
+		<c:if test="$count<2">
+		@NamedQuery(name = "findAll<c:get select="uppercaseFirst($foreign/@referenceTable)"/><c:get select="uppercaseFirst($eachTable/@name)"/>s", query = "select my<c:get select="uppercaseFirst($eachTable/@name)"/> from <c:get select="uppercaseFirst($eachTable/@name)"/> my<c:get select="uppercaseFirst($eachTable/@name)"/> where my<c:get select="uppercaseFirst($eachTable/@name)"/>.<c:get select="$foreign/@referenceTable"/>Id = ?1"),
+		</c:if>
+		<c:if test="$count>1">
+		@NamedQuery(name = "findAll<c:get select="uppercaseFirst($foreign/@referenceTable)"/><c:get select="uppercaseFirst($eachTable/@name)"/>s", query = "select my<c:get select="uppercaseFirst($eachTable/@name)"/> from <c:get select="uppercaseFirst($eachTable/@name)"/> my<c:get select="uppercaseFirst($eachTable/@name)"/> where my<c:get select="uppercaseFirst($eachTable/@name)"/>.<c:get select="$foreign/@referenceTable"/>Field = ?1"),
+		</c:if>
+		</c:if>
+		</c:iterate>
+		</c:iterate>
+		@<java:import>javax.persistence.NamedQuery</java:import>(name = "findAll<c:get select="uppercaseFirst($eachTable/@name)"/>s", query = "select my<c:get select="uppercaseFirst($eachTable/@name)"/> from <c:get select="uppercaseFirst($eachTable/@name)"/> my<c:get select="uppercaseFirst($eachTable/@name)"/>"),
+		<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+		<c:if test="$count<2">
+		@NamedQuery(name = "find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>", query = "select my<c:get select="uppercaseFirst($eachTable/@name)"/> from <c:get select="uppercaseFirst($eachTable/@name)"/> my<c:get select="uppercaseFirst($eachTable/@name)"/> where my<c:get select="uppercaseFirst($eachTable/@name)"/>.<c:get select="lowercaseFirst($primaryKey/@name)"/> = ?1"),
+		<c:if test="$primaryKey/@type='VARCHAR'">
+		@NamedQuery(name = "find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Containing", query = "select my<c:get select="uppercaseFirst($eachTable/@name)"/> from <c:get select="uppercaseFirst($eachTable/@name)"/> my<c:get select="uppercaseFirst($eachTable/@name)"/> where my<c:get select="uppercaseFirst($eachTable/@name)"/>.<c:get select="lowercaseFirst($primaryKey/@name)"/> like ?1"),
+		</c:if>
+		</c:if>
+		<c:if test="$count>1">
+		@NamedQuery(name = "find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field", query = "select my<c:get select="uppercaseFirst($eachTable/@name)"/> from <c:get select="uppercaseFirst($eachTable/@name)"/> my<c:get select="uppercaseFirst($eachTable/@name)"/> where my<c:get select="uppercaseFirst($eachTable/@name)"/>.<c:get select="lowercaseFirst($primaryKey/@name)"/>Field = ?1"),
+		<c:if test="$primaryKey/@type='VARCHAR'">
+		@NamedQuery(name = "find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>FieldContaining", query = "select my<c:get select="uppercaseFirst($eachTable/@name)"/> from <c:get select="uppercaseFirst($eachTable/@name)"/> my<c:get select="uppercaseFirst($eachTable/@name)"/> where my<c:get select="uppercaseFirst($eachTable/@name)"/>.<c:get select="lowercaseFirst($primaryKey/@name)"/>Field like ?1"),
+		</c:if>
+		</c:if>
+		</c:iterate>
+		<c:iterate select="$eachTable/columns/column" var="attribute">
+		@NamedQuery(name = "find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>", query = "select my<c:get select="uppercaseFirst($eachTable/@name)"/> from <c:get select="uppercaseFirst($eachTable/@name)"/> my<c:get select="uppercaseFirst($eachTable/@name)"/> where my<c:get select="uppercaseFirst($eachTable/@name)"/>.<c:get select="lowercaseFirst($attribute/@name)"/> = ?1"),
+		<c:if test="$attribute/@type='VARCHAR'">
+		@NamedQuery(name = "find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing", query = "select my<c:get select="uppercaseFirst($eachTable/@name)"/> from <c:get select="uppercaseFirst($eachTable/@name)"/> my<c:get select="uppercaseFirst($eachTable/@name)"/> where my<c:get select="uppercaseFirst($eachTable/@name)"/>.<c:get select="lowercaseFirst($attribute/@name)"/> like ?1"),
+		</c:if>
+		</c:iterate>
+		<c:setVariable select="0" var="i"/>
+		<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+			<c:setVariable select="$i+1" var="i"/>
+		</c:iterate>
+		<c:setVariable select="$i" var="j"/>
+		<c:setVariable select="1" var="k"/>
+		<c:if test="$i=1">
+		@NamedQuery(name = "find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey", query = "select my<c:get select="uppercaseFirst($eachTable/@name)"/> from <c:get select="uppercaseFirst($eachTable/@name)"/> my<c:get select="uppercaseFirst($eachTable/@name)"/> where my<c:get select="uppercaseFirst($eachTable/@name)"/>.<c:get select="lowercaseFirst($eachTable/primaryKeys/column/@name)"/> = ?1")
+		<c:if test="$eachTable/primaryKeys/column/@type='VARCHAR'">
+		@NamedQuery(name = "find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKeyContaining", query = "select my<c:get select="uppercaseFirst($eachTable/@name)"/> from <c:get select="uppercaseFirst($eachTable/@name)"/> my<c:get select="uppercaseFirst($eachTable/@name)"/> where my<c:get select="uppercaseFirst($eachTable/@name)"/>.<c:get select="lowercaseFirst($eachTable/primaryKeys/column/@name)"/> like ?1")
+		</c:if>
+		</c:if>
+		<c:if test="$i>1">
+		@NamedQuery(name = "find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey", query = "select my<c:get select="uppercaseFirst($eachTable/@name)"/> from <c:get select="uppercaseFirst($eachTable/@name)"/> my<c:get select="uppercaseFirst($eachTable/@name)"/> where <c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">my<c:get select="uppercaseFirst($eachTable/@name)"/>.<c:get select="lowercaseFirst($primaryKey/@name)"/>Field = ?<c:if test="$k<($j+1)"><c:get select="$k"/><c:setVariable select="$k+1" var="k"/></c:if><c:if test="$i>1"> and <c:setVariable select="$i+(-1)" var="i"/></c:if></c:iterate>")
+		</c:if>})
+@<java:import>javax.persistence.Table</java:import>(catalog = "<c:get select="$project/model/dataBaseType/@schema"/>", name = "<c:get select="$eachTable/@name"/>")
+@<java:import>javax.xml.bind.annotation.XmlAccessorType</java:import>(XmlAccessType.FIELD)
+@<java:import>javax.xml.bind.annotation.XmlType</java:import>(namespace = "<c:get select="$projectName"/>/<c:get select="$packageName"/>/domain", name = "<c:get select="uppercaseFirst($eachTable/@name)"/>")

@@ -1,0 +1,4 @@
+private final static <java:import>java.util.Set</java:import><Class<?>> dataTypes = new <java:import>java.util.HashSet</java:import><Class<?>>(<java:import>java.util.Arrays</java:import>.asList(new Class<?>[] { <c:get select="uppercaseFirst($eachTable/@name)"/>.class }));
+
+    @<java:import>javax.persistence.PersistenceContext</java:import>(unitName = "<c:get select="$project/model/dataBaseType/@schema"/>")
+	private <java:import>javax.persistence.EntityManager</java:import> entityManager;

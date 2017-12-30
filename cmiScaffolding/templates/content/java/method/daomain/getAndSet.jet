@@ -1,0 +1,297 @@
+<c:setVariable select="0" var="count"/>
+<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+<c:setVariable select="$count+1" var="count"/>
+</c:iterate>
+<c:setVariable select="$count" var="num"/>
+<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+<c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">
+	<c:if test="$count<2">
+	public void set<c:get select="uppercaseFirst($primaryKey/@name)"/>(String <c:get select="$primaryKey/@name"/>) {
+		this.<c:get select="lowercaseFirst($primaryKey/@name)"/> = <c:get select="$primaryKey/@name"/>;
+	}
+	
+	public String get<c:get select="uppercaseFirst($primaryKey/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($primaryKey/@name)"/>;
+	}
+	</c:if>
+	<c:if test="$count>1">
+	public void set<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(String <c:get select="$primaryKey/@name"/>Field) {
+		this.<c:get select="lowercaseFirst($primaryKey/@name)"/>Field = <c:get select="$primaryKey/@name"/>Field;
+	}
+	
+	public String get<c:get select="uppercaseFirst($primaryKey/@name)"/>Field() {
+		return this.<c:get select="lowercaseFirst($primaryKey/@name)"/>Field;
+	}
+	</c:if>
+</c:if>
+<c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">
+	<c:if test="$count<2">
+	public void set<c:get select="uppercaseFirst($primaryKey/@name)"/>(Integer <c:get select="$primaryKey/@name"/>) {
+		this.<c:get select="lowercaseFirst($primaryKey/@name)"/> = <c:get select="$primaryKey/@name"/>;
+	}
+	
+	public Integer get<c:get select="uppercaseFirst($primaryKey/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($primaryKey/@name)"/>;
+	}
+	</c:if>
+	<c:if test="$count>1">
+	public void set<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(Integer <c:get select="$primaryKey/@name"/>Field) {
+		this.<c:get select="lowercaseFirst($primaryKey/@name)"/>Field = <c:get select="$primaryKey/@name"/>Field;
+	}
+	
+	public Integer get<c:get select="uppercaseFirst($primaryKey/@name)"/>Field() {
+		return this.<c:get select="lowercaseFirst($primaryKey/@name)"/>Field;
+	}
+	</c:if>
+</c:if>
+
+<c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'">
+	<c:if test="$count<2">
+	public void set<c:get select="uppercaseFirst($primaryKey/@name)"/>(<java:import>java.util.Date</java:import> <c:get select="$primaryKey/@name"/>) {
+		this.<c:get select="lowercaseFirst($primaryKey/@name)"/> = <c:get select="$primaryKey/@name"/>;
+	}
+	
+	public <java:import>java.util.Date</java:import> get<c:get select="uppercaseFirst($primaryKey/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($primaryKey/@name)"/>;
+	}
+	</c:if>
+	<c:if test="$count>1">
+	public void set<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(<java:import>java.util.Date</java:import> <c:get select="$primaryKey/@name"/>Field) {
+		this.<c:get select="lowercaseFirst($primaryKey/@name)"/>Field = <c:get select="$primaryKey/@name"/>Field;
+	}
+	
+	public <java:import>java.util.Date</java:import> get<c:get select="uppercaseFirst($primaryKey/@name)"/>Field() {
+		return this.<c:get select="lowercaseFirst($primaryKey/@name)"/>Field;
+	}
+	</c:if>
+</c:if>
+
+<c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'">
+	<c:if test="$count<2">
+	public void set<c:get select="uppercaseFirst($primaryKey/@name)"/>(<java:import>java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/>) {
+		this.<c:get select="lowercaseFirst($primaryKey/@name)"/> = <c:get select="$primaryKey/@name"/>;
+	}
+	
+	public <java:import>java.math.BigDecimal</java:import> get<c:get select="uppercaseFirst($primaryKey/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($primaryKey/@name)"/>;
+	}
+	</c:if>
+	<c:if test="$count>1">
+	public void set<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(<java:import>java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/>Field) {
+		this.<c:get select="lowercaseFirst($primaryKey/@name)"/>Field = <c:get select="$primaryKey/@name"/>Field;
+	}
+	
+	public <java:import>java.math.BigDecimal</java:import> get<c:get select="uppercaseFirst($primaryKey/@name)"/>Field() {
+		return this.<c:get select="lowercaseFirst($primaryKey/@name)"/>Field;
+	}
+	</c:if>
+</c:if>
+</c:iterate>
+
+<c:iterate select="$eachTable/columns/column" var="attribute">
+	<c:if test="$attribute/@type='BINARY'or$attribute/@type='VARBINARY'or$attribute/@type='POINT'or$attribute/@type='LINESTRING'or$attribute/@type='POLYGON'or$attribute/@type='GEOMETRY'or$attribute/@type='MULTIPOINT'or$attribute/@type='MULTILINESTRING'or$attribute/@type='MULTIPOLYGON'or$attribute/@type='TINYBLOB'or$attribute/@type='BLOB'or$attribute/@type='MEDIUMBLOB'or$attribute/@type='LONGBLOB'">
+	<c:choose>
+	<c:when test="$attribute/@name='id'">
+	public void set<c:get select="uppercaseFirst($attribute/@name)"/>(byte[] <c:get select="$attribute/@name"/>) {
+		this.<c:get select="lowercaseFirst($attribute/@name)"/>_1 = <c:get select="$attribute/@name"/>;
+	}
+	
+	public byte[] get<c:get select="uppercaseFirst($attribute/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($attribute/@name)"/>_1;
+	}
+	</c:when>
+	<c:otherwise>
+	public void set<c:get select="uppercaseFirst($attribute/@name)"/>(byte[] <c:get select="$attribute/@name"/>) {
+		this.<c:get select="lowercaseFirst($attribute/@name)"/> = <c:get select="$attribute/@name"/>;
+	}
+	
+	public byte[] get<c:get select="uppercaseFirst($attribute/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($attribute/@name)"/>;
+	}
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	
+	<c:if test="$attribute/@type='CHAR'or$attribute/@type='VARCHAR'or$attribute/@type='SET'or$attribute/@type='ENUM'or$attribute/@type='TINYTEXT'or$attribute/@type='TEXT'or$attribute/@type='MEDIUMTEXT'or$attribute/@type='LONGTEXT'">
+	<c:choose>
+	<c:when test="$attribute/@name='id'">
+	public void set<c:get select="uppercaseFirst($attribute/@name)"/>(String <c:get select="$attribute/@name"/>) {
+		this.<c:get select="lowercaseFirst($attribute/@name)"/>_1 = <c:get select="$attribute/@name"/>;
+	}
+	
+	public String get<c:get select="uppercaseFirst($attribute/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($attribute/@name)"/>_1;
+	}
+	</c:when>
+	<c:otherwise>
+	public void set<c:get select="uppercaseFirst($attribute/@name)"/>(String <c:get select="$attribute/@name"/>) {
+		this.<c:get select="lowercaseFirst($attribute/@name)"/> = <c:get select="$attribute/@name"/>;
+	}
+	
+	public String get<c:get select="uppercaseFirst($attribute/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($attribute/@name)"/>;
+	}
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	
+	<c:if test="$attribute/@type='DOUBLE'or$attribute/@type='FLOAT'or$attribute/@type='REAL'or$attribute/@type='DECIMAL'or$attribute/@type='NUMERIC'">
+	<c:choose>
+	<c:when test="$attribute/@name='id'">
+	public void set<c:get select="uppercaseFirst($attribute/@name)"/>(<java:import>BigDecimal</java:import> <c:get select="$attribute/@name"/>) {
+		this.<c:get select="lowercaseFirst($attribute/@name)"/>_1 = <c:get select="$attribute/@name"/>;
+	}
+	
+	public <java:import>BigDecimal</java:import> get<c:get select="uppercaseFirst($attribute/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($attribute/@name)"/>_1;
+	}
+	</c:when>
+	<c:otherwise>
+	public void set<c:get select="uppercaseFirst($attribute/@name)"/>(<java:import>BigDecimal</java:import> <c:get select="$attribute/@name"/>) {
+		this.<c:get select="lowercaseFirst($attribute/@name)"/> = <c:get select="$attribute/@name"/>;
+	}
+	
+	public <java:import>BigDecimal</java:import> get<c:get select="uppercaseFirst($attribute/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($attribute/@name)"/>;
+	}
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	
+	<c:if test="$attribute/@type='SMALLINT'or$attribute/@type='MEDIUMINT'or$attribute/@type='INT'or$attribute/@type='INTEGER'or$attribute/@type='BIGINT'">
+	<c:choose>
+	<c:when test="$attribute/@name='id'">
+	public void set<c:get select="uppercaseFirst($attribute/@name)"/>(Integer <c:get select="$attribute/@name"/>) {
+		this.<c:get select="lowercaseFirst($attribute/@name)"/>_1 = <c:get select="$attribute/@name"/>;
+	}
+	
+	public Integer get<c:get select="uppercaseFirst($attribute/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($attribute/@name)"/>_1;
+	}
+	</c:when>
+	<c:otherwise>
+	public void set<c:get select="uppercaseFirst($attribute/@name)"/>(Integer <c:get select="$attribute/@name"/>) {
+		this.<c:get select="lowercaseFirst($attribute/@name)"/> = <c:get select="$attribute/@name"/>;
+	}
+	
+	public Integer get<c:get select="uppercaseFirst($attribute/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($attribute/@name)"/>;
+	}
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	
+	<c:if test="$attribute/@type='TIMESTAMP'or$attribute/@type='DATE'or$attribute/@type='TIME'or$attribute/@type='YEAR'or$attribute/@type='DATETIME'">
+	<c:choose>
+	<c:when test="$attribute/@name='id'">
+	public void set<c:get select="uppercaseFirst($attribute/@name)"/>(<java:import>java.util.Date</java:import> <c:get select="$attribute/@name"/>) {
+		this.<c:get select="lowercaseFirst($attribute/@name)"/>_1 = <c:get select="$attribute/@name"/>;
+	}
+	
+	public <java:import>java.util.Date</java:import> get<c:get select="uppercaseFirst($attribute/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($attribute/@name)"/>_1;
+	}
+	</c:when>
+	<c:otherwise>
+	public void set<c:get select="uppercaseFirst($attribute/@name)"/>(<java:import>java.util.Date</java:import> <c:get select="$attribute/@name"/>) {
+		this.<c:get select="lowercaseFirst($attribute/@name)"/> = <c:get select="$attribute/@name"/>;
+	}
+	
+	public <java:import>java.util.Date</java:import> get<c:get select="uppercaseFirst($attribute/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($attribute/@name)"/>;
+	}
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	<c:if test="$attribute/@type='TINYINT'or$attribute/@type='BIT'">
+	<c:choose>
+	<c:when test="$attribute/@name='id'">
+	public void set<c:get select="uppercaseFirst($attribute/@name)"/>(Boolean <c:get select="$attribute/@name"/>) {
+		this.<c:get select="lowercaseFirst($attribute/@name)"/>_1 = <c:get select="$attribute/@name"/>;
+	}
+	
+	public Boolean get<c:get select="uppercaseFirst($attribute/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($attribute/@name)"/>_1;
+	}
+	</c:when>
+	<c:otherwise>
+	public void set<c:get select="uppercaseFirst($attribute/@name)"/>(Boolean <c:get select="$attribute/@name"/>) {
+		this.<c:get select="lowercaseFirst($attribute/@name)"/> = <c:get select="$attribute/@name"/>;
+	}
+	
+	public Boolean get<c:get select="uppercaseFirst($attribute/@name)"/>() {
+		return this.<c:get select="lowercaseFirst($attribute/@name)"/>;
+	}
+	</c:otherwise>
+	</c:choose>
+	</c:if>
+	</c:iterate>
+	<c:setVariable select="0" var="count"/>
+	<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+	<c:setVariable select="$count+1" var="count"/>
+	</c:iterate>
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+	<c:iterate select="$referenceTables/table" var="existTable">
+	<c:if test="$foreign/@referenceTable=$existTable/@name">
+	<c:if test="$count<2">
+	public Integer get<c:get select="uppercaseFirst($foreign/@name)"/>Id() {
+		return <c:get select="$foreign/@name"/>Id;
+	}
+
+	public void set<c:get select="uppercaseFirst($foreign/@name)"/>Id(Integer <c:get select="$foreign/@referenceTable"/>Id) {
+		this.<c:get select="$foreign/@name"/>Id = <c:get select="$foreign/@referenceTable"/>Id;
+	}
+	</c:if>
+	
+	public void set<c:get select="uppercaseFirst($foreign/@name)"/>(<c:get select="uppercaseFirst($foreign/@referenceTable)"/> <c:get select="$foreign/@referenceTable"/>) {
+		this.<c:get select="$foreign/@name"/> = <c:get select="$foreign/@referenceTable"/>;
+	}
+
+	public <c:get select="uppercaseFirst($foreign/@referenceTable)"/> get<c:get select="uppercaseFirst($foreign/@name)"/>() {
+		return <c:get select="$foreign/@name"/>;
+	}
+	</c:if>
+</c:iterate>
+</c:iterate>
+
+	
+<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+	<c:iterate select="$referenceTables/table" var="referenceTable">
+		<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:choose>
+			<c:when test="$i=0and$j=0">
+			public void set<c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="uppercaseFirst($foreig/@referenceTable)"/></c:otherwise></c:choose></c:iterate><c:get select="uppercaseFirst($referenced/column/@name)"/>s(Set<<c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="uppercaseFirst($foreig/@referenceTable)"/></c:otherwise></c:choose></c:iterate>> <c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="$foreig/@referenceTable"/></c:otherwise></c:choose></c:iterate>s) {
+				this.<c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="$foreig/@referenceTable"/><c:get select="uppercaseFirst($referenced/column/@name)"/></c:otherwise></c:choose></c:iterate>s = <c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="$foreig/@referenceTable"/></c:otherwise></c:choose></c:iterate>s;
+			}
+
+			public <java:import>java.util.Set</java:import><<c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="uppercaseFirst($foreig/@referenceTable)"/></c:otherwise></c:choose></c:iterate>> get<c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="uppercaseFirst($foreig/@referenceTable)"/><c:get select="uppercaseFirst($referenced/column/@name)"/></c:otherwise></c:choose></c:iterate>s() {
+				if (<c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="$foreig/@referenceTable"/><c:get select="uppercaseFirst($referenced/column/@name)"/></c:otherwise></c:choose></c:iterate>s == null) {
+				<c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="$foreig/@referenceTable"/><c:get select="uppercaseFirst($referenced/column/@name)"/></c:otherwise></c:choose></c:iterate>s = new java.util.LinkedHashSet<<c:get select="$packageName"/>.domain.<c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="uppercaseFirst($foreig/@referenceTable)"/></c:otherwise></c:choose></c:iterate>>();
+				}
+				return <c:iterate select="$referenceTable/foreigns/column" var="foreig"><c:choose><c:when test="$foreig/@referenceTable=$eachTable/@name"></c:when><c:otherwise><c:get select="$foreig/@referenceTable"/><c:get select="uppercaseFirst($referenced/column/@name)"/></c:otherwise></c:choose></c:iterate>s;
+			}
+			</c:when>
+			<c:otherwise>
+			public void set<c:get select="uppercaseFirst($referenced/@name)"/><c:get select="uppercaseFirst($referenced/column/@name)"/>s(Set<<c:get select="uppercaseFirst($referenced/@name)"/>> <c:get select="$referenced/@name"/>s) {
+				this.<c:get select="$referenced/@name"/><c:get select="uppercaseFirst($referenced/column/@name)"/>s = <c:get select="$referenced/@name"/>s;
+			}
+
+			public <java:import>java.util.Set</java:import><<c:get select="uppercaseFirst($referenced/@name)"/>> get<c:get select="uppercaseFirst($referenced/@name)"/><c:get select="uppercaseFirst($referenced/column/@name)"/>s() {
+				if (<c:get select="$referenced/@name"/><c:get select="uppercaseFirst($referenced/column/@name)"/>s == null) {
+				<c:get select="$referenced/@name"/><c:get select="uppercaseFirst($referenced/column/@name)"/>s = new java.util.LinkedHashSet<<c:get select="$packageName"/>.domain.<c:get select="uppercaseFirst($referenced/@name)"/>>();
+				}
+				return <c:get select="$referenced/@name"/><c:get select="uppercaseFirst($referenced/column/@name)"/>s;
+			}
+			</c:otherwise>
+			</c:choose>
+		</c:if>
+	</c:iterate>
+	</c:iterate>

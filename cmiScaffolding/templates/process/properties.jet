@@ -1,0 +1,9 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+
+<%-- 生成application-resources.properties文件 --%>
+<ws:file template="templates/content/configure/application-bundles.jet" path="{$projectName}/cmi/bundles/application-resources.properties"/>
+
+<%-- 生成实体.properties文件 --%>
+<c:iterate select="$table" var="eachTable">
+<ws:file template="templates/content/configure/entity-bundles.jet" path="{$projectName}/cmi/bundles/{$eachTable/@name}-resources.properties"/>
+</c:iterate>

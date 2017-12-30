@@ -1,0 +1,7 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+<ws:file template="templates/content/configure/org.eclipse.jdt.core.prefs.jet" path="{$projectName}/.settings/org.eclipse.jdt.core.prefs"/>
+<ws:file template="templates/content/configure/org.eclipse.wst.common.component.jet" path="{$projectName}/.settings/org.eclipse.wst.common.component"/>
+<ws:file template="templates/content/configure/org.eclipse.wst.common.project.facet.core.xml.jet" path="{$projectName}/.settings/org.eclipse.wst.common.project.facet.core.xml"/>
+<ws:file template="templates/content/configure/com.genuitec.runtime.libraries.xml.jet" path="{$projectName}/.settings/com.genuitec.runtime.libraries.xml"/>
+<ws:file template="templates/content/configure/org.eclipse.wst.common.project.facet.core.prefs.xml.jet" path="{$projectName}/.settings/org.eclipse.wst.common.project.facet.core.prefs.xml"/>
+

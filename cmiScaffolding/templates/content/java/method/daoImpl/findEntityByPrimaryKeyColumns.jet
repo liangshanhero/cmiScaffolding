@@ -1,0 +1,146 @@
+<c:setVariable select="0" var="count"/>
+<c:iterate select="$eachTable/primaryKeys/column" var="pk">
+<c:setVariable select="$count+1" var="count"/>
+</c:iterate>
+<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+	<c:if test="$count<2">
+	<c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>(String <c:get select="$primaryKey/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>(<c:get select="$primaryKey/@name"/>, -1, -1);
+	}
+	
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>(String <c:get select="$primaryKey/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		try {
+			<java:import>javax.persistence.Query</java:import> query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>", startResult, maxRows, <c:get select="$primaryKey/@name"/>);
+			return (<c:get select="$packageName"/>.domain.<c:get select="uppercaseFirst($eachTable/@name)"/>) query.getSingleResult();
+		} catch (<java:import>javax.persistence.NoResultException</java:import> nre) {
+			return null;
+		}
+	}
+</c:if>
+<c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>(Integer <c:get select="$primaryKey/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>(<c:get select="$primaryKey/@name"/>, -1, -1);
+	}
+	
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>(Integer <c:get select="$primaryKey/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		try {
+			<java:import>javax.persistence.Query</java:import> query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>", startResult, maxRows, <c:get select="$primaryKey/@name"/>);
+			return (<c:get select="$packageName"/>.domain.<c:get select="uppercaseFirst($eachTable/@name)"/>) query.getSingleResult();
+		} catch (<java:import>javax.persistence.NoResultException</java:import> nre) {
+			return null;
+		}
+	}
+</c:if>
+<c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'">
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>(<java:import>java.util.Date</java:import> <c:get select="$primaryKey/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>(<c:get select="$primaryKey/@name"/>, -1, -1);
+	}
+	
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>(Date <c:get select="$primaryKey/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		try {
+			<java:import>javax.persistence.Query</java:import> query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>", startResult, maxRows, <c:get select="$primaryKey/@name"/>);
+			return (<c:get select="$packageName"/>.domain.<c:get select="uppercaseFirst($eachTable/@name)"/>) query.getSingleResult();
+		} catch (<java:import>javax.persistence.NoResultException</java:import> nre) {
+			return null;
+		}
+	}
+</c:if>
+<c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'">
+@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>(<java:import>java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>(<c:get select="$primaryKey/@name"/>, -1, -1);
+	}
+	
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>(BigDecimal <c:get select="$primaryKey/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		try {
+			<java:import>javax.persistence.Query</java:import> query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>", startResult, maxRows, <c:get select="$primaryKey/@name"/>);
+			return (<c:get select="$packageName"/>.domain.<c:get select="uppercaseFirst($eachTable/@name)"/>) query.getSingleResult();
+		} catch (<java:import>javax.persistence.NoResultException</java:import> nre) {
+			return null;
+		}
+	}
+</c:if>
+</c:if>
+<c:if test="$count>1">
+<c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(String <c:get select="$primaryKey/@name"/>Field) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(<c:get select="$primaryKey/@name"/>Field, -1, -1);
+	}
+	
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(String <c:get select="$primaryKey/@name"/>Field, int startResult, int maxRows) throws DataAccessException {
+		try {
+			<java:import>javax.persistence.Query</java:import> query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field", startResult, maxRows, <c:get select="$primaryKey/@name"/>Field);
+			return (<c:get select="$packageName"/>.domain.<c:get select="uppercaseFirst($eachTable/@name)"/>) query.getSingleResult();
+		} catch (<java:import>javax.persistence.NoResultException</java:import> nre) {
+			return null;
+		}
+	}
+</c:if>
+<c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(Integer <c:get select="$primaryKey/@name"/>Field) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(<c:get select="$primaryKey/@name"/>Field, -1, -1);
+	}
+	
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(Integer <c:get select="$primaryKey/@name"/>Field, int startResult, int maxRows) throws DataAccessException {
+		try {
+			<java:import>javax.persistence.Query</java:import> query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field", startResult, maxRows, <c:get select="$primaryKey/@name"/>Field);
+			return (<c:get select="$packageName"/>.domain.<c:get select="uppercaseFirst($eachTable/@name)"/>) query.getSingleResult();
+		} catch (<java:import>javax.persistence.NoResultException</java:import> nre) {
+			return null;
+		}
+	}
+</c:if>
+<c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'">
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(<java:import>java.util.Date</java:import> <c:get select="$primaryKey/@name"/>Field) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(<c:get select="$primaryKey/@name"/>Field, -1, -1);
+	}
+	
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(Date <c:get select="$primaryKey/@name"/>Field, int startResult, int maxRows) throws DataAccessException {
+		try {
+			<java:import>javax.persistence.Query</java:import> query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field", startResult, maxRows, <c:get select="$primaryKey/@name"/>Field);
+			return (<c:get select="$packageName"/>.domain.<c:get select="uppercaseFirst($eachTable/@name)"/>) query.getSingleResult();
+		} catch (<java:import>javax.persistence.NoResultException</java:import> nre) {
+			return null;
+		}
+	}
+</c:if>
+<c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'">
+@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(<java:import>java.math.BigDecimal</java:import> <c:get select="$primaryKey/@name"/>Field) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(<c:get select="$primaryKey/@name"/>Field, -1, -1);
+	}
+	
+	@Transactional
+	public <c:get select="uppercaseFirst($eachTable/@name)"/> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field(BigDecimal <c:get select="$primaryKey/@name"/>Field, int startResult, int maxRows) throws DataAccessException {
+		try {
+			<java:import>javax.persistence.Query</java:import> query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($primaryKey/@name)"/>Field", startResult, maxRows, <c:get select="$primaryKey/@name"/>Field);
+			return (<c:get select="$packageName"/>.domain.<c:get select="uppercaseFirst($eachTable/@name)"/>) query.getSingleResult();
+		} catch (<java:import>javax.persistence.NoResultException</java:import> nre) {
+			return null;
+		}
+	}
+</c:if>
+</c:if>
+</c:iterate>

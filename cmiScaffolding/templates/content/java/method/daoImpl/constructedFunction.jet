@@ -1,0 +1,3 @@
+public <c:get select="uppercaseFirst($eachTable/@name)"/>DAOImpl() {
+		super();
+	}

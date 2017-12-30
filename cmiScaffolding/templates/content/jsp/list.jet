@@ -1,0 +1,5 @@
+<c:setVariable var="operate" select="'List'"/>
+<c:include template="templates/content/jsp/fragment/fileHead.jet"/><html>
+<c:include template="templates/content/jsp/fragment/head.jet"/>
+<c:include template="templates/content/jsp/fragment/list/body.jet"/>
+</html>

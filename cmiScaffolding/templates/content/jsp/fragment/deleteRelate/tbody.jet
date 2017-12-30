@@ -1,0 +1,21 @@
+	<table cellpadding="0" cellspacing="0" id="viewTable">
+		<tbody>
+		<c:iterate select="$referenceTables/table" var="ft">
+		<c:if test="$ft/@name=$relateTableName">
+		<c:iterate select="$ft/primaryKeys/column" var="fc">
+		<tr>
+		<td class="label" valign="top"><fmt:message
+		key="<c:get select="$relateTableName"/>.<c:get select="$fc/@name"/>.title" />:</td>
+		<td>Dollar_symbol{<c:get select="$relateTableName"/>.<c:get select="$fc/@name"/>} &nbsp;</td>
+		</tr>
+		</c:iterate>
+		<c:iterate select="$ft/columns/column" var="fc">
+		<tr>
+		<td class="label" valign="top"><fmt:message key="<c:get select="$relateTableName"/>.<c:get select="$fc/@name"/>.title" />:</td>
+		<td>Dollar_symbol{<c:get select="$relateTableName"/>.<c:get select="$fc/@name"/>} &nbsp;</td>
+		</tr>
+		</c:iterate>
+		</c:if>
+		</c:iterate>
+		</tbody>
+	</table>

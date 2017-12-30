@@ -1,0 +1,9 @@
+	@RequestMapping("/<c:get select="$eachTable/@name"/>Controller/binary.action")
+	public ModelAndView streamBinary(
+			@ModelAttribute HttpServletRequest request,
+			@ModelAttribute HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("streamedBinaryContentView");
+		return mav;
+
+	}

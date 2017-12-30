@@ -1,0 +1,24 @@
+<f:replaceAll value="Dollar_symbol" replacement="$">		<tbody>
+<%--
+<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+				<tr>
+					<td class="label" valign="top"><fmt:message key="<c:get select="$eachTable/@name"/>.<c:get select="$primaryKey/@name"/>.title"/>:</td>
+					<td>Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="lowercaseFirst($primaryKey/@name)"/>}&nbsp;</td>
+				</tr>
+</c:iterate>
+--%>
+<c:iterate select="$eachTable/columns/column" var="attribute">
+				<tr>
+					<td class="label" valign="top"><fmt:message key="<c:get select="$eachTable/@name"/>.<c:get select="$attribute/@name"/>.title"/>:</td>
+		<c:choose>
+		<c:when test="$attribute/@type='TIMESTAMP'or$attribute/@type='DATE'or$attribute/@type='TIME'or$attribute/@type='YEAR'or$attribute/@type='DATETIME'">
+					<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="lowercaseFirst($attribute/@name)"/>}"/>&nbsp;</td>
+		</c:when>
+		<c:otherwise>
+					<td>Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="lowercaseFirst($attribute/@name)"/>}&nbsp;</td>
+		</c:otherwise>
+		</c:choose>
+				</tr>
+</c:iterate>
+			</tbody>
+</f:replaceAll>

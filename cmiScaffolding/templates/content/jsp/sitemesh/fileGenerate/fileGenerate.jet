@@ -1,0 +1,19 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+
+<ws:copyFile src="templates/content/jsp/sitemesh/sitemesh-common/dashboard.jsp" target="{$projectName}/WebRoot/WEB-INF/sitemesh-common/dashboard.jsp"/>
+
+<ws:copyFile src="templates/content/jsp/sitemesh/sitemesh-common/footer.jsp" target="{$projectName}/WebRoot/WEB-INF/sitemesh-common/footer.jsp"/>
+
+<ws:copyFile src="templates/content/jsp/sitemesh/sitemesh-common/header.jsp" target="{$projectName}/WebRoot/WEB-INF/sitemesh-common/header.jsp"/>
+
+<ws:copyFile src="templates/content/jsp/sitemesh/sitemesh-common/login.jsp" target="{$projectName}/WebRoot/WEB-INF/sitemesh-common/login.jsp"/>
+
+<ws:copyFile src="templates/content/jsp/sitemesh/sitemesh-common/tabs.jsp" target="{$projectName}/WebRoot/WEB-INF/sitemesh-common/tabs.jsp"/>
+
+<ws:copyFile src="templates/content/jsp/sitemesh/sitemesh-decorators/include.jsp" target="{$projectName}/WebRoot/WEB-INF/sitemesh-decorators/include.jsp"/>
+
+<ws:copyFile src="templates/content/jsp/sitemesh/sitemesh-decorators/main.jsp" target="{$projectName}/WebRoot/WEB-INF/sitemesh-decorators/main.jsp"/>
+
+<ws:copyFile src="templates/content/jsp/sitemesh/sitemesh-decorators/panel.jsp" target="{$projectName}/WebRoot/WEB-INF/sitemesh-decorators/panel.jsp"/>
+
+<ws:copyFile src="templates/content/jsp/sitemesh/sitemesh-decorators/printable.jsp" target="{$projectName}/WebRoot/WEB-INF/sitemesh-decorators/printable.jsp"/>

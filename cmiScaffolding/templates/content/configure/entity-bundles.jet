@@ -1,0 +1,116 @@
+# date
+date.format=MM/dd/yyyy
+date.format.invalid=Invalid date. Use
+
+# navigation
+navigation.new=New
+navigation.list=List
+navigation.back=Back
+navigation.save=Save
+navigation.edit=Edit
+navigation.view=View
+navigation.delete=Delete
+navigation.add=Add
+navigation.dateTime.title=MM/dd/yyyy hh:mm:ss AM
+
+# <c:get select="uppercaseFirst($eachTable/@name)"/>
+<c:get select="$eachTable/@name"/>.title=<c:get select="uppercaseFirst($eachTable/@name)"/>
+<c:iterate select="$eachTable/primaryKeys/column" var="c">
+<c:get select="$eachTable/@name"/>.<c:get select="$c/@name"/>.title=<c:get select="uppercaseFirst($c/@name)"/>
+<c:get select="$eachTable/@name"/>.<c:get select="$c/@name"/>.help=Enter <c:get select="uppercaseFirst($c/@name)"/>
+</c:iterate>
+<c:iterate select="$eachTable/columns/column" var="c">
+<c:get select="$eachTable/@name"/>.<c:get select="$c/@name"/>.title=<c:get select="uppercaseFirst($c/@name)"/>
+<c:get select="$eachTable/@name"/>.<c:get select="$c/@name"/>.help=Enter <c:get select="uppercaseFirst($c/@name)"/>
+</c:iterate>
+
+<%-- 生成关联实体的jsp页面 --%>
+<c:iterate select="$eachTable/foreigns/column" var="foreign">
+<c:iterate select="$referenceTables/table" var="ft">
+<c:if test="$ft/@name=$foreign/@referenceTable">
+# <c:get select="uppercaseFirst($foreign/@name)"/>
+<c:get select="$foreign/@name"/>.title=<c:get select="uppercaseFirst($foreign/@name)"/>
+<c:iterate select="$ft/primaryKeys/column" var="fc">
+<c:get select="$foreign/@name"/>.<c:get select="$fc/@name"/>.title=<c:get select="uppercaseFirst($fc/@name)"/>
+<c:get select="$foreign/@name"/>.<c:get select="$fc/@name"/>.help=Enter <c:get select="uppercaseFirst($fc/@name)"/>
+</c:iterate>
+<c:iterate select="$ft/columns/column" var="fc">
+<c:get select="$foreign/@name"/>.<c:get select="$fc/@name"/>.title=<c:get select="uppercaseFirst($fc/@name)"/>
+<c:get select="$foreign/@name"/>.<c:get select="$fc/@name"/>.help=Enter <c:get select="uppercaseFirst($fc/@name)"/>
+</c:iterate>
+</c:if>
+</c:iterate>
+</c:iterate>
+	
+	<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+	<c:iterate select="$referenceTables/table" var="referenceTable">
+		<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:if test="$i=0">
+			<c:if test="$j=0">
+			<c:iterate select="$referenceTable/foreigns/column" var="foreig">
+			<c:choose>
+			<c:when test="$foreig/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+	# <c:get select="uppercaseFirst($foreig/@referenceTable)"/>
+	<c:get select="$foreig/@referenceTable"/>s.title=<c:get select="uppercaseFirst($foreig/@referenceTable)"/>
+	<c:iterate select="$referenceTables/table" var="ft">
+	<c:if test="$ft/@name=$foreig/@referenceTable">
+	<c:iterate select="$ft/primaryKeys/column" var="fc">
+	<c:get select="$foreig/@referenceTable"/>.<c:get select="$fc/@name"/>.title=<c:get select="uppercaseFirst($fc/@name)"/>
+	<c:get select="$foreig/@referenceTable"/>.<c:get select="$fc/@name"/>.help=Enter <c:get select="uppercaseFirst($fc/@name)"/>
+	</c:iterate>
+	<c:iterate select="$ft/columns/column" var="fc">
+	<c:get select="$foreig/@referenceTable"/>.<c:get select="$fc/@name"/>.title=<c:get select="uppercaseFirst($fc/@name)"/>
+	<c:get select="$foreig/@referenceTable"/>.<c:get select="$fc/@name"/>.help=Enter <c:get select="uppercaseFirst($fc/@name)"/>
+	</c:iterate>
+	</c:if>
+	</c:iterate>
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:if>
+			<c:if test="$j>0">
+# <c:get select="uppercaseFirst($referenced/@name)"/>
+<c:get select="$referenced/@name"/>s.title=<c:get select="uppercaseFirst($referenced/@name)"/>
+<c:iterate select="$referenceTables/table" var="ft">
+<c:if test="$ft/@name=$referenced/@name">
+<c:iterate select="$ft/primaryKeys/column" var="fc">
+<c:get select="$referenced/@name"/>.<c:get select="$fc/@name"/>.title=<c:get select="uppercaseFirst($fc/@name)"/>
+<c:get select="$referenced/@name"/>.<c:get select="$fc/@name"/>.help=Enter <c:get select="uppercaseFirst($fc/@name)"/>
+</c:iterate>
+<c:iterate select="$ft/columns/column" var="fc">
+<c:get select="$referenced/@name"/>.<c:get select="$fc/@name"/>.title=<c:get select="uppercaseFirst($fc/@name)"/>
+<c:get select="$referenced/@name"/>.<c:get select="$fc/@name"/>.help=Enter <c:get select="uppercaseFirst($fc/@name)"/>
+</c:iterate>
+</c:if>
+</c:iterate>
+			</c:if>
+			</c:if>
+			<c:if test="$i>0">
+# <c:get select="uppercaseFirst($referenced/@name)"/>
+<c:get select="$referenced/@name"/>s.title=<c:get select="uppercaseFirst($referenced/@name)"/>
+<c:iterate select="$referenceTables/table" var="ft">
+<c:if test="$ft/@name=$referenced/@name">
+<c:iterate select="$ft/primaryKeys/column" var="fc">
+<c:get select="$referenced/@name"/>.<c:get select="$fc/@name"/>.title=<c:get select="uppercaseFirst($fc/@name)"/>
+<c:get select="$referenced/@name"/>.<c:get select="$fc/@name"/>.help=Enter <c:get select="uppercaseFirst($fc/@name)"/>
+</c:iterate>
+<c:iterate select="$ft/columns/column" var="fc">
+<c:get select="$referenced/@name"/>.<c:get select="$fc/@name"/>.title=<c:get select="uppercaseFirst($fc/@name)"/>
+<c:get select="$referenced/@name"/>.<c:get select="$fc/@name"/>.help=Enter <c:get select="uppercaseFirst($fc/@name)"/>
+</c:iterate>
+</c:if>
+</c:iterate>
+			</c:if>
+		</c:if>
+	</c:iterate>
+	</c:iterate>

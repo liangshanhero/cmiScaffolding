@@ -1,0 +1,25 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+
+<%-- 生成hibernate.properties文件 --%>
+<ws:file template="templates/content/configure/hibemateProperties.jet" path="{$projectName}/cmi/hibernate.properties"/>
+
+<%-- 生成jta.properties文件 --%>
+<ws:file template="templates/content/configure/jtaProperties.jet" path="{$projectName}/cmi/jta.properties"/>
+
+<%-- 生成log4j.properties文件 --%>
+<ws:file template="templates/content/configure/log4jProperties.jet" path="{$projectName}/cmi/log4j.properties"/>
+
+<%-- 生成dao-context.xml文件 --%>
+<ws:file template="templates/content/configure/dao-context.jet" path="{$projectName}/cmi/{$projectName}-dao-context.xml"/>
+
+<%-- 生成dao.properties文件 --%>
+<ws:file template="templates/content/configure/dao-property.jet" path="{$projectName}/cmi/{$projectName}-dao.properties"/>
+
+<%-- 生成security-context.xml文件 --%>
+<ws:file template="templates/content/configure/security-context.jet" path="{$projectName}/cmi/{$projectName}-security-context.xml"/>
+
+<%-- 生成service-context.xml文件 --%>
+<ws:file template="templates/content/configure/service-context.jet" path="{$projectName}/cmi/{$projectName}-service-context.xml"/>
+
+<%-- 生成web-context.xml文件 --%>
+<ws:file template="templates/content/configure/web-context.jet" path="{$projectName}/cmi/{$projectName}-web-context.xml"/>

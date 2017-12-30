@@ -1,0 +1,16 @@
+public boolean equals(Object obj) {
+		if (obj == this)
+			return true;
+		if (!(obj instanceof <c:get select="uppercaseFirst($eachTable/@name)"/>))
+			return false;
+		<c:get select="uppercaseFirst($eachTable/@name)"/> equalCheck = (<c:get select="uppercaseFirst($eachTable/@name)"/>) obj;
+		<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+		if ((<c:get select="lowercaseFirst($primaryKey/@name)"/> == null && equalCheck.<c:get select="lowercaseFirst($primaryKey/@name)"/> != null) || (<c:get select="lowercaseFirst($primaryKey/@name)"/> != null && equalCheck.<c:get select="lowercaseFirst($primaryKey/@name)"/> == null))
+			return false;
+		</c:iterate>
+		<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+		if (<c:get select="lowercaseFirst($primaryKey/@name)"/>!= null && !<c:get select="lowercaseFirst($primaryKey/@name)"/>.equals(equalCheck.<c:get select="lowercaseFirst($primaryKey/@name)"/>))
+			return false;
+		</c:iterate>
+		return true;
+	}

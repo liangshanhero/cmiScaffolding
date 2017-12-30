@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project xmlns:ns1="cn.edu.scau.cmi.liangshanero" name="ScauCmiScofford">
+	<package ns1:name="scau.cmi.liangzaoqing.test" />
+	<model>
+		<dataBaseType name="MySql" ip="127.0.0.1" port="3306"
+			username="root" password="root" schema="security">
+			<tables>
+				<table name="function">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" />
+						<column ns1:name="path" ns1:type="VARCHAR" />
+						<column ns1:name="comment" ns1:type="VARCHAR" />
+						<column ns1:name="facet" ns1:type="BIGINT" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="function2privilege">
+							<column ns1:name="functions" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="function2privilege">
+					<primaryKeys>
+						<column ns1:name="functions" ns1:type="BIGINT" />
+						<column ns1:name="privilege" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="functions" ns1:referenceTable="function"
+							ns1:referenceColumn="id" />
+						<column ns1:name="privilege" ns1:referenceTable="privilege"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="privilege">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" />
+						<column ns1:name="comment" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="function2privilege">
+							<column ns1:name="privilege" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="privilege2role">
+							<column ns1:name="privilege" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="privilege2role">
+					<primaryKeys>
+						<column ns1:name="role" ns1:type="BIGINT" />
+						<column ns1:name="privilege" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="privilege" ns1:referenceTable="privilege"
+							ns1:referenceColumn="id" />
+						<column ns1:name="role" ns1:referenceTable="role"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="role">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" />
+						<column ns1:name="comment" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="privilege2role">
+							<column ns1:name="role" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="role2user">
+							<column ns1:name="role" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="role2user">
+					<primaryKeys>
+						<column ns1:name="user" ns1:type="BIGINT" />
+						<column ns1:name="role" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="role" ns1:referenceTable="role"
+							ns1:referenceColumn="id" />
+						<column ns1:name="user" ns1:referenceTable="user"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="user">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="account" ns1:type="VARCHAR" ns1:display="true"/>
+						<column ns1:name="password" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="role2user">
+							<column ns1:name="user" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+			</tables>
+		</dataBaseType>
+	</model>
+</project>

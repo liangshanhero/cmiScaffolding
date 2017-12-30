@@ -1,0 +1,137 @@
+	<c:setVariable select="0" var="count"/>
+	<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+	<c:setVariable select="$count+1" var="count"/>
+	</c:iterate>
+	<c:setVariable select="$count" var="num"/>
+	
+	<c:setVariable select="0" var="x"/>
+	<c:setVariable select="0" var="y"/>
+	<c:iterate select="$eachTable/columns/column" var="col">
+		<c:setVariable select="$x+1" var="x"/>
+	</c:iterate>
+	<c:iterate select="$eachTable/referenceds/referenced" var="ref">
+		<c:setVariable select="$y+1" var="y"/>
+	</c:iterate>
+	
+	<c:choose>
+	<c:when test="($x=0)and($y=0)">
+	@RequestMapping("/save<c:get select="uppercaseFirst($eachTable/@name)"/>")
+	public String save<c:get select="uppercaseFirst($eachTable/@name)"/>(@ModelAttribute <c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="$eachTable/@name"/>,HttpServletRequest request) {
+		<c:get select="$eachTable/@name"/>Service.save<c:get select="uppercaseFirst($eachTable/@name)"/>(<c:get select="$eachTable/@name"/>);
+		request.getSession().setAttribute("page", "homePage");
+		return "forward:/index<c:get select="uppercaseFirst($eachTable/@name)"/>";
+	}
+	</c:when>
+	
+	<c:otherwise>
+	@Scope("prototype")
+	@RequestMapping("/save<c:get select="uppercaseFirst($eachTable/@name)"/>")
+	public String save<c:get select="uppercaseFirst($eachTable/@name)"/>(@ModelAttribute <c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="$eachTable/@name"/>,HttpServletRequest request) {
+		<c:get select="$eachTable/@name"/>Service.save<c:get select="uppercaseFirst($eachTable/@name)"/>(<c:get select="$eachTable/@name"/>);
+		request.getSession().setAttribute("page", "homePage");
+		return "forward:/index<c:get select="uppercaseFirst($eachTable/@name)"/>";
+	}
+	
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+	<c:iterate select="$referenceTables/table" var="existTable">
+	<c:if test="$foreign/@referenceTable=$existTable/@name">
+	<c:setVariable select="$num" var="count"/>
+	@RequestMapping("/save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>")
+	public ModelAndView save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">@RequestParam String <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">@RequestParam Integer <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,@ModelAttribute <c:get select="uppercaseFirst($foreign/@referenceTable)"/> <c:get select="$foreign/@referenceTable"/>){
+		<c:setVariable select="$num" var="count"/>
+		<c:get select="uppercaseFirst($eachTable/@name)"/> parent_<c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>Service.save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreign/@referenceTable)"/>(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,<c:get select="$foreign/@referenceTable"/>);
+
+		ModelAndView mav = new ModelAndView();
+		<c:setVariable select="$num" var="count"/>
+		<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+		mav.addObject("<c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>", <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>);
+		<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0"></c:if></c:iterate>
+		mav.addObject("<c:get select="$eachTable/@name"/>", parent_<c:get select="$eachTable/@name"/>);
+		mav.setViewName("<c:get select="$eachTable/@name"/>/view<c:get select="uppercaseFirst($eachTable/@name)"/>.jsp");
+
+		return mav;
+	}
+	</c:if>
+	</c:iterate>
+	</c:iterate>
+	
+	<c:iterate select="$eachTable/referenceds/referenced" var="referenced">
+	<c:iterate select="$referenceTables/table" var="referenceTable">
+		<c:if test="$referenceTable/@name=$referenced/@name">
+			<c:setVariable select="0" var="i"/>
+			<c:setVariable select="0" var="j"/>
+			<c:iterate select="$referenceTable/columns/column" var="col">
+				<c:setVariable select="$i+1" var="i"/>
+			</c:iterate>
+			<c:iterate select="$referenceTable/referenceds/referenced" var="ref">
+				<c:setVariable select="$j+1" var="j"/>
+			</c:iterate>
+			<c:if test="$i=0">
+			<c:if test="$j=0">
+			<c:iterate select="$referenceTable/foreigns/column" var="foreig">
+			<c:choose>
+			<c:when test="$foreig/@referenceTable=$eachTable/@name">
+			</c:when>
+			<c:otherwise>
+			<c:setVariable select="$num" var="count"/>
+			@RequestMapping("/save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreig/@referenceTable)"/>s")
+			public ModelAndView save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreig/@referenceTable)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">@RequestParam String <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">@RequestParam Integer <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,@ModelAttribute <c:get select="uppercaseFirst($foreig/@referenceTable)"/> <c:get select="$foreig/@referenceTable"/>s){
+				<c:setVariable select="$num" var="count"/>
+				<c:get select="uppercaseFirst($eachTable/@name)"/> parent_<c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>Service.save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($foreig/@referenceTable)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,<c:get select="$foreig/@referenceTable"/>s);
+
+				ModelAndView mav = new ModelAndView();
+				<c:setVariable select="$num" var="count"/>
+				<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+				mav.addObject("<c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>", <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>);
+				<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0"></c:if></c:iterate>
+				mav.addObject("<c:get select="$eachTable/@name"/>", parent_<c:get select="$eachTable/@name"/>);
+				mav.setViewName("<c:get select="$eachTable/@name"/>/view<c:get select="uppercaseFirst($eachTable/@name)"/>.jsp");
+
+				return mav;
+			}
+			</c:otherwise>
+			</c:choose>
+			</c:iterate>
+			</c:if>
+			<c:if test="$j>0">
+			<c:setVariable select="$num" var="count"/>
+			@RequestMapping("/save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s")
+			public ModelAndView save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">@RequestParam String <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">@RequestParam Integer <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,@ModelAttribute <c:get select="uppercaseFirst($referenced/@name)"/> <c:get select="$referenced/@name"/>s){
+				<c:setVariable select="$num" var="count"/>
+				<c:get select="uppercaseFirst($eachTable/@name)"/> parent_<c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>Service.save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,<c:get select="$referenced/@name"/>s);
+
+				ModelAndView mav = new ModelAndView();
+				<c:setVariable select="$num" var="count"/>
+				<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+				mav.addObject("<c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>", <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>);
+				<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0"></c:if></c:iterate>
+				mav.addObject("<c:get select="$eachTable/@name"/>", parent_<c:get select="$eachTable/@name"/>);
+				mav.setViewName("<c:get select="$eachTable/@name"/>/view<c:get select="uppercaseFirst($eachTable/@name)"/>.jsp");
+
+				return mav;
+			}
+			</c:if>
+			</c:if>
+			<c:if test="$i>0">
+			<c:setVariable select="$num" var="count"/>
+			@RequestMapping("/save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s")
+			public ModelAndView save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:if test="$primaryKey/@type='VARCHAR'or$primaryKey/@type='CHAR'or$primaryKey/@type='SET'or$primaryKey/@type='ENUM'or$primaryKey/@type='TINYTEXT'or$primaryKey/@type='TEXT'or$primaryKey/@type='MEDIUMTEXT'or$primaryKey/@type='LONGTEXT'">@RequestParam String <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='SMALLINT'or$primaryKey/@type='MEDIUMINT'or$primaryKey/@type='INT'or$primaryKey/@type='INTEGER'or$primaryKey/@type='BIGINT'">@RequestParam Integer <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='TIMESTAMP'or$primaryKey/@type='DATE'or$primaryKey/@type='TIME'or$primaryKey/@type='YEAR'or$primaryKey/@type='DATETIME'"><java:import>@RequestParam java.util.Date</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:if test="$primaryKey/@type='DOUBLE'or$primaryKey/@type='FLOAT'or$primaryKey/@type='REAL'or$primaryKey/@type='DECIMAL'or$primaryKey/@type='NUMERIC'"><java:import>@RequestParam java.math.BigDecimal</java:import> <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/></c:if><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,@ModelAttribute <c:get select="uppercaseFirst($referenced/@name)"/> <c:get select="$referenced/@name"/>s){
+				<c:setVariable select="$num" var="count"/>
+				<c:get select="uppercaseFirst($eachTable/@name)"/> parent_<c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>Service.save<c:get select="uppercaseFirst($eachTable/@name)"/><c:get select="uppercaseFirst($referenced/@name)"/>s(<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey"><c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/><c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0">,</c:if></c:iterate>,<c:get select="$referenced/@name"/>s);
+
+				ModelAndView mav = new ModelAndView();
+				<c:setVariable select="$num" var="count"/>
+				<c:iterate select="$eachTable/primaryKeys/column" var="primaryKey">
+				mav.addObject("<c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>", <c:get select="$eachTable/@name"/>_<c:get select="$primaryKey/@name"/>);
+				<c:setVariable select="$count+(-1)" var="count"/><c:if test="$count>0"></c:if></c:iterate>
+				mav.addObject("<c:get select="$eachTable/@name"/>", parent_<c:get select="$eachTable/@name"/>);
+				mav.setViewName("<c:get select="$eachTable/@name"/>/view<c:get select="uppercaseFirst($eachTable/@name)"/>.jsp");
+
+				return mav;
+			}
+			</c:if>
+		</c:if>
+	</c:iterate>
+	</c:iterate>
+	</c:otherwise>
+	</c:choose>

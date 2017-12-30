@@ -1,0 +1,164 @@
+<c:iterate select="$eachTable/columns/column" var="attribute">
+	<c:if test="$attribute/@type='BINARY'or$attribute/@type='VARBINARY'or$attribute/@type='POINT'or$attribute/@type='LINESTRING'or$attribute/@type='POLYGON'or$attribute/@type='GEOMETRY'or$attribute/@type='MULTIPOINT'or$attribute/@type='MULTILINESTRING'or$attribute/@type='MULTIPOLYGON'or$attribute/@type='TINYBLOB'or$attribute/@type='BLOB'or$attribute/@type='MEDIUMBLOB'or$attribute/@type='LONGBLOB'">
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(byte[] <c:get select="$attribute/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(<c:get select="$attribute/@name"/>, -1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(byte[] <c:get select="$attribute/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>", startResult, maxRows, <c:get select="$attribute/@name"/>);
+		return new LinkedHashSet<<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+	
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(byte[] <c:get select="$attribute/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(<c:get select="$attribute/@name"/>, -1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(byte[] <c:get select="$attribute/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing", startResult, maxRows, <c:get select="$attribute/@name"/>);
+		return new <java:import>java.util.LinkedHashSet</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+</c:if>
+<c:if test="$attribute/@type='CHAR'or$attribute/@type='VARCHAR'or$attribute/@type='SET'or$attribute/@type='ENUM'or$attribute/@type='TINYTEXT'or$attribute/@type='TEXT'or$attribute/@type='MEDIUMTEXT'or$attribute/@type='LONGTEXT'">
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(String <c:get select="$attribute/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(<c:get select="$attribute/@name"/>, -1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(String <c:get select="$attribute/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>", startResult, maxRows, <c:get select="$attribute/@name"/>);
+		return new LinkedHashSet<<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+	
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(String <c:get select="$attribute/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(<c:get select="$attribute/@name"/>, -1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(String <c:get select="$attribute/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing", startResult, maxRows, <c:get select="$attribute/@name"/>);
+		return new <java:import>java.util.LinkedHashSet</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+</c:if>
+<c:if test="$attribute/@type='DOUBLE'or$attribute/@type='FLOAT'or$attribute/@type='REAL'or$attribute/@type='DECIMAL'or$attribute/@type='NUMERIC'">
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(<java:import>java.math.BigDecimal</java:import> <c:get select="$attribute/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(<c:get select="$attribute/@name"/>, -1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(BigDecimal <c:get select="$attribute/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>", startResult, maxRows, <c:get select="$attribute/@name"/>);
+		return new LinkedHashSet<<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+	
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(BigDecimal <c:get select="$attribute/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(<c:get select="$attribute/@name"/>, -1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(BigDecimal <c:get select="$attribute/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing", startResult, maxRows, <c:get select="$attribute/@name"/>);
+		return new <java:import>java.util.LinkedHashSet</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+</c:if>
+<c:if test="$attribute/@type='SMALLINT'or$attribute/@type='MEDIUMINT'or$attribute/@type='INT'or$attribute/@type='INTEGER'or$attribute/@type='BIGINT'">
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(Integer <c:get select="$attribute/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(<c:get select="$attribute/@name"/>, -1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(Integer <c:get select="$attribute/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>", startResult, maxRows, <c:get select="$attribute/@name"/>);
+		return new LinkedHashSet<<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+	
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(Integer <c:get select="$attribute/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(<c:get select="$attribute/@name"/>, -1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(Integer <c:get select="$attribute/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing", startResult, maxRows, <c:get select="$attribute/@name"/>);
+		return new <java:import>java.util.LinkedHashSet</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+</c:if>
+<c:if test="$attribute/@type='TIMESTAMP'or$attribute/@type='DATE'or$attribute/@type='TIME'or$attribute/@type='YEAR'or$attribute/@type='DATETIME'">
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(<java:import>java.util.Date</java:import> <c:get select="$attribute/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(<c:get select="$attribute/@name"/>, -1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(Date <c:get select="$attribute/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>", startResult, maxRows, <c:get select="$attribute/@name"/>);
+		return new LinkedHashSet<<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+	
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(Date <c:get select="$attribute/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(<c:get select="$attribute/@name"/>, -1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(Date <c:get select="$attribute/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing", startResult, maxRows, <c:get select="$attribute/@name"/>);
+		return new <java:import>java.util.LinkedHashSet</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+</c:if>
+<c:if test="$attribute/@type='TINYINT'or$attribute/@type='BIT'">
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(Boolean <c:get select="$attribute/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(<c:get select="$attribute/@name"/>, -1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>(Boolean <c:get select="$attribute/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>", startResult, maxRows, <c:get select="$attribute/@name"/>);
+		return new LinkedHashSet<<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+	
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(Boolean <c:get select="$attribute/@name"/>) throws DataAccessException {
+
+		return find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(<c:get select="$attribute/@name"/>, -1, -1);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	public Set<<c:get select="uppercaseFirst($eachTable/@name)"/>> find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing(Boolean <c:get select="$attribute/@name"/>, int startResult, int maxRows) throws DataAccessException {
+		Query query = createNamedQuery("find<c:get select="uppercaseFirst($eachTable/@name)"/>By<c:get select="uppercaseFirst($attribute/@name)"/>Containing", startResult, maxRows, <c:get select="$attribute/@name"/>);
+		return new <java:import>java.util.LinkedHashSet</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>>(query.getResultList());
+	}
+</c:if>
+</c:iterate>

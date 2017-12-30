@@ -1,0 +1,39 @@
+<c:setVariable select="0" var="pkcount"/>
+<c:iterate select="$eachTable/primaryKeys/column" var="pk">
+<c:setVariable select="$pkcount+1" var="pkcount"/>
+</c:iterate>
+<c:setVariable select="$pkcount" var="pknum"/>
+package <c:get select="$packageName"/>.initBinder;
+<java:importsLocation package="org.example"/>
+import <c:get select="$packageName"/>.dao.*;
+import <c:get select="$packageName"/>.domain.*;
+
+@<java:import>org.springframework.stereotype.Component</java:import>("<c:get select="uppercaseFirst($eachTable/@name)"/>sEditor")
+public class <c:get select="uppercaseFirst($eachTable/@name)"/>sEditor extends <java:import>java.beans.PropertyEditorSupport</java:import>{
+
+	@<java:import>org.springframework.beans.factory.annotation.Autowired</java:import>
+	private <c:get select="uppercaseFirst($eachTable/@name)"/>DAO <c:get select="$eachTable/@name"/>DAO;
+	
+	public void setAsText(String <c:get select="$eachTable/@name"/>s){
+		
+		<java:import>java.util.Set</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>> <c:get select="$eachTable/@name"/>Set = new <java:import>java.util.HashSet</java:import><<c:get select="uppercaseFirst($eachTable/@name)"/>>();
+		if(<c:get select="$eachTable/@name"/>s.length()>0){
+		String[] source<c:get select="uppercaseFirst($eachTable/@name)"/>StringSet = <c:get select="$eachTable/@name"/>s.split(",");
+		if (source<c:get select="uppercaseFirst($eachTable/@name)"/>StringSet != null) {
+			for (String <c:get select="$eachTable/@name"/>StringSet : source<c:get select="uppercaseFirst($eachTable/@name)"/>StringSet) {
+				String[] <c:get select="$eachTable/@name"/>IdStringSet = <c:get select="$eachTable/@name"/>StringSet.split("\\] ");
+				<c:setVariable select="0" var="i"/>
+				<c:iterate select="$eachTable/primaryKeys/column" var="primariKey">	
+				String[] <c:get select="$eachTable/@name"/>IdString<c:get select="$i+1"/> = <c:get select="$eachTable/@name"/>IdStringSet[<c:get select="$i"/>].split("\\=\\[");
+				<c:setVariable select="$i+1" var="i"/>
+				</c:iterate>
+				<c:get select="uppercaseFirst($eachTable/@name)"/> <c:get select="$eachTable/@name"/> = <c:get select="$eachTable/@name"/>DAO.find<c:get select="uppercaseFirst($eachTable/@name)"/>ByPrimaryKey(<c:setVariable select="0" var="i"/><c:iterate select="$eachTable/primaryKeys/column" var="primariKey"><c:setVariable select="$i+1" var="i"/>Integer.parseInt(<c:get select="$eachTable/@name"/>IdString<c:get select="$i"/>[1])<c:if test="$i<$pknum">,</c:if></c:iterate>);
+				<c:get select="$eachTable/@name"/>Set.add(<c:get select="$eachTable/@name"/>);
+				}
+			}
+			setValue(<c:get select="$eachTable/@name"/>Set);
+		}
+		else
+			setValue(null);
+	}
+}

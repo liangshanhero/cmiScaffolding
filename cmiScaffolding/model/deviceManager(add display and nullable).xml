@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project xmlns:ns1="cn.edu.scau.cmi.liangshanero" name="deviceManager">
+	<package ns1:name="scau.cmi.liangzaoqing" />
+	<model>
+		<dataBaseType name="MySql" ip="localhost" port="3306"
+			username="root" password="root" schema="energydevice">
+			<tables>
+				<table name="cac">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="remark" ns1:type="VARCHAR" ns1:display="true" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="project" ns1:referenceTable="project"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="cacdevice">
+							<column ns1:name="cac" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="cacsensor">
+							<column ns1:name="cac" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="cacdevice">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="cac" ns1:referenceTable="cac"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="cacdevicedata">
+							<column ns1:name="cacdevice" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="cacmalfunction">
+							<column ns1:name="cacdevice" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="cacdevicedata">
+					<primaryKeys>
+						<column ns1:name="cacdevice" ns1:type="BIGINT" ns1:nullable="false"/>
+						<column ns1:name="cacrecordtime" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="value" ns1:type="VARCHAR" ns1:display="true" ns1:nullable="false"/>
+						<column ns1:name="isreport" ns1:type="SMALLINT"  ns1:nullable="false"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="cacdevice" ns1:referenceTable="cacdevice"
+							ns1:referenceColumn="id" ns1:nullable="false"/>
+						<column ns1:name="cacrecordtime" ns1:referenceTable="cacrecordtime"
+							ns1:referenceColumn="id" ns1:nullable="false"/>
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="cacmalfunction">
+					<primaryKeys>
+						<column ns1:name="cacrecordtime" ns1:type="BIGINT" ns1:nullable="false"/>
+						<column ns1:name="cacdevice" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="status" ns1:type="ENUM" ns1:display="true" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="cacdevice" ns1:referenceTable="cacdevice"
+							ns1:referenceColumn="id" ns1:nullable="false"/>
+						<column ns1:name="cacrecordtime" ns1:referenceTable="cacrecordtime"
+							ns1:referenceColumn="id" ns1:nullable="false"/>
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="cacrecordtime">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="RecordTime" ns1:type="DATETIME" ns1:display="true" ns1:nullable="true"/>
+						<column ns1:name="Watchkeeper" ns1:type="VARCHAR" ns1:nullable="true"/>
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="cacdevicedata">
+							<column ns1:name="cacrecordtime" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="cacmalfunction">
+							<column ns1:name="cacrecordtime" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="cacsensordata">
+							<column ns1:name="cacrecordtime" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="cacsensor">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="cac" ns1:referenceTable="cac"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="cacsensordata">
+							<column ns1:name="cacsensor" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="cacsensordata">
+					<primaryKeys>
+						<column ns1:name="cacrecordtime" ns1:type="BIGINT" ns1:nullable="false"/>
+						<column ns1:name="cacsensor" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="value" ns1:type="DECIMAL" ns1:display="true" ns1:nullable="true"/>
+						<column ns1:name="isreport" ns1:type="INT" ns1:nullable="false"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="cacrecordtime" ns1:referenceTable="cacrecordtime"
+							ns1:referenceColumn="id" ns1:nullable="false"/>
+						<column ns1:name="cacsensor" ns1:referenceTable="cacsensor"
+							ns1:referenceColumn="id" ns1:nullable="false"/>
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="company">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="false"/>
+						<column ns1:name="phone" ns1:type="VARCHAR" ns1:nullable="true"/>
+						<column ns1:name="fax" ns1:type="VARCHAR" ns1:nullable="true"/>
+						<column ns1:name="postcode" ns1:type="CHAR" ns1:nullable="true"/>
+						<column ns1:name="address" ns1:type="VARCHAR" ns1:nullable="true"/>
+						<column ns1:name="website" ns1:type="VARCHAR" ns1:nullable="true"/>
+						<column ns1:name="personduty" ns1:type="VARCHAR" ns1:nullable="true"/>
+						<column ns1:name="detail" ns1:type="TEXT" ns1:nullable="true"/>
+						<column ns1:name="remark" ns1:type="TEXT" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="representative" ns1:referenceTable="staff"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="project">
+							<column ns1:name="company" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="staff">
+							<column ns1:name="company" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="ledbuilding">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="false"/>
+						<column ns1:name="well" ns1:type="INT" ns1:nullable="true"/>
+						<column ns1:name="storey" ns1:type="INT" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="project" ns1:referenceTable="project"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="ledmeter">
+							<column ns1:name="ledbuilding" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="ledmeter">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="number" ns1:type="VARCHAR" ns1:display="true" ns1:nullable="true"/>
+						<column ns1:name="well" ns1:type="BIGINT" ns1:nullable="true"/>
+						<column ns1:name="storey" ns1:type="BIGINT" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="ledbuilding" ns1:referenceTable="ledbuilding"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="ledmeterdata">
+							<column ns1:name="ledmeter" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="ledmeterdata">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="value" ns1:type="DECIMAL" ns1:display="true" ns1:nullable="false"/>
+						<column ns1:name="time" ns1:type="DATETIME" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="ledmeter" ns1:referenceTable="ledmeter"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="project">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="false"/>
+						<column ns1:name="type" ns1:type="VARCHAR" ns1:nullable="false"/>
+						<column ns1:name="status" ns1:type="VARCHAR" ns1:nullable="false"/>
+						<column ns1:name="province" ns1:type="VARCHAR" ns1:nullable="true"/>
+						<column ns1:name="city" ns1:type="VARCHAR" ns1:nullable="true"/>
+						<column ns1:name="area" ns1:type="VARCHAR" ns1:nullable="true"/>
+						<column ns1:name="address" ns1:type="VARCHAR" ns1:nullable="true"/>
+						<column ns1:name="detail" ns1:type="TEXT" ns1:nullable="true"/>
+						<column ns1:name="remark" ns1:type="TEXT" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="company" ns1:referenceTable="company"
+							ns1:referenceColumn="id" ns1:nullable="false"/>
+						<column ns1:name="responsibility" ns1:referenceTable="staff"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="cac">
+							<column ns1:name="project" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="ledbuilding">
+							<column ns1:name="project" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="whbuilding">
+							<column ns1:name="project" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="staff">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="false"/>
+						<column ns1:name="duty" ns1:type="VARCHAR" ns1:nullable="true"/>
+						<column ns1:name="token" ns1:type="VARCHAR" ns1:nullable="true"/>
+						<column ns1:name="type" ns1:type="VARCHAR" ns1:nullable="false"/>
+						<column ns1:name="status" ns1:type="VARCHAR" ns1:nullable="false"/>
+						<column ns1:name="level" ns1:type="VARCHAR" ns1:nullable="false"/>
+						<column ns1:name="loginname" ns1:type="VARCHAR" ns1:nullable="false"/>
+						<column ns1:name="password" ns1:type="VARCHAR" ns1:nullable="false"/>
+						<column ns1:name="remark" ns1:type="VARCHAR" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="company" ns1:referenceTable="company"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="company">
+							<column ns1:name="representative" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="project">
+							<column ns1:name="responsibility" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="whbuilding">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="false"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="project" ns1:referenceTable="project"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="whdevice">
+							<column ns1:name="whbuilding" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="whdatatype">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:nullable="true"/>
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="whdatatype2whdevice">
+							<column ns1:name="whdatatype" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="whdevicedata">
+							<column ns1:name="whdatatype" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="whdatatype2whdevice">
+					<primaryKeys>
+						<column ns1:name="whdatatype" ns1:type="BIGINT" ns1:nullable="false"/>
+						<column ns1:name="whdevice" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="whdatatype" ns1:referenceTable="whdatatype"
+							ns1:referenceColumn="id" ns1:nullable="false"/>
+						<column ns1:name="whdevice" ns1:referenceTable="whdevice"
+							ns1:referenceColumn="id" ns1:nullable="false"/>
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="whdevice">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="number" ns1:type="VARCHAR" ns1:display="true" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="whbuilding" ns1:referenceTable="whbuilding"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+					</foreigns>
+					<referenceds>
+						<referenced name="whdatatype2whdevice">
+							<column ns1:name="whdevice" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="whdevicedata">
+							<column ns1:name="whdevice" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="whdevicedata">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" ns1:nullable="false"/>
+					</primaryKeys>
+					<columns>
+						<column ns1:name="time" ns1:type="DATETIME" ns1:nullable="true"/>
+						<column ns1:name="value" ns1:type="DECIMAL" ns1:display="true" ns1:nullable="true"/>
+						<column ns1:name="isupdate" ns1:type="SMALLINT" ns1:nullable="true"/>
+						<column ns1:name="isio" ns1:type="SMALLINT" ns1:nullable="true"/>
+					</columns>
+					<foreigns>
+						<column ns1:name="whdatatype" ns1:referenceTable="whdatatype"
+							ns1:referenceColumn="id" ns1:nullable="true"/>
+						<column ns1:name="whdevice" ns1:referenceTable="whdevice"
+							ns1:referenceColumn="id" ns1:nullable="false"/>
+					</foreigns>
+					<referenceds />
+				</table>
+			</tables>
+		</dataBaseType>
+	</model>
+</project>

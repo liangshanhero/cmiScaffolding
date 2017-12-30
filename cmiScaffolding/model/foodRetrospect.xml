@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project xmlns:ns1="cn.edu.scau.cmi.liangshanero" name="foodRetrospect">
+	<package ns1:name="cn.edu.scau.cmi" />
+	<model>
+		<dataBaseType name="MySql" ip="localhost" port="3306"
+			username="root" password="root" schema="food">
+			<tables>
+				<table name="animal_production_information">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" />
+						<column ns1:name="variety" ns1:type="VARCHAR" />
+						<column ns1:name="producingArea" ns1:type="VARCHAR" />
+						<column ns1:name="producingTime" ns1:type="DATETIME" />
+						<column ns1:name="slaughteringMethods" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="producer" ns1:referenceTable="producer_information"
+							ns1:referenceColumn="id" />
+						<column ns1:name="type" ns1:referenceTable="food_type"
+							ns1:referenceColumn="id" />
+						<column ns1:name="tester" ns1:referenceTable="tester_information"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="contact2node">
+					<primaryKeys>
+						<column ns1:name="nodeId" ns1:type="BIGINT" />
+						<column ns1:name="contactId" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="nodeId" ns1:referenceTable="node_information"
+							ns1:referenceColumn="id" />
+						<column ns1:name="contactId" ns1:referenceTable="contact_information"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="contact2producer">
+					<primaryKeys>
+						<column ns1:name="contactId" ns1:type="BIGINT" />
+						<column ns1:name="producerId" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="contactId" ns1:referenceTable="contact_information"
+							ns1:referenceColumn="id" />
+						<column ns1:name="producerId" ns1:referenceTable="producer_information"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="contact2tester">
+					<primaryKeys>
+						<column ns1:name="testerId" ns1:type="BIGINT" />
+						<column ns1:name="contactId" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns />
+					<foreigns>
+						<column ns1:name="testerId" ns1:referenceTable="tester_information"
+							ns1:referenceColumn="id" />
+						<column ns1:name="contactId" ns1:referenceTable="contact_information"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="contact_information">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="email" ns1:type="VARCHAR" />
+						<column ns1:name="telephone" ns1:type="VARCHAR" ns1:display="true"/>
+						<column ns1:name="weichat" ns1:type="VARCHAR" />
+						<column ns1:name="qq" ns1:type="VARCHAR" />
+						<column ns1:name="fax" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="contact2node">
+							<column ns1:name="contactId" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="contact2producer">
+							<column ns1:name="contactId" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="contact2tester">
+							<column ns1:name="contactId" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="food_type">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:display="true"/>
+						<column ns1:name="note" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="animal_production_information">
+							<column ns1:name="type" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="plant_production_information">
+							<column ns1:name="type" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="node_information">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="nodeIdentifier" ns1:type="VARCHAR" />
+						<column ns1:name="name" ns1:type="VARCHAR" />
+						<column ns1:name="registrationMark" ns1:type="VARCHAR" />
+						<column ns1:name="subordinateArea" ns1:type="VARCHAR" />
+						<column ns1:name="filingDate" ns1:type="DATETIME" />
+						<column ns1:name="legalPerson" ns1:type="VARCHAR" />
+						<column ns1:name="contactWay" ns1:type="BIGINT" />
+						<column ns1:name="address" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="type" ns1:referenceTable="node_type"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds>
+						<referenced name="contact2node">
+							<column ns1:name="nodeId" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="node_type">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" ns1:display="true"/>
+						<column ns1:name="note" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="node_information">
+							<column ns1:name="type" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="plant_production_information">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" />
+						<column ns1:name="harvestTime" ns1:type="DATETIME" />
+						<column ns1:name="produceMethod" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns>
+						<column ns1:name="type" ns1:referenceTable="food_type"
+							ns1:referenceColumn="id" />
+						<column ns1:name="producer" ns1:referenceTable="producer_information"
+							ns1:referenceColumn="id" />
+						<column ns1:name="tester" ns1:referenceTable="tester_information"
+							ns1:referenceColumn="id" />
+					</foreigns>
+					<referenceds />
+				</table>
+				<table name="producer_information">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" />
+						<column ns1:name="sex" ns1:type="VARCHAR" />
+						<column ns1:name="contactWay" ns1:type="BIGINT" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="animal_production_information">
+							<column ns1:name="producer" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="contact2producer">
+							<column ns1:name="producerId" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="plant_production_information">
+							<column ns1:name="producer" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+				<table name="tester_information">
+					<primaryKeys>
+						<column ns1:name="id" ns1:type="BIGINT" />
+					</primaryKeys>
+					<columns>
+						<column ns1:name="name" ns1:type="VARCHAR" />
+						<column ns1:name="inspectorId" ns1:type="VARCHAR" />
+						<column ns1:name="contactWay" ns1:type="BIGINT" />
+						<column ns1:name="sex" ns1:type="VARCHAR" />
+					</columns>
+					<foreigns />
+					<referenceds>
+						<referenced name="animal_production_information">
+							<column ns1:name="tester" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="contact2tester">
+							<column ns1:name="testerId" ns1:referencedColumn="id" />
+						</referenced>
+						<referenced name="plant_production_information">
+							<column ns1:name="tester" ns1:referencedColumn="id" />
+						</referenced>
+					</referenceds>
+				</table>
+			</tables>
+		</dataBaseType>
+	</model>
+</project>

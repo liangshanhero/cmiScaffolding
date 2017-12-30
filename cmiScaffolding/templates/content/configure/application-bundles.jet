@@ -1,0 +1,6 @@
+# general
+application.title=<c:get select="$projectName"/>
+
+# navigation
+navigation.backToDashboard=Back to Dashboard
+navigation.view=View

@@ -1,0 +1,50 @@
+<f:replaceAll value="Dollar_symbol" replacement="$"><c:replaceStrings replace="%Left_angle_brackets,%Right_angle_brackets" with="<,>">			<h1><fmt:message key="<c:get select="$eachTable/@name"/>.title"/>Details</h1>
+	<c:setVariable select="0" var="count"/>
+	<c:iterate select="$eachTable/primaryKeys/column" var="PK">
+	<c:setVariable select="$count+1" var="count"/>
+	</c:iterate>
+	<c:setVariable select="$count" var="num"/>
+<div class="navitem"><a class="button" href="Dollar_symbol{pageContext.request.contextPath}/index<c:get select="uppercaseFirst($eachTable/@name)"/>?page=homePage"><span><img src="images/icons/back.gif" /><fmt:message key="navigation.back"/></span></a></div>	
+				<table cellpadding="0" cellspacing="0" id="viewTable">
+					<tbody>
+					<c:iterate select="$eachTable/columns/column" var="attribute">
+						<tr>
+							<td class="label" valign="top">
+							<fmt:message key="<c:get select="$eachTable/@name"/>.<c:get select="$attribute/@name"/>.title"/>:
+							</td>
+						<c:choose>
+						<c:when test="$attribute/@type='TIMESTAMP'or$attribute/@type='DATE'or$attribute/@type='TIME'or$attribute/@type='YEAR'or$attribute/@type='DATETIME'">
+							<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="lowercaseFirst($attribute/@name)"/>}"/>&nbsp;</td>
+						</c:when>
+						<c:otherwise>
+							<td>Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="lowercaseFirst($attribute/@name)"/>}&nbsp;</td>
+						</c:otherwise>
+						</c:choose>
+						</tr>
+					</c:iterate>
+				</tbody>
+			</table>
+	<c:iterate select="$eachTable/foreigns/column" var="foreign">
+			<h1><fmt:message key="<c:get select="$foreign/@referenceTable"/>.title"/></h1>
+			%Left_angle_bracketsc:if test='Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$foreign/@referenceTable"/> != null}'%Right_angle_brackets
+			<table cellpadding="0" cellspacing="0" id="viewTable">
+				<tbody>
+				<c:iterate select="$referenceTables/table" var="rt">
+				<c:if test="$rt/@name=$foreign/@referenceTable">
+				<c:iterate select="$rt/columns/column" var="attribute">
+					<tr>
+						<td  class="label">
+							<fmt:message key="<c:get select="$foreign/@referenceTable"/>.<c:get select="$attribute/@name"/>.title"/>:
+						</td>
+						<td>
+							Dollar_symbol{<c:get select="$eachTable/@name"/>.<c:get select="$foreign/@referenceTable"/>.<c:get select="lowercaseFirst($attribute/@name)"/>}
+						&nbsp;
+						</td>
+					</tr>
+				</c:iterate>
+				</c:if>
+				</c:iterate>
+				</tbody>
+			</table>
+			%Left_angle_brackets/c:if%Right_angle_brackets
+	</c:iterate></c:replaceStrings></f:replaceAll>

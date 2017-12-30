@@ -1,0 +1,16 @@
+<%@taglib prefix="ws" id="org.eclipse.jet.workspaceTags" %>
+
+<%-- 生成appengine-web.xml文件 --%>
+<ws:file template="templates/content/configure/appengine-web.xml.jet" path="{$projectName}/WebRoot/WEB-INF/appengine-web.xml"/>
+
+<%-- 生成decorators.xml文件 --%>
+<ws:file template="templates/content/configure/decorators.jet" path="{$projectName}/WebRoot/WEB-INF/decorators.xml"/>
+
+<%-- 生成spring-form.tld文件 --%>
+<ws:file template="templates/content/configure/spring-form.tld.jet" path="{$projectName}/WebRoot/WEB-INF/spring-form.tld"/>
+
+<%-- 生成spring.tld文件 --%>
+<ws:file template="templates/content/configure/spring.tld.jet" path="{$projectName}/WebRoot/WEB-INF/spring.tld"/>
+
+<%-- 生成web.xml文件 --%>
+<ws:file template="templates/content/configure/webxml.jet" path="{$projectName}/WebRoot/WEB-INF/web.xml"/>

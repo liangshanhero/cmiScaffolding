@@ -1,0 +1,5 @@
+	@RequestMapping(value = "/<c:get select="uppercaseFirst($eachTable/@name)"/>", method = RequestMethod.GET)
+	@ResponseBody
+	public List<<c:get select="uppercaseFirst($eachTable/@name)"/>> list<c:get select="uppercaseFirst($eachTable/@name)"/>s() {
+		return new java.util.ArrayList<<c:get select="uppercaseFirst($eachTable/@name)"/>>(<c:get select="$eachTable/@name"/>Service.load<c:get select="uppercaseFirst($eachTable/@name)"/>s());
+	}

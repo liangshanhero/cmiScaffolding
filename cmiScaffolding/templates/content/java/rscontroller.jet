@@ -1,0 +1,23 @@
+package <c:get select="$packageName"/>.RS;
+<java:importsLocation package="org.example"/>
+
+import java.util.List;
+
+import <c:get select="$packageName"/>.dao.*;
+import <c:get select="$packageName"/>.domain.*;
+import <c:get select="$packageName"/>.service.*;
+import <c:get select="$packageName"/>.web.*;
+import org.springframework.web.bind.annotation.*;
+
+<java:format>
+@<java:import>org.springframework.stereotype.Controller</java:import>("<c:get select="uppercaseFirst($eachTable/@name)"/>RestController")
+public class <c:get select="uppercaseFirst($eachTable/@name)"/>RestController extends CmiController{
+	<c:include template="templates/content/java/method/rscontroller/variable.jet"/>
+	<c:include template="templates/content/java/method/rscontroller/delete.jet"/>
+	<c:include template="templates/content/java/method/rscontroller/get.jet"/>
+	<c:include template="templates/content/java/method/rscontroller/list.jet"/>
+	<c:include template="templates/content/java/method/rscontroller/load.jet"/>
+	<c:include template="templates/content/java/method/rscontroller/new.jet"/>
+	<c:include template="templates/content/java/method/rscontroller/save.jet"/>
+}
+</java:format>
