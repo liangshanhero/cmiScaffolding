@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: cmiScaffolding
-Bundle-SymbolicName: cmiScaffolding;singleton:=true
+Bundle-SymbolicName: cn.edu.scau.cmi.cmiScaffolding;singleton:=true
 Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.jet
 Bundle-ClassPath: .,bin/
